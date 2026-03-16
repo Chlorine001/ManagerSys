@@ -1,24 +1,54 @@
 package com.chlorine.water.config.Error;
-import java.util.HashMap;
-import java.util.Map;
 
-// 定义错误码常量或枚举
+import lombok.Getter;
 
-public final class ErrorCodes {
-    public static final int USER_NOT_FOUND = 1001;
-    public static final int USER_ALREADY_FOUND = 1002;
-    public static final int ORDER_ALREADY_PAID = 2001;
-    // ...
+/**
+ * 错误码枚举
+ * 统一管理系统所有错误码，避免重复维护
+ */
+@Getter
+public enum ErrorCodes {
+    // 用户相关错误 (1001-1999)
+    USER_NOT_FOUND(1001, "用户未找到"),
+    REGISTER_USER_ALREADY_FOUND(1002, "用户已存在"),
+    
+    // 订单相关错误 (2001-2999)
+    ORDER_ALREADY_PAID(2001, "订单已支付"),
+    ;
 
-    private static final Map<Integer, String> CODE_TO_NAME = new HashMap<>();
+    private final int code;
+    private final String message;
 
-    static {
-        CODE_TO_NAME.put(USER_NOT_FOUND, "USER_NOT_FOUND");
-        CODE_TO_NAME.put(USER_ALREADY_FOUND, "USER_ALREADY_FOUND");
-        CODE_TO_NAME.put(ORDER_ALREADY_PAID, "ORDER_ALREADY_PAID");
+    ErrorCodes(int code, String message) {
+        this.code = code;
+        this.message = message;
     }
 
+    /**
+     * 根据错误码获取枚举
+     */
+    public static ErrorCodes fromCode(int code) {
+        for (ErrorCodes error : values()) {
+            if (error.getCode() == code) {
+                return error;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 获取错误码名称
+     */
     public static String getNameByCode(int code) {
-        return CODE_TO_NAME.getOrDefault(code, "UNKNOWN_ERROR");
+        ErrorCodes error = fromCode(code);
+        return error != null ? error.name() : "UNKNOWN_ERROR";
+    }
+
+    /**
+     * 获取错误信息
+     */
+    public static String getMessageByCode(int code) {
+        ErrorCodes error = fromCode(code);
+        return error != null ? error.getMessage() : "未知错误";
     }
 }

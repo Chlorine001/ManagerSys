@@ -65,7 +65,8 @@ public class GlobalExceptionHandler {
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("ok", false);
         result.put("code", e.getCode());
-        result.put("code_mes", ErrorCodes.getNameByCode(e.getCode()) );
+        result.put("code_name", ErrorCodes.getNameByCode(e.getCode()) );
+        result.put("code_message", ErrorCodes.getMessageByCode(e.getCode()) );
         result.put("BusinessException", true);
         result.put("message", e.getMessage() != null ? e.getMessage() : "业务逻辑失败");
         return result;
