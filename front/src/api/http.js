@@ -30,25 +30,42 @@ async function request(path, options = {}) {
     const contentType = res.headers.get('content-type') || ''
     const isJson = contentType.includes('application/json')
 
+    // 读取响应体
+    let data
+    if (isJson) {
+      data = await res.json().catch(() => null)
+    } else {
+      data = await res.text().catch(() => '')
+    }
+
     if (!res.ok) {
-      const errBody = isJson ? await res.json().catch(() => null) : await res.text().catch(() => '')
-      const msg = typeof errBody === 'string' && errBody ? errBody : `HTTP ${res.status}`
+      // HTTP 状态码错误（500 等）
+      const msg = data?.message || (typeof data === 'string' && data ? data : `HTTP ${res.status}`)
       const err = new Error(msg)
       err.status = res.status
-      err.body = errBody
+      err.body = data
+      throw err
+    }
+
+    // 检查业务层面的错误（ok: false）
+    if (data && typeof data === 'object' && data.ok === false) {
+      const err = new Error(data.message || '请求失败')
+      err.status = res.status
+      err.body = data
       throw err
     }
 
     if (options.responseType === 'text' || !isJson) {
-      return await res.text()
+      return data
     }
-    return await res.json()
+    return data
   } catch (e) {
     if (e?.name === 'AbortError') {
       const err = new Error('timeout')
       err.code = 'TIMEOUT'
       throw err
     }
+    // 重新抛出错误，让调用方处理
     throw e
   } finally {
     clearTimeout(timer)
