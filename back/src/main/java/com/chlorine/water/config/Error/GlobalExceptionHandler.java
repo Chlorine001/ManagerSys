@@ -1,11 +1,11 @@
-package com.chlorine.water.config;
+package com.chlorine.water.config.Error;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -24,8 +24,9 @@ public class GlobalExceptionHandler {
         // 记录详细错误日志
         logger.error("系统异常：", e);
 
-        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> result = new LinkedHashMap<>();
         result.put("ok", false);
+        result.put("BusinessException", false);
         result.put("message", e.getMessage() != null ? e.getMessage() : "系统内部错误");
         result.put("error", e.getClass().getSimpleName());
         
@@ -47,12 +48,27 @@ public class GlobalExceptionHandler {
     public Map<String, Object> handleRuntimeException(RuntimeException e) {
         // 记录详细错误日志
         logger.error("运行时异常：", e);
-
-        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> result = new LinkedHashMap<>();
         result.put("ok", false);
+        result.put("BusinessException", false);
         result.put("message", e.getMessage() != null ? e.getMessage() : "运行时错误");
-        
-
         return result;
+    }
+
+    /**
+     * 处理业务逻辑失败时异常
+     */
+    @ExceptionHandler(BusinessException.class)
+    public Map<String, Object> handleBusinessException(BusinessException e) {
+        // 记录详细错误日志
+        logger.error("业务逻辑失败：", e);
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("ok", false);
+        result.put("code", e.getCode());
+        result.put("code_mes", ErrorCodes.getNameByCode(e.getCode()) );
+        result.put("BusinessException", true);
+        result.put("message", e.getMessage() != null ? e.getMessage() : "业务逻辑失败");
+        return result;
+
     }
 }
