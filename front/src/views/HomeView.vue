@@ -138,8 +138,8 @@
 </template>
 
 <script>
-import {getglobalbtn} from '@/utils'
-import fadeshowVue from '../components/fadeshow.vue'
+import {getglobalbtn} from '@/utils/utils'
+import loginShadowVue from '../views/login/loginshadow.vue'
 import chat from '../components/chat.vue'
 import menuitem from '../components/menuitem.vue'
 import righttop from '../components/righttop.vue'
@@ -164,7 +164,7 @@ export default {
     }
   },
   components: {
-    fadeshowVue,
+    fadeshowVue: loginShadowVue,
     chat,
     menuitem,
     righttop,

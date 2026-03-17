@@ -1,7 +1,7 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
-import router from './router'
-import { fns } from './utils.js'
+import router from '@/utils/router'
+import {fns} from '@/utils/utils.js'
 
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
@@ -24,7 +24,7 @@ router.beforeEach((to, from, next) => {
     //一个模拟的令牌token，实际情况请自行处理
     if (localStorage.getItem('token')) {
         if (to.path == '/') {
-            next({ path: '/home/home' });
+            next({path: '/home/home'});
         } else {
             next()
         }
@@ -33,7 +33,7 @@ router.beforeEach((to, from, next) => {
             next();
         } else {
             // if (to.meta.ifnologin != 1) {
-            next({ path: '/' })
+            next({path: '/'})
             // } else {
             // 	next()
             // }

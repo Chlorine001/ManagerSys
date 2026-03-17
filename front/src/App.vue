@@ -1,10 +1,10 @@
 <template>
-  <RouterView />
+  <RouterView/>
 </template>
 
 <script>
-import { dictionarys } from './dictionary/dictionaryMap.js' // 字典相关
-import { langarr } from './langs/index.js'//国际化相关
+import {dictionarys} from './utils/dictionaryMap.js' // 字典相关
+import {langarr} from './utils/langs.js'//国际化相关
 export default {
   data() {
     return {
@@ -48,11 +48,11 @@ export default {
       }
       if (this.$route.meta && this.$route.meta.dicts && this.$route.meta.dicts.length != 0) {
         for (var i = 0; i < this.$route.meta.dicts.length; i++) {
-          this.dictionarysarr.indexOf(this.$route.meta.dicts[i]) != -1 ? (!this.dictionarysuse ? this.dictionarysuse = { [this.$route.meta.dicts[i]]: 1 } : this.dictionarysuse[this.$route.meta.dicts[i]] = 1) : ''
+          this.dictionarysarr.indexOf(this.$route.meta.dicts[i]) != -1 ? (!this.dictionarysuse ? this.dictionarysuse = {[this.$route.meta.dicts[i]]: 1} : this.dictionarysuse[this.$route.meta.dicts[i]] = 1) : ''
         }
       } else {
         for (var i = 0; i < dictionarys.length; i++) {
-          (!this.dictionarysuse ? this.dictionarysuse = { [dictionarys[i].name]: 1 } : this.dictionarysuse[dictionarys[i].name] = 1)
+          (!this.dictionarysuse ? this.dictionarysuse = {[dictionarys[i].name]: 1} : this.dictionarysuse[dictionarys[i].name] = 1)
         }
       }
     },
