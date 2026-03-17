@@ -59,9 +59,11 @@
                     <!--                     </el-menu-item-group>-->
                   </el-sub-menu>
 
-                  <el-menu-item v-else-if="!v.meta || v.meta && v.meta.hide !== 0 && v.meta.userroot"
+                  <el-menu-item v-else-if="!v.meta || v.meta && v.meta.ishide !== true && v.meta.userroot"
                                 :index="v.meta.forusepath || v.name"
                                 @click="$root.replaceto(v.meta.forusepath), title = v.meta.title, nowroute = v.path || v.name">
+                    {{ console.log(v.meta.ishide,'child:', v, 'meta:', v.meta) }}
+
                     <!-- <i :class="'fas ' + icons[v.name]" style=" width:20px; font-size: 20px;"></i> -->
                     <!-- <img class="navimg" src="../../public/favicon.ico"> -->
                     <elicon :name="v.meta.icon"></elicon>

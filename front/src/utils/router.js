@@ -42,6 +42,7 @@ export function buildRoutes(pid, grouped) {
             meta: {
                 title: menu.name,
                 icon: menu.icon,
+                ishide: menu.ishide,
                 userroot: 1
             }
         }

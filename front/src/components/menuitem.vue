@@ -14,7 +14,7 @@
             </Menuitem>
             <!-- </el-menu-item-group> -->
         </el-sub-menu>
-        <el-menu-item v-else-if="!v.meta || v.meta && v.meta.hide !== 0 && v.meta.userroot" :index="v.path || v.name"
+        <el-menu-item v-else-if="!v.meta || v.meta && v.meta.ishide !== true && v.meta.userroot" :index="v.path || v.name"
             @click="$root.replaceto(v.meta.forusepath), settitle(v)">
             <!-- <i :class="'fas ' + icons[v.name]" style=" width:20px;font-size: 20px;"></i> -->
             <!-- <img class="navimg" src="../../public/favicon.ico"> -->

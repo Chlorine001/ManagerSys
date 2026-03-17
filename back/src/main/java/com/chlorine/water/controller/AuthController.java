@@ -63,6 +63,7 @@ public class AuthController {
                     r.put("name", m.getName());
                     r.put("icon", m.getIcon());
                     r.put("pid", m.getPid());
+                    r.put("ishide", m.getIshide());
                     return r;
                 })
                 .collect(Collectors.toList());
