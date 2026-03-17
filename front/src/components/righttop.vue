@@ -37,7 +37,9 @@
             </svg>
         </span>
     <img class="head" @click="topersonal" src="/favicon.ico" alt="">
-    <span class="username" style="margin-left:10px;margin-right:10px;" @click="topersonal">Admin</span>
+    <span class="username" style="margin-left:10px;margin-right:10px;" @click="topersonal">{{
+        currentUserName || 'Admin'
+      }}</span>
     <!-- 搜索层 -->
     <div v-if="showfades == 1">
       <div style="position: fixed;top:0;left:0;width:100%;height:100%;background-color: rgba(0, 0, 0, .7); ">
@@ -101,6 +103,7 @@
 
 <script>
 import elicon from './fonticons.vue'
+import {getCurrentUserName} from '@/utils/user'
 
 export default {
   data() {
@@ -112,13 +115,26 @@ export default {
       routes: [],
       decplroutes: [],
       resroutes: [],
-      resroutespath: []
+      resroutespath: [],
+      currentUserName: ''// 当前用户名
     }
   },
+  mounted() {
+    // 获取当前用户名
+    this.currentUserName = getCurrentUserName()
+    this.initroutes()
+    this.doms()
+    window.addEventListener('resize', () => {
+      this.doms()
+    })
+  },
+
   components: {
     elicon
   },
+
   methods: {
+    getCurrentUserName,
     topersonal() {
       this.$root.replaceto('/home/personal')
     },
@@ -242,13 +258,6 @@ export default {
       }
     }
   },
-  mounted() {
-    this.initroutes()
-    this.doms()
-    window.addEventListener('resize', () => {
-      this.doms()
-    })
-  }
 }
 </script>
 
