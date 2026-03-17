@@ -30,7 +30,7 @@
         nick_name,avatar,phone,
         sex,age,sign,
         email,organization,create_time,
-        state,ture_state,role,
+        state,true_state,role,
         true_name,id_number,direction
     </sql>
 
@@ -40,5 +40,30 @@
         from user
         where name = #{name}
     </select>
+
+    <insert id="insert">
+        insert into user(name, password) values(#{name}, #{password})
+    </insert>
+
+<!--    <update id="updateUserEmail">-->
+<!--        update user-->
+<!--        <set>-->
+<!--            <if test="name != null">-->
+<!--                name = #{name},-->
+<!--            </if>-->
+<!--            &lt;!&ndash;            <if test="password != null">&ndash;&gt;-->
+<!--            &lt;!&ndash;                password = #{password},&ndash;&gt;-->
+<!--            &lt;!&ndash;            </if>&ndash;&gt;-->
+<!--            <if test="nickname != null">-->
+<!--                nickname = #{nickname},-->
+<!--            </if>-->
+<!--            <if test="sex != null">-->
+<!--                sex = #{sex}-->
+<!--            </if>-->
+<!--        </set>-->
+<!--        <where>-->
+<!--            id = #{id}-->
+<!--        </where>-->
+<!--    </update>-->
 
 </mapper>

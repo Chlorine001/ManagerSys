@@ -5,14 +5,19 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @TableName user
  */
 @TableName(value ="user")
 @Data
+@Getter
+@Setter
 public class User implements Serializable {
     private Integer id;
 
@@ -36,11 +41,11 @@ public class User implements Serializable {
 
     private String organization;
 
-    private Date createTime;
+    private LocalDateTime createTime;
 
-    private Boolean state;
+    private Integer state;
 
-    private Integer tureState;
+    private Integer trueState;
 
     private Integer role;
 
