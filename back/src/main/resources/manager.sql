@@ -272,16 +272,27 @@ CREATE TABLE `menu`  (
   `icon` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图标',
   `pid` int NULL DEFAULT 0 COMMENT '父级菜单',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of menu
 -- ----------------------------
-INSERT INTO `menu` VALUES (1, '菜单名1', '地址1', '图标1', 0);
-INSERT INTO `menu` VALUES (2, '菜单名2', '地址2', '图标2', 0);
-INSERT INTO `menu` VALUES (3, '菜单名1.1', '地址3', '图标3', 1);
-INSERT INTO `menu` VALUES (4, '菜单名2.1', '地址4', '图标4', 2);
-INSERT INTO `menu` VALUES (5, '菜单名2.2', '地址5', '图标5', 2);
+INSERT INTO `menu` VALUES (1, '首页', '/home/home', 'home', 0);
+INSERT INTO `menu` VALUES (2, '系统管理', '/home/systemSet', 'systemSet', 0);
+INSERT INTO `menu` VALUES (3, '路由存储管理', '/home/systemSet/routes', 'routes', 2);
+INSERT INTO `menu` VALUES (4, '字典存储管理', '/home/systemSet/dictsset', 'dictsset', 2);
+INSERT INTO `menu` VALUES (5, '部门管理', '/home/systemSet/department', 'department', 2);
+INSERT INTO `menu` VALUES (6, '角色配置', '/home/systemSet/page1', 'page1', 2);
+INSERT INTO `menu` VALUES (7, '用户管理', '/home/systemSet/userset', 'userset', 2);
+INSERT INTO `menu` VALUES (8, '权限页面分配', '/home/systemSet/pagerootsettip', 'pagerootsettip', 2);
+INSERT INTO `menu` VALUES (9, '数据查看', '/home/page1b', 'page1b', 0);
+INSERT INTO `menu` VALUES (10, '关于本站弹窗管理', '/home/page1b/subpage1b', 'subpage1b', 9);
+INSERT INTO `menu` VALUES (11, '导航分级', '/home/page1b2', 'page1b2', 0);
+INSERT INTO `menu` VALUES (12, '导航二级', '/home/page1b2/subpage1b2', 'subpage1b2', 11);
+INSERT INTO `menu` VALUES (13, '导航三级', '/home/page1b2/subpage1b2/subpage1b2s', 'subpage1b2s', 12);
+INSERT INTO `menu` VALUES (14, '更多图标展示', '/home/icons', 'icons', 0);
+INSERT INTO `menu` VALUES (15, '个人资料', '/home/personal', 'personal', 0);
+INSERT INTO `menu` VALUES (16, '设置', '/home/setting', 'setting', 0);
 
 -- ----------------------------
 -- Table structure for notice
