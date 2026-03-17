@@ -10,8 +10,11 @@ import lombok.Getter;
 public enum ErrorCodes {
     // 用户相关错误 (1001-1999)
     USER_NOT_FOUND(1001, "用户未找到"),
-    REGISTER_USER_ALREADY_FOUND(1002, "用户已存在"),
-    
+    USER_ALREADY_FOUND(1002, "用户已存在"),
+    USER_NOT_LOGIN(1003, "用户未登录"),
+    USER_NOT_AUTHORIZED(1004, "用户未授权"),
+    USER_NOT_ENABLED(1005, "用户未启用"),
+
     // 订单相关错误 (2001-2999)
     ORDER_ALREADY_PAID(2001, "订单已支付"),
     ;

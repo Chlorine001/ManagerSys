@@ -14,6 +14,11 @@ public class BusinessException extends RuntimeException {
     private final int code;          // 错误码
     private final Object data;        // 可选的附加数据
 
+    public BusinessException(int code) {
+        this.code = code;
+        this.data = null;
+    }
+
     public BusinessException(int code, String message) {
         super(message);
         this.code = code;

@@ -51,6 +51,7 @@ public class GlobalExceptionHandler {
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("ok", false);
         result.put("BusinessException", false);
+        result.put("error", e.getClass().getSimpleName());
         result.put("message", e.getMessage() != null ? e.getMessage() : "运行时错误");
         return result;
     }
