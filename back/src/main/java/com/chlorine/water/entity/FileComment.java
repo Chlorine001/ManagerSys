@@ -1,17 +1,15 @@
 package com.chlorine.water.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * @TableName file_comment
  */
-@TableName(value ="file_comment")
+@TableName(value = "file_comment")
 @Data
 public class FileComment implements Serializable {
     private Integer id;

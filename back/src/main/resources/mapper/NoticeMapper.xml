@@ -5,12 +5,12 @@
 <mapper namespace="com.chlorine.water.mapper.NoticeMapper">
 
     <resultMap id="BaseResultMap" type="com.chlorine.water.entity.Notice">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="userId" column="user_id" jdbcType="INTEGER"/>
-            <result property="tittle" column="tittle" jdbcType="VARCHAR"/>
-            <result property="content" column="content" jdbcType="VARCHAR"/>
-            <result property="publishTime" column="publish_time" jdbcType="TIMESTAMP"/>
-            <result property="expirationTime" column="expiration_time" jdbcType="TIMESTAMP"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="tittle" column="tittle" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="publishTime" column="publish_time" jdbcType="TIMESTAMP"/>
+        <result property="expirationTime" column="expiration_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">

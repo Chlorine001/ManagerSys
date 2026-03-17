@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
         result.put("BusinessException", false);
         result.put("message", e.getMessage() != null ? e.getMessage() : "系统内部错误");
         result.put("error", e.getClass().getSimpleName());
-        
+
         // 提取 stackTrace 中的 className 和 lineNumber
         StackTraceElement[] stackTrace = e.getStackTrace();
         String[] simplifiedStack = new String[stackTrace.length];
@@ -66,8 +66,8 @@ public class GlobalExceptionHandler {
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("ok", false);
         result.put("code", e.getCode());
-        result.put("code_name", ErrorCodes.getNameByCode(e.getCode()) );
-        result.put("code_message", ErrorCodes.getMessageByCode(e.getCode()) );
+        result.put("code_name", ErrorCodes.getNameByCode(e.getCode()));
+        result.put("code_message", ErrorCodes.getMessageByCode(e.getCode()));
         result.put("BusinessException", true);
         result.put("message", e.getMessage() != null ? e.getMessage() : "业务逻辑失败");
         return result;

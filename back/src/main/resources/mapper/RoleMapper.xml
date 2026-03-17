@@ -5,11 +5,11 @@
 <mapper namespace="com.chlorine.water.mapper.RoleMapper">
 
     <resultMap id="BaseResultMap" type="com.chlorine.water.entity.Role">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="state" column="state" jdbcType="VARCHAR"/>
-            <result property="info" column="info" jdbcType="VARCHAR"/>
-            <result property="numb" column="numb" jdbcType="TINYINT"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="state" column="state" jdbcType="VARCHAR"/>
+        <result property="info" column="info" jdbcType="VARCHAR"/>
+        <result property="numb" column="numb" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">

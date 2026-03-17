@@ -5,13 +5,13 @@
 <mapper namespace="com.chlorine.water.mapper.FileCommentMapper">
 
     <resultMap id="BaseResultMap" type="com.chlorine.water.entity.FileComment">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="fileId" column="file_id" jdbcType="INTEGER"/>
-            <result property="userId" column="user_id" jdbcType="INTEGER"/>
-            <result property="content" column="content" jdbcType="VARCHAR"/>
-            <result property="pid" column="pid" jdbcType="INTEGER"/>
-            <result property="time" column="time" jdbcType="TIMESTAMP"/>
-            <result property="likes" column="likes" jdbcType="INTEGER"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="fileId" column="file_id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="pid" column="pid" jdbcType="INTEGER"/>
+        <result property="time" column="time" jdbcType="TIMESTAMP"/>
+        <result property="likes" column="likes" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">

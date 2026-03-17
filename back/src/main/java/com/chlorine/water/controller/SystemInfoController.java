@@ -12,10 +12,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/system")
 public class SystemInfoController {
-    
+
     @Autowired
     private Environment environment;
-    
+
     @GetMapping("/profile")
     public Map<String, String> getProfile() {
         Map<String, String> result = new HashMap<>();

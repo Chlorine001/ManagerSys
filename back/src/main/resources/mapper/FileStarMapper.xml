@@ -5,10 +5,10 @@
 <mapper namespace="com.chlorine.water.mapper.FileStarMapper">
 
     <resultMap id="BaseResultMap" type="com.chlorine.water.entity.FileStar">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="userId" column="user_id" jdbcType="INTEGER"/>
-            <result property="fileId" column="file_id" jdbcType="INTEGER"/>
-            <result property="star" column="star" jdbcType="DOUBLE"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="fileId" column="file_id" jdbcType="INTEGER"/>
+        <result property="star" column="star" jdbcType="DOUBLE"/>
     </resultMap>
 
     <sql id="Base_Column_List">

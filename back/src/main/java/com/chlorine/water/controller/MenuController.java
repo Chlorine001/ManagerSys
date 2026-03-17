@@ -25,11 +25,12 @@ public class MenuController {
         res.put("data", list);
         return res;
     }
+
     @PostMapping("/user")
     public Map<String, Object> listByUser(@RequestBody User user) {
         String userName = user.getName();
         Integer role = user.getRole();
-        
+
         // 管理员：直接给全部菜单
         List<Menu> menus;
         if ("admin".equalsIgnoreCase(userName) || (role != null && role == 0)) {

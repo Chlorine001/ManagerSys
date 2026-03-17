@@ -1,8 +1,11 @@
 package com.chlorine.water.mapper;
 
-import com.chlorine.water.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.*;
+import com.chlorine.water.entity.User;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * @author Chlorine

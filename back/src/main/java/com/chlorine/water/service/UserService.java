@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.chlorine.water.entity.User;
 
 /**
-* @author Chlorine
-* @description 针对表【user(用户表)】的数据库操作Service
-* @createDate 2024-04-23 16:46:25
-*/
+ * @author Chlorine
+ * @description 针对表【user(用户表)】的数据库操作Service
+ * @createDate 2024-04-23 16:46:25
+ */
 public interface UserService extends IService<User> {
 
     User registerUser(User user);           // 用户注册（可能包含密码加密、校验等）
