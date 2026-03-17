@@ -100,7 +100,6 @@ export const fns = (router, memorylist) => {
     fn2b(addPrefixList)
 
 
-
     // 匹配权限 - 优化算法复杂度
     const temproute = router.getRoutes()
 

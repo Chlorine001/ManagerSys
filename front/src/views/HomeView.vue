@@ -42,6 +42,7 @@
             <template v-for="val in $router.options.routes">
               <template v-if="val.meta && val.meta.title === 'base'">
                 <template v-for="(v, i) in val.children">
+<!--                  {{ console.log(v.meta.ishide,'child:', v, 'meta:', v.meta) }}-->
                   <el-sub-menu v-if="v && v.children && v.children.length && v.meta.userroot"
                                :index="v.meta.forusepath || v.name">
                     <template #title>
@@ -62,7 +63,6 @@
                   <el-menu-item v-else-if="!v.meta || v.meta && v.meta.ishide !== true && v.meta.userroot"
                                 :index="v.meta.forusepath || v.name"
                                 @click="$root.replaceto(v.meta.forusepath), title = v.meta.title, nowroute = v.path || v.name">
-                    {{ console.log(v.meta.ishide,'child:', v, 'meta:', v.meta) }}
 
                     <!-- <i :class="'fas ' + icons[v.name]" style=" width:20px; font-size: 20px;"></i> -->
                     <!-- <img class="navimg" src="../../public/favicon.ico"> -->
