@@ -18,7 +18,7 @@
             <result property="organization" column="organization" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="state" column="state" jdbcType="BIT"/>
-            <result property="tureState" column="ture_state" jdbcType="TINYINT"/>
+            <result property="trueState" column="ture_state" jdbcType="TINYINT"/>
             <result property="role" column="role" jdbcType="TINYINT"/>
             <result property="trueName" column="true_name" jdbcType="VARCHAR"/>
             <result property="idNumber" column="id_number" jdbcType="VARCHAR"/>
@@ -41,9 +41,9 @@
         where name = #{name}
     </select>
 
-    <insert id="insert">
-        insert into user(name, password) values(#{name}, #{password})
-    </insert>
+<!--    <insert id="insert">-->
+<!--        insert into user(name, password) values(#{name}, #{password})-->
+<!--    </insert>-->
 
 <!--    <update id="updateUserEmail">-->
 <!--        update user-->
@@ -65,5 +65,30 @@
 <!--            id = #{id}-->
 <!--        </where>-->
 <!--    </update>-->
+
+    <insert id="insert">
+        insert into user(name, password) values(#{name}, #{password})
+    </insert>
+    <update id="update">
+        update user
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <!--            <if test="password != null">-->
+            <!--                password = #{password},-->
+            <!--            </if>-->
+            <if test="nickname != null">
+                nickname = #{nickname},
+            </if>
+            <if test="sex != null">
+                sex = #{sex}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+
+    </update>
 
 </mapper>
