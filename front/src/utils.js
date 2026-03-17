@@ -109,12 +109,3 @@ export const getCurrentUser = () => {
     }
     return null
 }
-
-/**
- * 获取当前登录用户名
- * @returns {string|null} - 用户名，如果未登录则返回 null
- */
-export const getCurrentUserName = () => {
-    const user = getCurrentUser()
-    return user ? user.name : null
-}
