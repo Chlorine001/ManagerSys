@@ -42,7 +42,7 @@ export function buildRoutes(pid, grouped) {
             meta: {
                 title: menu.name,
                 icon: menu.icon,
-                forrootset: 1
+                userroot: 1
             }
         }
 
@@ -115,7 +115,7 @@ const router = createRouter({
             name: '404',
             meta: {
                 title: '404',
-                forrootset: 1,
+                userroot: 1,
                 hide: true
             },
             component: () => import('../views/error/404.vue'),

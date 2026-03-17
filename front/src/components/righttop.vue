@@ -65,7 +65,7 @@
                   <div v-if="v.name">
                     <div style="padding:25px 10px 0">
                       <!-- <i :class="'fas ' + icons[v.name]"></i> -->
-                      <elicon :name="v.name"></elicon>
+                      <elicon :name="v.meta.icon"></elicon>
                     </div>
                   </div>
                   <div style="width:100%">

@@ -29,7 +29,7 @@
       </span>
     </div>
 
-      <!-- out -->
+    <!-- out -->
     <chat></chat>
 
     <div class="left">
@@ -37,35 +37,34 @@
         <div class="theleftin">
           <!-- in -->
           <el-menu class="el-menu-vertical-demo" router
-                   :collapse="!ifopen && allshow ? false : ((ifopen || (!ifopen && allhide)) ? true : false)"
+                   :collapse="!ifopen && allshow ? false : (!!(ifopen || (!ifopen && allhide)))"
                    :default-active="nowroute">
             <template v-for="val in $router.options.routes">
-              <template v-if="val.meta && val.meta.title == 'base'">
+              <template v-if="val.meta && val.meta.title === 'base'">
                 <template v-for="(v, i) in val.children">
-
-                  <el-sub-menu v-if="v && v.children && v.children.length && v.meta.userroot" :index="v.path || v.name">
+                  <el-sub-menu v-if="v && v.children && v.children.length && v.meta.userroot"
+                               :index="v.meta.forusepath || v.name">
                     <template #title>
-                      <a
-                          style=" display: inline-block;margin-top:-20px; height:0;line-height: normal; vertical-align: top;">
-<!--                         <i :class="'fas ' + icons[v.name]" style=" width:20px;font-size: 20px;"></i>-->
-<!--                         <img class="navimg" src="../../public/favicon.ico" />-->
-                        <elicon :name="v.name"></elicon>
+                      <a style=" display: inline-block;margin-top:-20px; height:0;line-height: normal; vertical-align: top;">
+                        <!--                         <i :class="'fas ' + icons[v.name]" style=" width:20px;font-size: 20px;"></i>-->
+                        <!--                         <img class="navimg" src="../../public/favicon.ico" />-->
+                        <elicon :name="v.meta.icon"></elicon>
                       </a>
                       <span v-if="!ifopen" style="margin-left: 10px;">{{ v && titlechange(v.meta.title) }}</span>
                     </template>
 
-<!--                     <el-menu-item-group>-->
+                    <!--                     <el-menu-item-group>-->
                     <menuitem :list="v" :ifopen="ifopen" @title="settitle">
                     </menuitem>
-<!--                     </el-menu-item-group>-->
+                    <!--                     </el-menu-item-group>-->
                   </el-sub-menu>
 
-                  <el-menu-item v-else-if="!v.meta || v.meta && v.meta.hide != true && v.meta.userroot"
-                                :index="v.path || v.name"
+                  <el-menu-item v-else-if="!v.meta || v.meta && v.meta.hide !== 0 && v.meta.userroot"
+                                :index="v.meta.forusepath || v.name"
                                 @click="$root.replaceto(v.meta.forusepath), title = v.meta.title, nowroute = v.path || v.name">
                     <!-- <i :class="'fas ' + icons[v.name]" style=" width:20px; font-size: 20px;"></i> -->
                     <!-- <img class="navimg" src="../../public/favicon.ico"> -->
-                    <elicon :name="v.name"></elicon>
+                    <elicon :name="v.meta.icon"></elicon>
 
                     <template #title>
                       <span style="margin-left: 10px;">{{ v && titlechange(v.meta.title) }}</span>
@@ -83,16 +82,15 @@
           <div style="height:56px"></div>
         </div>
         <!-- nav bottom -->
-        //左下角
         <template v-for="val in $router.options.routes">
-          <template v-if="val.meta && val.meta.title == 'base'">
+          <template v-if="val.meta && val.meta.title === 'base'">
 
             <template v-for="(v, i) in val.children">
               <div style="position: absolute;left:0;bottom: 0;width:100%;"
-                   v-if="v.name == 'icons' && !v.meta || v.meta && v.meta.hide != true && v.meta.userroot">
+                   v-if="v.path === 'icons' && !v.meta || v.meta && v.meta.userroot">
                 <div style="margin-right: 9px;border-top: 1px solid #ccc;">
                   <el-menu class="el-menu-vertical-demo"
-                           :collapse="!ifopen && allshow ? false : ((ifopen || (!ifopen && allhide)) ? true : false)">
+                           :collapse="!ifopen && allshow ? false : (!!(ifopen || (!ifopen && allhide)))">
                     <el-menu-item style="_background-color: #fff;" @click="toicons">
                       <elicon name="icons"></elicon>
                       <template #title>
@@ -107,9 +105,6 @@
         </template>
       </div>
     </div>
-
-
-
 
 
     <!-- # cont -->

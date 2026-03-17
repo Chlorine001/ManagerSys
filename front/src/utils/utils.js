@@ -70,7 +70,7 @@ export const fns = (router, memorylist) => {
             }
 
             // 递归处理子路由
-            if (item.children && item.meta.forrootset) {
+            if (item.children && item.meta.userroot) {
                 fn2(item.children, item.meta.subtitle || item.meta.title, item.meta.forusepath || item.path)
             }
         }
@@ -92,7 +92,7 @@ export const fns = (router, memorylist) => {
                 item.meta.forusepath = '/home' + item.meta.forusepath
             }
 
-            if (item.children && item.meta.forrootset) {
+            if (item.children && item.meta.userroot) {
                 fn2b(item.children)
             }
         }

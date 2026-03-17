@@ -5,7 +5,7 @@
                 <a style=" display: inline-block;margin-top:-20px;height:0;line-height: normal; vertical-align: top;">
                     <!-- <i :class="'fas ' + icons[v.name]" style=" width:20px;font-size: 20px;"></i> -->
                     <!-- <img class="navimg" src="../../public/favicon.ico" /> -->
-                    <elicon :name="v.name"></elicon>
+                    <elicon :name="v.meta.icon"></elicon>
                 </a>
                 <span style="margin-left: 10px;">{{ v && titlechange(v.meta.title) }}</span>
             </template>
@@ -14,11 +14,11 @@
             </Menuitem>
             <!-- </el-menu-item-group> -->
         </el-sub-menu>
-        <el-menu-item v-else-if="!v.meta || v.meta && v.meta.hide != true && v.meta.userroot" :index="v.path || v.name"
+        <el-menu-item v-else-if="!v.meta || v.meta && v.meta.hide !== 0 && v.meta.userroot" :index="v.path || v.name"
             @click="$root.replaceto(v.meta.forusepath), settitle(v)">
             <!-- <i :class="'fas ' + icons[v.name]" style=" width:20px;font-size: 20px;"></i> -->
             <!-- <img class="navimg" src="../../public/favicon.ico"> -->
-            <elicon :name="v.name"></elicon>
+            <elicon :name="v.meta.icon"></elicon>
             <template #title>
                 <span style="margin-left: 10px;">{{ v && titlechange(v.meta.title) }}</span>
             </template>
