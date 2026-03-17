@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import {fns, getglobalbtn} from '../utils.js'
+import {fns, getglobalbtn} from '../../utils.js'
 import {ElMessage} from 'element-plus'
 import { http } from '@/api/http'
 import { loadMenuRoutes, addMenuRoutes } from '@/router'
@@ -113,7 +113,7 @@ export default {
   width: 100%;
   height: 100%;
   background-color: brown;
-  background: url(../assets/back.jpg) center no-repeat;
+  background: url(../../assets/back.jpg) center no-repeat;
   background-size: cover;
 }
 
