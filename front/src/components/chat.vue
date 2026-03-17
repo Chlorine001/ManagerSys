@@ -19,18 +19,18 @@
                     <div style="height:50px;width:50px;background-color: white;cursor: pointer;"
                         :style="{ boxShadow: $root.boxShadow2, backgroundColor: changetype == 2 ? '#308df7' : '#fff' }"
                         @click="changetype = 2">
-                        <ele-icon>
+                        <el-icon>
                             <User style="transform: scale(.5);" :style="{ color: changetype == 2 ? '#fff' : '' }" />
-                        </ele-icon>
+                        </el-icon>
                     </div>
                 </div>
                 <div style="padding: 20px 20px 0;" v-if="showchat">
                     <div style="height:50px;width:50px;background-color: white;cursor: pointer;"
                         :style="{ boxShadow: $root.boxShadow2, backgroundColor: changetype == 1 ? '#308df7' : '#fff' }"
                         @click="changetype = 1">
-                        <ele-icon>
+                        <el-icon>
                             <ChatDotRound style="transform: scale(.5);" :style="{ color: changetype == 1 ? '#fff' : '' }" />
-                        </ele-icon>
+                        </el-icon>
                     </div>
                 </div>
             </div>
@@ -112,14 +112,13 @@
 
                 </div>
             </div>
-            <div v-if="ifshow" v-html="'<style>body{overflow:hidden !important}</style>'"></div>
         </div>
         <!-- 浮动按钮 -->
         <div style="position: fixed;right:20px;bottom:30px;width: 60px;height: 60px;background-color: #308df7;border-radius: 50%;z-index: 2;cursor: pointer;"
             :style="{ boxShadow: $root.boxShadow }" @click="ifshow = 1">
-            <ele-icon>
-                <ChatDotRound style="color: white;transform: scale(.5);" />
-            </ele-icon>
+            <el-icon>
+                <ChatDotRound  style="color: white;transform: scale(.5);"/>
+            </el-icon>
         </div>
     </div>
 </template>
@@ -133,11 +132,21 @@ export default {
             winheight: '',
             ifshow: 0,
             showchat: 0,
-            changetype: 2,//1是会话窗口，2是列表
+            changetype: 2,//1 是会话窗口，2 是列表
             list: [],
             mscrollinit: {},
             canload: 1,
             page: 0,
+        }
+    },
+    watch: {
+        // 监听 ifshow 状态，动态控制 body 滚动
+        ifshow(newVal) {
+            if (newVal) {
+                document.body.style.overflow = 'hidden'
+            } else {
+                document.body.style.overflow = ''
+            }
         }
     },
     methods: {
@@ -265,6 +274,10 @@ export default {
                 this.setdoms()
             })
         }, 500)
+    },
+    beforeUnmount() {
+        // 组件销毁前恢复 body 滚动
+        document.body.style.overflow = ''
     }
 }
 </script>
