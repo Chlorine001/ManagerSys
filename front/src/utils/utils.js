@@ -77,7 +77,7 @@ export const fns = (router, memorylist) => {
     }
     fn2(addTittleList)
 
-    // 适配左侧导航路由 - 添加 /home 前缀 -- 适应特定的路由前缀要求
+    // 适配左侧导航路由 - 添加 /tup 前缀 -- 适应特定的路由前缀要求
     const addPrefixList = getBaseChildren(router)
     const fn2b = (list) => {
         for (let ind = 0; ind < list.length; ind++) {
@@ -87,9 +87,9 @@ export const fns = (router, memorylist) => {
                 item.meta = {}
             }
 
-            // 防止重复添加 /home 前缀
-            if (item.meta.forusepath && !item.meta.forusepath.startsWith('/home')) {
-                item.meta.forusepath = '/home' + item.meta.forusepath
+            // 防止重复添加 /tup 前缀
+            if (item.meta.forusepath && !item.meta.forusepath.startsWith('/tup')) {
+                item.meta.forusepath = '/tup' + item.meta.forusepath
             }
 
             if (item.children && item.meta.userroot) {

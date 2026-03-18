@@ -26,28 +26,34 @@ if (memoryRoute.length) {
     // router.options.routes = fns(router, memoryRoute).getRoutes()
 }
 
-//路由处理层级导航
-
 //路由守卫
+// 定义无需登录的白名单路由
+const whiteList = ['/', '/404'] // 登录页和 404 页无需登录
 
 router.beforeEach((to, from, next) => {
-    //一个模拟的令牌token，实际情况请自行处理
-    if (localStorage.getItem('token')) {
-        if (to.path == '/') {
-            next({path: '/home/home'});
+    const hasToken = localStorage.getItem('token')
+
+    // 在白名单中，直接放行
+    if (whiteList.includes(to.path)) {
+        // 已登录用户访问登录页，重定向到首页
+        if (hasToken && to.path === '/') {
+            next({path: '/tup/home'})
         } else {
             next()
         }
+        return
+    }
+
+    // 不在白名单中，需要登录
+    if (hasToken) {
+        // TODO: 可在此处添加 token 有效性验证逻辑
+        next()
     } else {
-        if (to.path == '/') {
-            next();
-        } else {
-            // if (to.meta.ifnologin != 1) {
-            next({path: '/'})
-            // } else {
-            // 	next()
-            // }
-        }
+        // 未登录，重定向到登录页
+        next({
+            path: '/',
+            query: {redirect: to.fullPath} // 保存原始目标路径，登录后可跳转回去
+        })
     }
 })
 

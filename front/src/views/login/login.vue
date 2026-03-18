@@ -102,6 +102,8 @@ export default {
             localStorage.setItem('menuRoutes', JSON.stringify(menuRoutes))
             // 动态添加路由到 router 实例
             addMenuRoutes(menuRoutes)
+            console.log('menuRoutes:', menuRoutes)
+            console.log('router:', this.$router.options.routes)
             // 处理路由元信息（面包屑、权限等）- 传入原始的 navroot
             fns(this.$router, navroot)
           } catch (e) {
@@ -114,7 +116,7 @@ export default {
           if ((localStorage.getItem('navroot') || []).length === 0) {
             ElMessage({type: 'error', message: '没有获取到页面地址组'})
           } else {
-            this.$router.replace('/home/home')
+            this.$router.replace('/tup/home')
           }
         }, 200)
       } catch (e) {

@@ -63,21 +63,21 @@ export default {
             showsetadd: 0,
             dicts: '',
             list: [
-                {
-                    dicts: 'home:view:nums',
-                    path: '/home/home',
-                    id: '1'
-                },
-                {
-                    dicts: 'home:view:radar',
-                    path: '/home/home',
-                    id: '2'
-                },
-                {
-                    dicts: 'home:view:calendar',
-                    path: '/home/home',
-                    id: '3'
-                },
+                // {
+                //     dicts: 'home:view:nums',
+                //     path: '/home/home',
+                //     id: '1'
+                // },
+                // {
+                //     dicts: 'home:view:radar',
+                //     path: '/home/home',
+                //     id: '2'
+                // },
+                // {
+                //     dicts: 'home:view:calendar',
+                //     path: '/home/home',
+                //     id: '3'
+                // },
             ]
 
         }

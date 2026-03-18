@@ -157,7 +157,7 @@ export default {
       allshow: 1,
       load: 0,
       //
-      nowroute: ''
+      nowroute: 'home'
     }
   },
   components: {
@@ -222,6 +222,7 @@ export default {
       this.titles = this.$route.meta.subtitles || '--'
       //
       this.nowroute = (this.$route.path.split('/')[this.$route.path.split('/').length - 1]) || this.$route.meta.name
+      console.log(this.nowroute)
       //
       window.scrollTo(0, 0)
     },

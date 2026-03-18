@@ -124,12 +124,12 @@ const router = createRouter({
         },
         // 首页 - 默认路由
         {
-            path: '/home',
-            name: 'home',
+            path: '/tup',
+            name: 'tup',
             meta: {
                 title: 'base',
             },
-            redirect: '/home/home',
+            redirect: '/tup/home',
             component: HomeView,
             children: []
         },
@@ -153,7 +153,7 @@ const router = createRouter({
  * @param {Array} routes - 路由配置数组
  */
 export function addMenuRoutes(routes) {
-    const homeRoute = router.options.routes.find(r => r.path === '/home')
+    const homeRoute = router.options.routes.find(r => r.path === '/tup')
     if (homeRoute && routes && routes.length > 0) {
         routes.forEach(route => {
             // 避免重复添加

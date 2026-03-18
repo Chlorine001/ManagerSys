@@ -102,11 +102,11 @@ export default {
 
 /*  日历单元格鼠标滑过背景色 */
 :deep(.el-calendar-table .el-calendar-day:hover) {
-  background-color: lightblue !important;
+  background-color: lightcyan !important;
 }
 
 :deep(.el-calendar-table .is-today) {
-  color: red !important;
+  color: #8400ff !important;
   background-color: white;
 }
 
