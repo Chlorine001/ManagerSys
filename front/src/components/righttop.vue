@@ -136,10 +136,10 @@ export default {
   methods: {
     getCurrentUserName,
     topersonal() {
-      this.$root.replaceto('/home/personal')
+      goBase('/personal')
     },
     tosetting() {
-      this.$root.replaceto('/home/setting')
+      goBase('/setting')
     },
     search() {
       clearTimeout(this.flag)

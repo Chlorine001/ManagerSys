@@ -136,8 +136,8 @@
 
 <script>
 import {getglobalbtn} from '@/utils/utils'
-import loginShadowVue from '../views/login/loginshadow.vue'
-import chat from '../components/chat.vue'
+import loginShadowVue from '@/views/login/loginshadow.vue'
+import chat from '@/components/chat.vue'
 import menuitem from '../components/menuitem.vue'
 import righttop from '../components/righttop.vue'
 import vue3test from '../components/vue3test.vue'
@@ -228,7 +228,7 @@ export default {
     },
     //
     toicons() {
-      this.$router.replace({path: '/home/icons'})
+      goBase('/icons')
     },
     //
     showreport() {

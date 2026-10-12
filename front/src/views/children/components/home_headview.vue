@@ -1,5 +1,5 @@
 <template>
-  <div style="position:relative;cursor: pointer;" @click="$router.replace('/home/personal')">
+  <div style="position:relative;cursor: pointer;" @click="goBase('/personal')">
     <div class="head">
       <img src="/favicon.ico" style="width:100%;height:100%" alt="">
     </div>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-
+import {goBase} from "@/r";
 </script>
 
 <style scoped>
