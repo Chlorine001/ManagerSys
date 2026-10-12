@@ -1,6 +1,15 @@
-import {createRouter, createWebHistory, createWebHashHistory} from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import {http} from '@/utils/http'
+import { createRouter, createWebHistory } from 'vue-router'
+import HomeView from '@/views/HomeView.vue'
+import { BASE_PATH, BASE_NAME } from '@/router/constants'
+
+/**
+ * 跳转到 base 下的子路径
+ * @param {string} path - 子路径，如 'icons' 或 '/icons'
+ */
+export function goBase(path) {
+    const sub = path.replace(/^\//, '')
+    return router.replaceto(`${BASE_PATH}/${sub}`)
+}
 
 // 动态菜单路由
 let dynamicRoutes = []
@@ -63,8 +72,8 @@ export function buildRoutes(pid, grouped, parentPath = '') {
 
         function loadComponent(fullPath) {
             const loader = modules[fullPath]
-            // console.log('组件路径:', componentPath)
-            // console.log(loader)
+            console.log('组件路径:', componentPath)
+            console.log(loader)
             if (!loader) {
                 console.error(`Loader not found for path: ${fullPath}`)
                 // 开发环境下可以返回一个提示组件，生产环境建议跳转404
@@ -115,7 +124,8 @@ export async function loadMenuRoutes(user = {}) {
 }
 
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
+    // createWebHashHistory -- /#/ 开头
     routes: [
         {
             path: '/',
@@ -124,12 +134,12 @@ const router = createRouter({
         },
         // 首页 - 默认路由
         {
-            path: '/tup',
-            name: 'tup',
+            path: BASE_PATH,
+            name: BASE_NAME,
             meta: {
                 title: 'base',
             },
-            redirect: '/tup/home',
+            redirect: `${BASE_PATH}/home`,
             component: HomeView,
             children: []
         },
@@ -175,6 +185,6 @@ export function addMenuRoutes(routes) {
     return dynamicRoutes
 }
 
-export {dynamicRoutes}
+export { dynamicRoutes }
 
 export default router
