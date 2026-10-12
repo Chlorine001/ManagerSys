@@ -60,7 +60,7 @@
 import {fns} from '@/utils/utils.js'
 import {ElMessage} from 'element-plus'
 import {http} from '@/utils/http'
-import {loadMenuRoutes, addMenuRoutes, dynamicRoutes, groupByPid, buildRoutes} from '@/utils/router'
+import {loadMenuRoutes, addMenuRoutes, dynamicRoutes, groupByPid, buildRoutes} from '@/router/router'
 
 export default {
   data() {
