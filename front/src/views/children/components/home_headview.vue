@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import {goBase} from "@/r";
+import {goBase} from "@/router/router";
 </script>
 
 <style scoped>
