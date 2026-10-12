@@ -11,10 +11,6 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./src', import.meta.url))
         }
     },
-    base: './',
-    build: {
-        assetsPublicPath: './'
-    },
     // chainWebpack(config) {
     //     config.resolve.alias
     //         .set('@', resolve('http://localhost:3000'));
