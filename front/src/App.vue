@@ -27,7 +27,6 @@ export default {
       boxShadow2: '2px 2px 5px 0px #888',
       //国际化
       langtype: 'default',//目前分了default和en两种
-      //vue3test
       vue3test: 5
     }
   },

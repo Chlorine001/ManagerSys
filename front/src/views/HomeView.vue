@@ -129,8 +129,6 @@
         <!-- 权限：{{ $route.meta.root }} -->
       </div>
     </div>
-    <!-- vue3test -->
-    <vue3test></vue3test>
   </div>
 </template>
 
@@ -138,10 +136,9 @@
 import {getglobalbtn} from '@/utils/utils'
 import loginShadowVue from '@/views/login/loginshadow.vue'
 import chat from '@/components/chat.vue'
-import menuitem from '../components/menuitem.vue'
-import righttop from '../components/righttop.vue'
-import vue3test from '../components/vue3test.vue'
-import elicon from '../components/fonticons.vue'
+import menuitem from '@/components/menuitem.vue'
+import righttop from '@/components/righttop.vue'
+import elicon from '@/components/fonticons.vue'
 import {ElMessage, ElMessageBox, ElLoading} from 'element-plus'
 
 export default {
@@ -165,7 +162,6 @@ export default {
     chat,
     menuitem,
     righttop,
-    vue3test,
     elicon
   },
   methods: {
@@ -222,7 +218,7 @@ export default {
       this.titles = this.$route.meta.subtitles || '--'
       //
       this.nowroute = (this.$route.path.split('/')[this.$route.path.split('/').length - 1]) || this.$route.meta.name
-      console.log(this.nowroute)
+      // console.log(this.nowroute)
       //
       window.scrollTo(0, 0)
     },

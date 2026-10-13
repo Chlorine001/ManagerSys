@@ -1,14 +1,16 @@
-import {createApp} from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
-import router from '@/utils/router'
-import {fns} from '@/utils/utils.js'
-import {groupByPid, buildRoutes, addMenuRoutes} from '@/utils/router'
+import router from '@/router/router.js'
+import { fns } from '@/utils/utils.js'
+import { groupByPid, buildRoutes, addMenuRoutes } from '@/router/router.js'
 
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'//图标相关
 
-const app = createApp(App)
+const app = createApp(App) 
+
+app.config.globalProperties.$vue3test = 2
 
 // 从 localStorage 恢复动态路由
 const navrootStr = localStorage.getItem('navroot')
@@ -37,7 +39,7 @@ router.beforeEach((to, from, next) => {
     if (whiteList.includes(to.path)) {
         // 已登录用户访问登录页，重定向到首页
         if (hasToken && to.path === '/') {
-            next({path: '/tup/home'})
+            next({ path: '/tup/home' })
         } else {
             next()
         }
@@ -52,7 +54,7 @@ router.beforeEach((to, from, next) => {
         // 未登录，重定向到登录页
         next({
             path: '/',
-            query: {redirect: to.fullPath} // 保存原始目标路径，登录后可跳转回去
+            query: { redirect: to.fullPath } // 保存原始目标路径，登录后可跳转回去
         })
     }
 })
@@ -67,7 +69,5 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 app.use(router)
 app.use(ElementPlus)
-
-app.config.globalProperties.$vue3test = 2
 
 app.mount('#app')
