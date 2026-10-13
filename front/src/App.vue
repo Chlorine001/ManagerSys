@@ -65,12 +65,6 @@ export default {
       }
       return temp || title
     },
-    replaceto(url) {
-      this.$router.replace(url)
-    },
-    navto(url) {
-      this.$router.push(url)
-    },
   },
   mounted() {
     setTimeout(() => {

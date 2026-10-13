@@ -1,31 +1,31 @@
 <template>
   <div>
-    <fadeshowVue/>
+    <fadeshowVue />
     <div class="top">
       <!-- in -->
       <span class="logoimg">
         <img src="/favicon.ico" alt="">
       </span>
       <span class="projtitle"
-            :style="{ width: ifopen ? undefined : winwidth > 400 ? '120px' : undefined }">后台管理系统</span>
+        :style="{ width: ifopen ? undefined : winwidth > 400 ? '120px' : undefined }">后台管理系统</span>
       <span class="navslide projtitle" @click="setleftnav" v-if="ifopen">
         <svg t="1682083887476" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-             p-id="5621" width="17" height="17">
+          p-id="5621" width="17" height="17">
           <path
-              d="M109.632 673.664h519.68c25.152 0 45.568-22.016 45.568-48.896 0-26.88-20.416-48.896-45.568-48.896h-519.68c-25.216 0-45.632 22.016-45.632 48.896 0 26.88 20.48 48.896 45.632 48.896z m0-228.096h519.68c25.152 0 45.568-21.952 45.568-48.896 0-26.88-20.416-48.896-45.568-48.896h-519.68c-25.216 0-45.632 22.016-45.632 48.896 0 26.88 20.48 48.896 45.632 48.896z m3.264-219.904h795.776c26.88 0 50.56-20.352 51.328-47.168A48.896 48.896 0 0 0 911.104 128H115.328c-26.88 0-50.56 20.416-51.328 47.168a48.896 48.896 0 0 0 48.896 50.56z m619.776 447.232V348.672L960 510.784l-227.328 162.112c0 0.768 0 0.768 0 0z m178.432 122.944H115.328c-26.88 0-50.56 20.48-51.328 47.232a48.896 48.896 0 0 0 48.896 50.496h795.776c26.88 0 50.56-20.416 51.328-47.232a48.896 48.896 0 0 0-48.896-50.496z"
-              fill="#000000" p-id="5622"></path>
+            d="M109.632 673.664h519.68c25.152 0 45.568-22.016 45.568-48.896 0-26.88-20.416-48.896-45.568-48.896h-519.68c-25.216 0-45.632 22.016-45.632 48.896 0 26.88 20.48 48.896 45.632 48.896z m0-228.096h519.68c25.152 0 45.568-21.952 45.568-48.896 0-26.88-20.416-48.896-45.568-48.896h-519.68c-25.216 0-45.632 22.016-45.632 48.896 0 26.88 20.48 48.896 45.632 48.896z m3.264-219.904h795.776c26.88 0 50.56-20.352 51.328-47.168A48.896 48.896 0 0 0 911.104 128H115.328c-26.88 0-50.56 20.416-51.328 47.168a48.896 48.896 0 0 0 48.896 50.56z m619.776 447.232V348.672L960 510.784l-227.328 162.112c0 0.768 0 0.768 0 0z m178.432 122.944H115.328c-26.88 0-50.56 20.48-51.328 47.232a48.896 48.896 0 0 0 48.896 50.496h795.776c26.88 0 50.56-20.416 51.328-47.232a48.896 48.896 0 0 0-48.896-50.496z"
+            fill="#000000" p-id="5622"></path>
         </svg>
       </span>
       <span class="navslide projtitle" @click="setleftnav" v-else>
         <svg t="1682083749544" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-             p-id="5241" width="17" height="17">
+          p-id="5241" width="17" height="17">
           <path
-              d="M914.368 673.664h-519.68c-25.152 0-45.568-22.016-45.568-48.896 0-26.88 20.416-48.896 45.568-48.896h519.68c25.216 0 45.632 22.016 45.632 48.896 0 26.88-20.48 48.896-45.632 48.896z m0-228.096h-519.68c-25.152 0-45.568-21.952-45.568-48.896 0-26.88 20.416-48.896 45.568-48.896h519.68c25.216 0 45.632 22.016 45.632 48.896 0 26.88-20.48 48.896-45.632 48.896z m-3.264-219.904H115.328c-26.88 0-50.56-20.352-51.328-47.168A48.896 48.896 0 0 1 112.896 128h795.776c26.88 0 50.56 20.416 51.328 47.168a48.896 48.896 0 0 1-48.896 50.56z m-619.776 447.232V348.672L64 510.784l227.328 162.112c0 0.768 0 0.768 0 0z m-178.432 122.944h795.776c26.88 0 50.56 20.48 51.328 47.232a48.896 48.896 0 0 1-48.896 50.496H115.328c-26.88 0-50.56-20.416-51.328-47.232a48.896 48.896 0 0 1 48.896-50.496z"
-              fill="#000000" p-id="5242"></path>
+            d="M914.368 673.664h-519.68c-25.152 0-45.568-22.016-45.568-48.896 0-26.88 20.416-48.896 45.568-48.896h519.68c25.216 0 45.632 22.016 45.632 48.896 0 26.88-20.48 48.896-45.632 48.896z m0-228.096h-519.68c-25.152 0-45.568-21.952-45.568-48.896 0-26.88 20.416-48.896 45.568-48.896h519.68c25.216 0 45.632 22.016 45.632 48.896 0 26.88-20.48 48.896-45.632 48.896z m-3.264-219.904H115.328c-26.88 0-50.56-20.352-51.328-47.168A48.896 48.896 0 0 1 112.896 128h795.776c26.88 0 50.56 20.416 51.328 47.168a48.896 48.896 0 0 1-48.896 50.56z m-619.776 447.232V348.672L64 510.784l227.328 162.112c0 0.768 0 0.768 0 0z m-178.432 122.944h795.776c26.88 0 50.56 20.48 51.328 47.232a48.896 48.896 0 0 1-48.896 50.496H115.328c-26.88 0-50.56-20.416-51.328-47.232a48.896 48.896 0 0 1 48.896-50.496z"
+            fill="#000000" p-id="5242"></path>
         </svg>
       </span>
       <span style="float:right">
-        <righttop @title="settitle"/>
+        <righttop @title="settitle" />
       </span>
     </div>
 
@@ -37,16 +37,16 @@
         <div class="theleftin">
           <!-- in -->
           <el-menu class="el-menu-vertical-demo" router
-                   :collapse="!ifopen && allshow ? false : (!!(ifopen || (!ifopen && allhide)))"
-                   :default-active="nowroute">
+            :collapse="!ifopen && allshow ? false : (!!(ifopen || (!ifopen && allhide)))" :default-active="nowroute">
             <template v-for="val in $router.options.routes">
               <template v-if="val.meta && val.meta.title === 'base'">
                 <template v-for="(v, i) in val.children">
-<!--                  {{ console.log(v.meta.ishide,'child:', v, 'meta:', v.meta) }}-->
+                  <!-- {{ console.log(v.meta.ishide,'child:', v, 'meta:', v.meta) }} -->
                   <el-sub-menu v-if="v && v.children && v.children.length && v.meta.userroot"
-                               :index="v.meta.forusepath || v.name">
+                    :index="v.meta.forusepath || v.name">
                     <template #title>
-                      <a style=" display: inline-block;margin-top:-20px; height:0;line-height: normal; vertical-align: top;">
+                      <a
+                        style=" display: inline-block;margin-top:-20px; height:0;line-height: normal; vertical-align: top;">
                         <!--                         <i :class="'fas ' + icons[v.name]" style=" width:20px;font-size: 20px;"></i>-->
                         <!--                         <img class="navimg" src="../../public/favicon.ico" />-->
                         <elicon :name="v.meta.icon"></elicon>
@@ -61,9 +61,7 @@
                   </el-sub-menu>
 
                   <el-menu-item v-else-if="!v.meta || v.meta && v.meta.ishide !== true && v.meta.userroot"
-                                :index="v.meta.forusepath || v.name"
-                                @click="$root.replaceto(v.meta.forusepath), title = v.meta.title, nowroute = v.path || v.name">
-
+                    :index="v.meta.forusepath || v.name" @click="handleMenuClick(v)">
                     <!-- <i :class="'fas ' + icons[v.name]" style=" width:20px; font-size: 20px;"></i> -->
                     <!-- <img class="navimg" src="../../public/favicon.ico"> -->
                     <elicon :name="v.meta.icon"></elicon>
@@ -89,10 +87,10 @@
 
             <template v-for="(v, i) in val.children">
               <div style="position: absolute;left:0;bottom: 0;width:100%;"
-                   v-if="v.path === 'icons' && !v.meta || v.meta && v.meta.userroot">
+                v-if="v.path === 'icons' && !v.meta || v.meta && v.meta.userroot">
                 <div style="margin-right: 9px;border-top: 1px solid #ccc;">
                   <el-menu class="el-menu-vertical-demo"
-                           :collapse="!ifopen && allshow ? false : (!!(ifopen || (!ifopen && allhide)))">
+                    :collapse="!ifopen && allshow ? false : (!!(ifopen || (!ifopen && allhide)))">
                     <el-menu-item style="_background-color: #fff;" @click="toicons">
                       <elicon name="icons"></elicon>
                       <template #title>
@@ -123,7 +121,7 @@
       <div style="padding:20px;min-width: 260px;">
         <router-view v-slot="{ Component }">
           <transition mode="out-in" name="fade-transform">
-            <component :is="Component"/>
+            <component :is="Component" />
           </transition>
         </router-view>
         <!-- 权限：{{ $route.meta.root }} -->
@@ -133,13 +131,13 @@
 </template>
 
 <script>
-import {getglobalbtn} from '@/utils/utils'
+import { getglobalbtn } from '@/utils/utils'
 import loginShadowVue from '@/views/login/loginshadow.vue'
 import chat from '@/components/chat.vue'
 import menuitem from '@/components/menuitem.vue'
 import righttop from '@/components/righttop.vue'
 import elicon from '@/components/fonticons.vue'
-import {ElMessage, ElMessageBox, ElLoading} from 'element-plus'
+import { ElMessage, ElMessageBox, ElLoading } from 'element-plus'
 
 export default {
   data() {
@@ -216,17 +214,18 @@ export default {
     gettitle() {
       this.title = this.$route.meta.subtitle || '--'
       this.titles = this.$route.meta.subtitles || '--'
-      //
       this.nowroute = (this.$route.path.split('/')[this.$route.path.split('/').length - 1]) || this.$route.meta.name
-      // console.log(this.nowroute)
-      //
       window.scrollTo(0, 0)
     },
-    //
     toicons() {
       goBase('/icons')
     },
-    //
+    handleMenuClick(v) {
+      const path = v.meta?.forusepath
+      if (path) this.$router.push(path)
+      this.title = v.meta?.title ?? ''
+      this.nowroute = v.path || v.name
+    },
     showreport() {
       var loadings = ElLoading.service()
       // const loadings = ElLoading.service();
@@ -237,7 +236,6 @@ export default {
       //   // 可选：在此处添加对超时情况的处理逻辑，如提示用户加载超时
       // }, 3000);
 
-
       $.ajax({
         url: '/api/back_notice/text',
         timeout: 3000,
@@ -246,12 +244,12 @@ export default {
           loadings.close()
           if (res) {  //关于本站弹窗提示
             ElMessageBox.alert(res, '关于本站'
-                , {
-                  dangerouslyUseHTMLString: true,
-                  // callback() {
-                  //   console.log(res);
-                  // }
-                }
+              , {
+                dangerouslyUseHTMLString: true,
+                // callback() {
+                //   console.log(res);
+                // }
+              }
             )
             // console.log(res)
           }

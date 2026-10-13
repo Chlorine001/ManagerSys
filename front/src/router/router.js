@@ -7,8 +7,7 @@ import { BASE_PATH, BASE_NAME } from '@/router/constants'
  * @param {string} path - 子路径，如 'icons' 或 '/icons'
  */
 export function goBase(path) {
-    const sub = path.replace(/^\//, '')
-    return router.replaceto(`${BASE_PATH}/${sub}`)
+    return router.replace(`${BASE_PATH}${path}`)
 }
 
 // 动态菜单路由
@@ -72,8 +71,8 @@ export function buildRoutes(pid, grouped, parentPath = '') {
 
         function loadComponent(fullPath) {
             const loader = modules[fullPath]
-            console.log('组件路径:', componentPath)
-            console.log(loader)
+            // console.log('组件路径:', componentPath)
+            // console.log(loader)
             if (!loader) {
                 console.error(`Loader not found for path: ${fullPath}`)
                 // 开发环境下可以返回一个提示组件，生产环境建议跳转404
@@ -157,32 +156,55 @@ const router = createRouter({
     ]
 })
 
+
+// 记录已添加的动态路由 name，防止重复
+const addedRouteNames = new Set()
+
 /**
- * 动态添加菜单路由到 home 路由下
- * 需要在登录成功后调用
- * @param {Array} routes - 路由配置数组
+ * 将动态菜单路由挂到父路由下
+ * @param {Array} routes - buildRoutes 生成的子路由数组
+ * @returns {Array} - 实际生效的路由数组
  */
 export function addMenuRoutes(routes) {
-    const homeRoute = router.options.routes.find(r => r.path === '/tup')
-    if (homeRoute && routes && routes.length > 0) {
-        routes.forEach(route => {
-            // 避免重复添加
-            // const exists = homeRoute.children.some(child => child.name === route.name)
-            // if (!exists) {
-            // // 在 path 前添加 'home/' 前缀（如果没有）
-            // if (!route.path.startsWith('home/')) {
-            //     route.path = 'home/' + route.path
-            // }
-            homeRoute.children.push(route)
-            // }
-        })
-        // 重新添加路由以确保生效
-        router.options.routes.forEach(r => {
-            router.addRoute(r)
-        })
-        dynamicRoutes = router.options.routes
+    if (!Array.isArray(routes) || routes.length === 0) {
+        return dynamicRoutes
     }
+
+    // 找到父路由的【options 快照】
+    const parentOption = router.options.routes.find(r => r.name === BASE_NAME)
+    if (!parentOption) {
+        console.error(`[addMenuRoutes] 父路由 "${BASE_NAME}" 不存在`)
+        return dynamicRoutes
+    }
+
+    // 保证 children 是数组
+    if (!Array.isArray(parentOption.children)) {
+        parentOption.children = []
+    }
+
+    routes.forEach(route => {
+        // 去重：options 里已有同名路由就跳过
+        const exists = parentOption.children.some(c => c.name === route.name)
+        if (exists) return
+
+        // ① 让路由真正生效
+        router.addRoute(BASE_NAME, route)
+
+        // ② 同步进 options 快照，供菜单渲染使用
+        parentOption.children.push(route)
+    })
+
+    dynamicRoutes = router.options.routes
     return dynamicRoutes
+}
+
+export function resetMenuRoutes() {
+    addedRouteNames.forEach(name => {
+        if (router.hasRoute(name)) {
+            router.removeRoute(name)
+        }
+    })
+    addedRouteNames.clear()
 }
 
 export { dynamicRoutes }

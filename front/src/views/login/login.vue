@@ -60,7 +60,7 @@
 import {fns} from '@/utils/utils.js'
 import {ElMessage} from 'element-plus'
 import {http} from '@/utils/http'
-import {loadMenuRoutes, addMenuRoutes, dynamicRoutes, groupByPid, buildRoutes} from '@/router/router'
+import {loadMenuRoutes, addMenuRoutes, dynamicRoutes, groupByPid, buildRoutes, goBase} from '@/router/router'
 
 export default {
   data() {
@@ -116,7 +116,7 @@ export default {
           if ((localStorage.getItem('navroot') || []).length === 0) {
             ElMessage({type: 'error', message: '没有获取到页面地址组'})
           } else {
-            this.$router.replace('/tup/home')
+            goBase('/home')
           }
         }, 200)
       } catch (e) {
