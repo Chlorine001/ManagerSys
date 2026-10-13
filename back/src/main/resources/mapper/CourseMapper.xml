@@ -5,9 +5,9 @@
 <mapper namespace="com.chlorine.water.mapper.CourseMapper">
 
     <resultMap id="BaseResultMap" type="com.chlorine.water.entity.Course">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="info" column="info" jdbcType="VARCHAR"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="info" column="info" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">

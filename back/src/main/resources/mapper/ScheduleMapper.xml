@@ -5,10 +5,10 @@
 <mapper namespace="com.chlorine.water.mapper.ScheduleMapper">
 
     <resultMap id="BaseResultMap" type="com.chlorine.water.entity.Schedule">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="classId" column="class_id" jdbcType="INTEGER"/>
-            <result property="userId" column="user_id" jdbcType="INTEGER"/>
-            <result property="courseId" column="course_id" jdbcType="INTEGER"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="classId" column="class_id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="courseId" column="course_id" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">

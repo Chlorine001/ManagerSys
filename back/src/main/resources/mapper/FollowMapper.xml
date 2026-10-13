@@ -5,10 +5,10 @@
 <mapper namespace="com.chlorine.water.mapper.FollowMapper">
 
     <resultMap id="BaseResultMap" type="com.chlorine.water.entity.Follow">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="followerId" column="follower_id" jdbcType="INTEGER"/>
-            <result property="followingId" column="following_id" jdbcType="INTEGER"/>
-            <result property="time" column="time" jdbcType="TIMESTAMP"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="followerId" column="follower_id" jdbcType="INTEGER"/>
+        <result property="followingId" column="following_id" jdbcType="INTEGER"/>
+        <result property="time" column="time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">

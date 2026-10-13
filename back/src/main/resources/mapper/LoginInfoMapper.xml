@@ -5,11 +5,11 @@
 <mapper namespace="com.chlorine.water.mapper.LoginInfoMapper">
 
     <resultMap id="BaseResultMap" type="com.chlorine.water.entity.LoginInfo">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="userId" column="user_id" jdbcType="INTEGER"/>
-            <result property="loginTime" column="login_time" jdbcType="TIMESTAMP"/>
-            <result property="ipAddress" column="ip_address" jdbcType="VARCHAR"/>
-            <result property="deviceInfo" column="device_info" jdbcType="VARCHAR"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="loginTime" column="login_time" jdbcType="TIMESTAMP"/>
+        <result property="ipAddress" column="ip_address" jdbcType="VARCHAR"/>
+        <result property="deviceInfo" column="device_info" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">

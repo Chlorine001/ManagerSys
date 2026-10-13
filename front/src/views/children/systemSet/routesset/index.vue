@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
-            <span style="color:#999">该表格用于维护存储到后端的路由表，拿了几个简单来举例放到表格中</span>
-        </div>
+<!--        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">-->
+<!--            <span style="color:#999">该表格用于维护存储到后端的路由表，拿了几个简单来举例放到表格中</span>-->
+<!--        </div>-->
         <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
             <span style="color:#999">对应路由与角色的权限匹配方式：比如这个角色有这个路由显示权限，然后这个路由有这些权限：<span style="white-space: nowrap;">{{
                 '[{path:xxx,root:[],dicts:[]}]' }}</span>，root是按钮显示权限，dicts是数据显示权限，通过字典标识来控制</span>
@@ -35,7 +35,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column label="操作">
-                    <template #default="scope">
+                    <template #default>
                         <div style="padding-top:10px"></div>
                         <el-button style="margin:0 10px 10px 0" @click="viewdetail2">删除</el-button>
                     </template>
@@ -65,26 +65,27 @@
 
 <script>
 import { ElMessage } from 'element-plus'
+import { http } from '@/utils/http'
 export default {
     data() {
         return {
             showsetadd: 0,
             list: [
-                {
-                    path: '/home/home',
-                    title: '首页',
-                    id: '1'
-                },
-                {
-                    path: '/home/department',
-                    title: '部门管理',
-                    id: '2'
-                },
-                {
-                    path: '/home/routes',
-                    title: '路由存储管理',
-                    id: '3'
-                },
+                // {
+                //     path: '/home/home',
+                //     title: '首页',
+                //     id: '1'
+                // },
+                // {
+                //     path: '/home/department',
+                //     title: '部门管理',
+                //     id: '2'
+                // },
+                // {
+                //     path: '/home/routes',
+                //     title: '路由存储管理',
+                //     id: '3'
+                // },
             ]
 
         }
@@ -96,6 +97,23 @@ export default {
                 type: 'success'
             })
         },
+        async load() {
+            try {
+                const res = await http.get('/menu/user', { timeoutMs: 5000 })
+                const data = res && res.ok ? res.data : []
+                this.list = (data || []).map(v => ({
+                    id: String(v.id),
+                    path: v.url,
+                    title: v.name,
+                }))
+            } catch (e) {
+                ElMessage({ type: 'error', message: '加载路由表失败，请检查后端' })
+            }
+        }
+    }
+    ,
+    mounted() {
+        this.load()
     }
 }
 </script>

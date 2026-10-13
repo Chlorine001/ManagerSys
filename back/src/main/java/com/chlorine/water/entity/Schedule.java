@@ -1,16 +1,14 @@
 package com.chlorine.water.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * @TableName schedule
  */
-@TableName(value ="schedule")
+@TableName(value = "schedule")
 @Data
 public class Schedule implements Serializable {
     private Integer id;

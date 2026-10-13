@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.chlorine.water.mapper.BackNoticeMapper">
     <resultMap id="BaseResultMap" type="com.chlorine.water.entity.BackNotice">
-<!--        <id property="id" column="id" jdbcType="INTEGER"/>-->
+        <!--        <id property="id" column="id" jdbcType="INTEGER"/>-->
         <result property="report" column="text" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -21,8 +21,6 @@
         ORDER BY
         id DESC LIMIT 1
     </select>
-
-
 
 
 </mapper>

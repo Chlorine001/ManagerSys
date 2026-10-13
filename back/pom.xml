@@ -19,10 +19,10 @@
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
-<!--        mybatis - plus-->
+        <!-- mybatis-plus boot starter（提供 BaseMapper/selectList 等注入能力） -->
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus</artifactId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>3.5.3.2</version>
         </dependency>
 
@@ -35,6 +35,11 @@
 
 
 
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-security</artifactId>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -43,13 +48,9 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <scope>annotationProcessor</scope>
+            <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>2.2.2</version>
-        </dependency>
+        <!-- mybatis-plus-boot-starter 已包含 mybatis-spring-boot-starter -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -97,7 +98,7 @@
                 <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>com.chlorine.water.WaterApplication</mainClass>
-                    <skip>true</skip>
+                    <skip>false</skip>
                 </configuration>
                 <executions>
                     <execution>
@@ -105,6 +106,32 @@
                         <goals>
                             <goal>repackage</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 将前端 Vite build 的 dist 拷贝进 Spring Boot 静态资源目录（dist 不存在也不报错） -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-frontend-dist</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <mkdir dir="${project.build.outputDirectory}/static"/>
+                                <copy todir="${project.build.outputDirectory}/static" overwrite="true" failonerror="false">
+                                    <fileset dir="${project.basedir}/../front/dist" erroronmissingdir="false">
+                                        <include name="**/*"/>
+                                    </fileset>
+                                </copy>
+                            </target>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

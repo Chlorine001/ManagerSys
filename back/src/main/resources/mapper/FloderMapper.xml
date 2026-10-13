@@ -5,11 +5,11 @@
 <mapper namespace="com.chlorine.water.mapper.FloderMapper">
 
     <resultMap id="BaseResultMap" type="com.chlorine.water.entity.Floder">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="pid" column="pid" jdbcType="INTEGER"/>
-            <result property="userId" column="user_id" jdbcType="INTEGER"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="pid" column="pid" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">

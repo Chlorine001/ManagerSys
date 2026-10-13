@@ -1,17 +1,15 @@
 package com.chlorine.water.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * @TableName flie
  */
-@TableName(value ="flie")
+@TableName(value = "flie")
 @Data
 public class Flie implements Serializable {
     private Integer id;

@@ -5,17 +5,17 @@
 <mapper namespace="com.chlorine.water.mapper.FlieMapper">
 
     <resultMap id="BaseResultMap" type="com.chlorine.water.entity.Flie">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="userId" column="user_id" jdbcType="INTEGER"/>
-            <result property="floderId" column="floder_id" jdbcType="INTEGER"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="type" column="type" jdbcType="VARCHAR"/>
-            <result property="tag" column="tag" jdbcType="VARCHAR"/>
-            <result property="privacyLevel" column="privacy_level" jdbcType="VARCHAR"/>
-            <result property="star" column="star" jdbcType="DOUBLE"/>
-            <result property="version" column="version" jdbcType="VARCHAR"/>
-            <result property="uploadTime" column="upload_time" jdbcType="TIMESTAMP"/>
-            <result property="state" column="state" jdbcType="BIT"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="floderId" column="floder_id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+        <result property="tag" column="tag" jdbcType="VARCHAR"/>
+        <result property="privacyLevel" column="privacy_level" jdbcType="VARCHAR"/>
+        <result property="star" column="star" jdbcType="DOUBLE"/>
+        <result property="version" column="version" jdbcType="VARCHAR"/>
+        <result property="uploadTime" column="upload_time" jdbcType="TIMESTAMP"/>
+        <result property="state" column="state" jdbcType="BIT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
