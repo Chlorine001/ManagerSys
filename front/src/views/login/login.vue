@@ -99,11 +99,11 @@ export default {
             // 保存原始菜单数据到 localStorage（供侧边栏使用）
             localStorage.setItem('navroot', JSON.stringify(navroot))
             // 保存构建好的路由配置到 localStorage（可选，用于调试）
-            localStorage.setItem('menuRoutes', JSON.stringify(menuRoutes))
+            // localStorage.setItem('menuRoutes', JSON.stringify(menuRoutes))
             // 动态添加路由到 router 实例
             addMenuRoutes(menuRoutes)
-            console.log('menuRoutes:', menuRoutes)
-            console.log('router:', this.$router.options.routes)
+            // console.log('menuRoutes:', menuRoutes)
+            // console.log('router:', this.$router.options.routes)
             // 处理路由元信息（面包屑、权限等）- 传入原始的 navroot
             fns(this.$router, navroot)
           } catch (e) {

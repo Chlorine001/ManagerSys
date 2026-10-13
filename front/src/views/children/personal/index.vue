@@ -58,7 +58,7 @@
 
 <script>
 import personalHeadvue from '../components/personal_headview.vue'
-import {getCurrentUser, getCurrentUserName} from '@/utils/user'
+import { getCurrentUser, getCurrentUserName } from '@/utils/user'
 
 export default {
   data() {
@@ -87,6 +87,7 @@ export default {
         //token 过期也按如下方式处理清除信息，不建议直接 clear 全部本地缓存清除
         localStorage.removeItem('token')
         localStorage.removeItem('navroot')
+        // localStorage.removeItem('menuRoutes')
         localStorage.removeItem('currentUser')// 清除用户信息
         //这一步非常重要
         setTimeout(() => {

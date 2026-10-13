@@ -173,7 +173,7 @@ export function addMenuRoutes(routes) {
     // 找到父路由的【options 快照】
     const parentOption = router.options.routes.find(r => r.name === BASE_NAME)
     if (!parentOption) {
-        console.error(`[addMenuRoutes] 父路由 "${BASE_NAME}" 不存在`)
+        console.error(`父路由 "${BASE_NAME}" 不存在，请联系管理员！`)
         return dynamicRoutes
     }
 
@@ -198,14 +198,6 @@ export function addMenuRoutes(routes) {
     return dynamicRoutes
 }
 
-export function resetMenuRoutes() {
-    addedRouteNames.forEach(name => {
-        if (router.hasRoute(name)) {
-            router.removeRoute(name)
-        }
-    })
-    addedRouteNames.clear()
-}
 
 export { dynamicRoutes }
 

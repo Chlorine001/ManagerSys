@@ -278,16 +278,16 @@ export default {
       this.gettitle()
       var k = 0;
       for (var i = 0; i < JSON.parse(localStorage.getItem('navroot')).length; i++) {
-        if (this.$route.path == JSON.parse(localStorage.getItem('navroot'))[i].path) {
+        if ('/' + this.$route.path.split('/').at(-1) == JSON.parse(localStorage.getItem('navroot'))[i].url) {
           k = 1
         }
       }
       if (k == 0) {
         ElMessage({
           type: 'error',
-          message: '页面消失了，请尝试清理缓存'
+          message: '页面消失了，请尝试清理缓存或重新登录'
         })
-        this.$router.back()
+        // this.$router.back()
       }
     }
   },
