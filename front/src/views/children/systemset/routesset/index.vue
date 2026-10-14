@@ -144,7 +144,7 @@ import { BASE_PATH } from '@/router/constants'
 export default {
     data() {
         return {
-            selectedRow: [], // 当前选中的行
+            selectedRows: [], // 当前选中的行
             showsetadd: false,
             loading: false,
             list: [],
@@ -196,12 +196,6 @@ export default {
         }
     },
     methods: {
-        viewdetail2() {
-            ElMessage({
-                message: '删除操作',
-                type: 'success'
-            })
-        },
         async loadMenuList() {
             this.loading = true
             try {
@@ -306,7 +300,7 @@ export default {
         },
 
         handleSelectionChange(rows) {
-            this.selectedRow = rows
+            this.selectedRows = rows
         },
         // 提交
         async submitForm() {
@@ -359,22 +353,29 @@ export default {
             }).catch(() => { })
         },
         handleBatchDelete() {
-            console.log(this.selectedRows)
             if (this.selectedRows.length === 0) {
                 ElMessage.warning('请先选择要删除的菜单')
                 return
             }
-            ElMessageBox.confirm(
-                `确定删除选中的 ${this.selectedRows.length} 个菜单吗？`,
-                '提示',
-                { type: 'warning' }
-            ).then(async () => {
-                const ids = this.selectedRows.map(r => r.id)
-                await http.postJson('/menu/batchDelete', { ids })
-                ElMessage.success('删除成功')
-                this.loadMenuList()
-            }).catch(() => { })
-        }
+            try {
+                ElMessageBox.confirm(
+                    `确定删除选中的 ${this.selectedRows.length} 个菜单吗？`,
+                    '提示',
+                    { type: 'warning' }
+                ).then(async () => {
+                    const ids = this.selectedRows.map(r => r.id)
+                    await http.postJson('/menu/batchDelete', { ids })
+                    ElMessage.success('批量删除成功！')
+                    this.selectedRow = []
+                    if (this.$refs.tableRef) {
+                        this.$refs.tableRef.clearSelection()
+                    }
+                    this.loadMenuList()
+                }).catch(() => { })
+            } catch (e) {
+                ElMessage.error('批量删除失败：' + e.message)
+            }
+        },
     },
     mounted() {
         this.loadMenuList()
