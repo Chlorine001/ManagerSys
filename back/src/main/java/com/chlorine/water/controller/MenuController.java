@@ -33,7 +33,7 @@ public class MenuController {
 
         // 管理员：直接给全部菜单
         List<Menu> menus;
-        if ("admin".equalsIgnoreCase(userName) || (role != null && role == 0)) {
+        if (role != null && role == 0) {
             menus = menuMapper.selectList(null);
         } else {
             menus = menuMapper.selectMenusByUsername(userName);
