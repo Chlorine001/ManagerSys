@@ -40,50 +40,62 @@ async function request(path, options = {}) {
 
     // 读取响应体
     let data
-    if (isJson) {
+    if (options.responseType === 'text') {
+      // 用户明确要文本，无论 content-type 是什么，都按文本读
+      data = await res.text().catch(() => '')
+    } else if (isJson) {
       data = await res.json().catch(() => null)
     } else {
       data = await res.text().catch(() => '')
     }
 
-    //todo ok??和BusinessException？？待测试与修改
+    // ① HTTP 状态码错误（404 / 500 等，后端未被 GlobalExceptionHandler 捕获时）
     if (!res.ok) {
-      // HTTP 状态码错误（500 等）
       const msg = data?.message || (typeof data === 'string' && data ? data : `HTTP ${res.status}`)
       const err = new Error(msg)
       err.status = res.status
       err.body = data
+      err.type = 'http'
       throw err
     }
 
-    // 检查系统内部的错误（ok: false && BusinessException: false）
-    if (data && typeof data === 'object' && data.ok === false && data.BusinessException === false) {
-      const err = new Error(data.message || '系统错误')
+    // ② 业务层统一包装：ok === false
+    if (data && typeof data === 'object' && data.ok === false) {
+      //检查系统内部的错误 or 业务层面的错误
+      const isBusiness = data.BusinessException === true
+      const err = new Error(data.message || (isBusiness ? '业务错误' : '系统错误'))
       err.status = res.status
       err.body = data
-      throw err
-    }
+      err.isBusinessError = isBusiness
+      err.type = isBusiness ? 'business' : 'system'
 
-    // 检查业务层面的错误（ok: false && BusinessException: true）
-    if (data && typeof data === 'object' && data.ok === false && data.BusinessException === true) {
-      const err = new Error(data.message || '业务错误')
-      err.status = res.status
-      err.body = data
-      err.isBusinessError = true
+      if (isBusiness) {
+        // 业务异常：后端带 code / code_name / code_message
+        err.code = data.code
+        err.codeName = data.code_name
+        err.codeMessage = data.code_message
+      } else {
+        // 系统异常：后端带 error / stacktrace
+        err.errorType = data.error
+        err.stacktrace = data.stacktrace
+      }
       throw err
-    }
-
-    if (options.responseType === 'text' || !isJson) {
-      return data
     }
     return data
   } catch (e) {
     if (e?.name === 'AbortError') {
-      const err = new Error('timeout')
+      const err = new Error('请求超时，请稍后重试')
       err.code = 'TIMEOUT'
+      err.type = 'timeout'
       throw err
     }
-    // 重新抛出错误，让调用方处理
+    // fetch 网络层错误（断网、跨域被拒等）
+    if (e instanceof TypeError && !e.type) {
+      const err = new Error('网络异常，请检查网络连接')
+      err.type = 'network'
+      throw err
+    }
+    // 其余（上面已经构造好的 Error）直接抛出
     throw e
   } finally {
     clearTimeout(timer)

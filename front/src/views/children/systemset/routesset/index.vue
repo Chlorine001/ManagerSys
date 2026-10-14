@@ -87,10 +87,10 @@
             <el-form label-width="150px" label-position="left" class="my-form">
                 <!-- 直属上级菜单 -->
                 <el-form-item label="直属上级菜单：">
-                    <span>{{ getParentName(this.form.pid) }}</span>
-                    <!-- <el-tree-select v-model="form.pid" :data="parentTree"
+                    <!-- <span>{{ getParentName(this.form.pid) }}</span> -->
+                    <el-tree-select v-model="form.pid" :data="parentTree"
                         :props="{ label: 'name', children: 'children', value: 'id' }" check-strictly clearable
-                        placeholder="顶级菜单" style="width: 100%" /> -->
+                        placeholder="不选则为顶级菜单" style="width: 100%" />
                 </el-form-item>
 
                 <!-- 路径：前缀 + 输入框 -->
@@ -141,6 +141,7 @@
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { http } from '@/utils/http'
 import { BASE_PATH } from '@/router/constants'
+import { getErrorMessage } from '@/utils/errorMessage'
 export default {
     data() {
         return {
@@ -185,7 +186,13 @@ export default {
                     }
                 })
             }
-            return build('0')
+            return [
+                {
+                    id: '0',
+                    name: '顶级菜单',
+                    children: build('0')
+                }
+            ]
         },
         // 路径前缀：随所选父菜单变化
         pathPrefix() {
@@ -215,7 +222,7 @@ export default {
                 this.flatList = flat
                 this.list = this.buildTreeOrder(flat)
             } catch (e) {
-                ElMessage({ type: 'error', message: '加载路由表失败：' + e.message })
+                ElMessage({ type: 'error', message: getErrorMessage(e, '加载路由表失败，请稍后重试') })
             } finally {
                 this.loading = false
             }
@@ -271,7 +278,7 @@ export default {
             this.formMode = 'add'
             this.form = {
                 id: null,
-                pid: parent ? String(parent.id) : null,
+                pid: parent ? String(parent.id) : '0',
                 path: '',
                 name: '',
                 icon: '',
@@ -292,11 +299,6 @@ export default {
                 isleaf: row.isleaf,
             }
             this.showsetadd = true
-        },
-
-        // 切换父菜单时清空已输入的子路径
-        handleParentChange() {
-            this.form.path = ''
         },
 
         handleSelectionChange(rows) {
@@ -334,7 +336,8 @@ export default {
                 this.showsetadd = false
                 this.loadMenuList()
             } catch (e) {
-                ElMessage.error((this.formMode === 'add' ? '新增' : '编辑') + '失败：' + e.message)
+                const action = this.formMode === 'add' ? '新增' : '编辑'
+                ElMessage({ type: 'error', message: getErrorMessage(e, `${action}失败，请稍后重试`) })
             }
         },
         handleDelete(row) {
@@ -348,32 +351,40 @@ export default {
                     ElMessage.success('删除成功')
                     this.loadMenuList()
                 } catch (e) {
-                    ElMessage.error('删除失败：' + e.message)
+                    ElMessage({
+                        type: 'error',
+                        message: getErrorMessage(e, '删除失败，请稍后重试')
+                    })
                 }
             }).catch(() => { })
         },
-        handleBatchDelete() {
+        async handleBatchDelete() {
             if (this.selectedRows.length === 0) {
                 ElMessage.warning('请先选择要删除的菜单')
                 return
             }
             try {
-                ElMessageBox.confirm(
+                await ElMessageBox.confirm(
                     `确定删除选中的 ${this.selectedRows.length} 个菜单吗？`,
                     '提示',
                     { type: 'warning' }
-                ).then(async () => {
-                    const ids = this.selectedRows.map(r => r.id)
-                    await http.postJson('/menu/batchDelete', { ids })
-                    ElMessage.success('批量删除成功！')
-                    this.selectedRow = []
-                    if (this.$refs.tableRef) {
-                        this.$refs.tableRef.clearSelection()
-                    }
-                    this.loadMenuList()
-                }).catch(() => { })
+                )
+            } catch {
+                return   // 用户取消，直接返回
+            }
+            try {
+                const ids = this.selectedRows.map(r => r.id)
+                await http.postJson('/menu/batchDelete', { ids })
+                ElMessage.success('批量删除成功！')
+                this.selectedRows = []
+                this.$refs.tableRef?.clearSelection()
+                this.loadMenuList()
             } catch (e) {
-                ElMessage.error('批量删除失败：' + e.message)
+                console.error('批量删除失败:', e)
+                ElMessage({
+                    type: 'error',
+                    message: getErrorMessage(e, '批量删除失败，请稍后重试')
+                })
             }
         },
     },
