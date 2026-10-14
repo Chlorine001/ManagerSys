@@ -24,8 +24,20 @@ public interface MenuMapper extends BaseMapper<Menu> {
             "WHERE u.name = #{username} " +
             "ORDER BY m.pid, m.id")
     List<Menu> selectMenusByUsername(@Param("username") String username);
+
+    /** 统计某个父级下的子节点数量 */
+    @Select("SELECT COUNT(*) FROM menu WHERE pid = #{pid}")
+    Long countByPid(@Param("pid") Integer pid);
+
+    /** 同级下相同路径的数量（排除 excludeId） */
+    @Select("<script>" +
+            "SELECT COUNT(*) FROM menu " +
+            "WHERE pid = #{pid} AND url = #{url} " +
+            "<if test='excludeId != null'> AND id != #{excludeId} </if>" +
+            "</script>")
+    Long countByPidAndUrl(@Param("pid") Integer pid,
+                          @Param("url") String url,
+                          @Param("excludeId") Integer excludeId);
 }
-
-
 
 
