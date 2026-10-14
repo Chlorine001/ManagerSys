@@ -18,9 +18,8 @@
                 </span>
                 <el-button style="margin:12px 0px 0px 12px;vertical-align: top;" type="primary">查询</el-button>
             </span>
-            <el-button style="margin:12px 0px 0px 12px;vertical-align: top;"
-                @click="openAddDialog(selectedRow)">新增</el-button>
-            <el-button style="margin:12px 0px 0px 12px;vertical-align: top;" @click="viewdetail2">批量删除</el-button>
+            <el-button style="margin:12px 0px 0px 12px;vertical-align: top;" @click="openAddDialog(null)">新增</el-button>
+            <el-button style="margin:12px 0px 0px 12px;vertical-align: top;" @click="handleBatchDelete">批量删除</el-button>
         </div>
 
         <div id="tables" style="margin-bottom: 20px;" :style="{ boxShadow: $root.boxShadow }">
@@ -50,28 +49,18 @@
                         </el-tooltip>
                     </template>
                 </el-table-column>
-                <el-table-column label="icon标识">
+                <el-table-column label="icon标识" width="130">
                     <template #default="scope">
                         {{ scope.row.icon }}
                     </template>
                 </el-table-column>
-                <el-table-column label="首页是否展示" align="center">
+                <el-table-column label="是否展示" align="center">
                     <template #default="scope">
                         <el-tag :type="scope.row.ishide ? 'info' : 'success'" size="small">
                             {{ scope.row.ishide ? '隐藏' : '展示' }}
                         </el-tag>
                     </template>
                 </el-table-column>
-                <!-- <el-table-column label="是否叶子节点" width="130" align="center">
-                    <template #default="scope">
-                        <el-icon v-if="scope.row.isleaf" color="#67C23A">
-                            <CircleCheck />
-                        </el-icon>
-                        <el-icon v-else color="#909399">
-                            <Remove />
-                        </el-icon>
-                    </template>
-                </el-table-column> -->
                 <el-table-column label="是否叶子节点" width="130" align="center">
                     <template #default="scope">
                         <el-tag :type="scope.row.isleaf ? 'success' : 'info'" size="small">
@@ -79,28 +68,33 @@
                         </el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作">
-                    <template #default>
-                        <div style="padding-top:10px"></div>
-                        <el-button style="margin:0 10px 10px 0" @click="viewdetail2">删除</el-button>
+                <el-table-column label="操作" width="280" align="center" fixed="right">
+                    <template #default="{ row }">
+                        <el-button size="small" type="primary" :disabled="row.isleaf"
+                            @click="openAddDialog(row)">新增下级</el-button>
+                        <el-button size="small" @click="openEditDialog(row)">编辑</el-button>
+                        <el-button size="small" type="danger" @click="handleDelete(row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
         </div>
+
+        <!-- 弹窗 -->
         <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
             <el-pagination small background layout="prev, pager, next" :total="list.length" class="mt-4" />
         </div>
-        <el-dialog v-model="showsetadd" align-center title="新增条目" width="520px">
-            <el-form label-width="100px">
+        <el-dialog v-model="showsetadd" align-center :title="formMode === 'add' ? '新增条目' : '编辑条目'" width="520px">
+            <el-form label-width="150px" label-position="left" class="my-form">
                 <!-- 直属上级菜单 -->
-                <el-form-item label="直属上级">
-                    <el-tree-select v-model="form.pid" :data="parentTree"
+                <el-form-item label="直属上级菜单：">
+                    <span>{{ getParentName(this.form.pid) }}</span>
+                    <!-- <el-tree-select v-model="form.pid" :data="parentTree"
                         :props="{ label: 'name', children: 'children', value: 'id' }" check-strictly clearable
-                        placeholder="不选则为顶级菜单" style="width: 100%" />
+                        placeholder="顶级菜单" style="width: 100%" /> -->
                 </el-form-item>
 
                 <!-- 路径：前缀 + 输入框 -->
-                <el-form-item label="路径">
+                <el-form-item label="路径：">
                     <div style="display: flex; align-items: center; width: 100%;">
                         <span style="margin-right: 4px; color: #909399; white-space: nowrap;">
                             {{ pathPrefix }}
@@ -110,24 +104,43 @@
                 </el-form-item>
 
                 <!-- 标题 -->
-                <el-form-item label="标题">
+                <el-form-item label="标题：">
                     <el-input v-model="form.name" placeholder="请输入标题" style="width: 100%" />
+                </el-form-item>
+                <!-- icon -->
+                <el-form-item label="icon标识：">
+                    <el-input v-model="form.icon" placeholder="如 userinfo" style="width: 100%" />
+                </el-form-item>
+
+                <!-- 首页是否展示 -->
+                <el-form-item label="首页是否展示：">
+                    <el-switch v-model="form.ishide" :active-value="false" :inactive-value="true" />
+                    <span style="margin-left: 8px; color: #909399;">
+                        {{ form.ishide ? '隐藏' : '展示' }}
+                    </span>
+                </el-form-item>
+
+                <!-- 是否叶子节点 -->
+                <el-form-item label="是否叶子节点：">
+                    <el-switch v-model="form.isleaf" :active-text="false" :data-allow-mismatch="true" />
+                    <span style="margin-left: 8px; color: #909399;">
+                        {{ form.isleaf ? '是' : '否' }}
+                    </span>
                 </el-form-item>
             </el-form>
 
             <template #footer>
                 <el-button @click="showsetadd = false">取消</el-button>
-                <el-button type="primary" @click="submitAdd">确定</el-button>
+                <el-button type="primary" @click="submitForm">确定</el-button>
             </template>
         </el-dialog>
     </div>
 </template>
 
 <script>
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { http } from '@/utils/http'
 import { BASE_PATH } from '@/router/constants'
-// import { CircleCheck, Remove } from '@element-plus/icons-vue'
 export default {
     data() {
         return {
@@ -135,10 +148,16 @@ export default {
             showsetadd: false,
             loading: false,
             list: [],
+            flatList: [],           // ← 新增：扁平数据，给 computed 用
+            formMode: 'add',        // ← 新增：'add' | 'edit'
             form: {
-                pid: null,
+                id: null,
+                pid: 0,
                 path: '',
-                name: ''
+                name: '',
+                icon: '',
+                ishide: false,
+                isleaf: false,
             }
         }
     },
@@ -208,8 +227,8 @@ export default {
             }
         },
         getParentName(pid) {
-            if (pid === 0 || pid === '0') return '顶级菜单'
-            const parent = this.list.find(item => item.id === pid || item.id === String(pid))
+            if (!pid || pid === 0 || pid === '0') return '顶级菜单'
+            const parent = this.flatList.find(i => i.id === pid)
             return parent ? parent.name : `未知(${pid})`
         },
         // 构建顺序 + 记录深度
@@ -255,16 +274,28 @@ export default {
         },
         // 打开对话框时重置表单
         openAddDialog(parent) {
-            if (parent && parent.length > 1) {
-                ElMessage.warning('只能选择一个父菜单新增！')
-                return;
-            }
-           
-            const parent0 = parent?.[0]
+            this.formMode = 'add'
             this.form = {
-                pid: parent0 ? parent0.id : null,   // 选中行作为父级，没选则顶级
+                id: null,
+                pid: parent ? String(parent.id) : null,
                 path: '',
-                name: ''
+                name: '',
+                icon: '',
+                ishide: false,
+                isleaf: false,
+            }
+            this.showsetadd = true
+        },
+        openEditDialog(row) {
+            this.formMode = 'edit'
+            this.form = {
+                id: row.id,
+                pid: row.pid,
+                path: row.path,          // 单段路径，如 /systemset
+                name: row.name,
+                icon: row.icon,
+                ishide: row.ishide,
+                isleaf: row.isleaf,
             }
             this.showsetadd = true
         },
@@ -278,7 +309,7 @@ export default {
             this.selectedRow = rows
         },
         // 提交
-        async submitAdd() {
+        async submitForm() {
             const sub = this.form.path.trim().replace(/^\//, '')
             if (!sub) {
                 ElMessage.warning('请输入子路径')
@@ -289,18 +320,60 @@ export default {
                 return
             }
 
+            const payload = {
+                pid: this.form.pid || '0',
+                url: '/' + sub,
+                name: this.form.name.trim(),
+                icon: this.form.icon.trim(),
+                isHide: this.form.ishide,     // 注意后端字段名大小写
+                isLeaf: this.form.isleaf,
+            }
+
             try {
-                await http.postJson('/menu/add', {
-                    pid: this.form.pid || '0',      // null 转 '0'
-                    url: '/' + sub,                  // 只存单段
-                    name: this.form.name.trim()
-                })
-                ElMessage.success('新增成功')
+                if (this.formMode === 'add') {
+                    await http.postJson('/menu/add', payload)
+                    ElMessage.success('新增成功')
+                } else {
+                    await http.postJson('/menu/update', { ...payload, id: this.form.id })
+                    ElMessage.success('编辑成功')
+                }
                 this.showsetadd = false
                 this.loadMenuList()
             } catch (e) {
-                ElMessage.error('新增失败：' + e.message)
+                ElMessage.error((this.formMode === 'add' ? '新增' : '编辑') + '失败：' + e.message)
             }
+        },
+        handleDelete(row) {
+            ElMessageBox.confirm(
+                `确定删除「${row.name}」吗？`,
+                '提示',
+                { type: 'warning' }
+            ).then(async () => {
+                try {
+                    await http.postJson('/menu/delete', { id: row.id })
+                    ElMessage.success('删除成功')
+                    this.loadMenuList()
+                } catch (e) {
+                    ElMessage.error('删除失败：' + e.message)
+                }
+            }).catch(() => { })
+        },
+        handleBatchDelete() {
+            console.log(this.selectedRows)
+            if (this.selectedRows.length === 0) {
+                ElMessage.warning('请先选择要删除的菜单')
+                return
+            }
+            ElMessageBox.confirm(
+                `确定删除选中的 ${this.selectedRows.length} 个菜单吗？`,
+                '提示',
+                { type: 'warning' }
+            ).then(async () => {
+                const ids = this.selectedRows.map(r => r.id)
+                await http.postJson('/menu/batchDelete', { ids })
+                ElMessage.success('删除成功')
+                this.loadMenuList()
+            }).catch(() => { })
         }
     },
     mounted() {
@@ -308,3 +381,10 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+/* 加在 <style scoped> 里，需要用 :deep() */
+.my-form :deep(.el-form-item__label) {
+    padding-left: 30px;
+}
+</style>
