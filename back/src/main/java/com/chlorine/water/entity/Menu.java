@@ -22,7 +22,9 @@ public class Menu implements Serializable {
 
     private Integer pid;
 
-    private Boolean ishide;
+    private Boolean isHide;
+
+    private Boolean isLeaf;
 
     private static final long serialVersionUID = 1L;
 }
