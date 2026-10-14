@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
+        <!-- <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
             <span style="color:#999">用于维护存储到后端的路由表</span>
         </div>
-        <!-- <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
+        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
             <span style="color:#999">对应路由与角色的权限匹配方式：比如这个角色有这个路由显示权限，然后这个路由有这些权限：<span style="white-space: nowrap;">{{
                 '[{path:xxx,root:[],dicts:[]}]' }}</span>，root是按钮显示权限，dicts是数据显示权限，通过字典标识来控制</span>
         </div>
@@ -12,18 +12,18 @@
         </div> -->
         <div style="margin-bottom: 20px;padding:0 0 10px 0; background-color: white;"
             :style="{ boxShadow: $root.boxShadow }">
-            <span style="display:inline-block;white-space: nowrap;">
-                <span style="display: inline-block;margin: 12px 0px 0 12px;">
-                    <el-input placeholder="Filter keyword" />
-                </span>
-                <el-button style="margin:12px 0px 0px 12px;vertical-align: top;" type="primary">查询</el-button>
-            </span>
+            <el-input v-model="keyword" placeholder="请输入路由标题" clearable
+                style="display: inline-block; white-space: nowrap; margin: 12px 0px 0 12px; width: 220px"
+                @keyup.enter="handleSearch" />
+            <el-button style="margin:12px 0px 0px 12px;vertical-align: top;" type="primary"
+                @click="handleSearch">查询</el-button>
             <el-button style="margin:12px 0px 0px 12px;vertical-align: top;" @click="openAddDialog(null)">新增</el-button>
-            <el-button style="margin:12px 0px 0px 12px;vertical-align: top;" @click="handleBatchDelete">批量删除</el-button>
+            <el-button style="margin:12px 0px 0px 12px;vertical-align: top;" :disabled="!selectedRows.length"
+                @click="handleBatchDelete">批量删除</el-button>
         </div>
 
         <div id="tables" style="margin-bottom: 20px;" :style="{ boxShadow: $root.boxShadow }">
-            <el-table ref="tableRef" :data="list" stripe row-key="id" @selection-change="handleSelectionChange">
+            <el-table ref="tableRef" :data="pagedList" stripe row-key="id" @selection-change="handleSelectionChange">
                 <el-table-column type="selection"></el-table-column>
                 <el-table-column label="序号" width="70">
                     <template #default="scope">
@@ -79,10 +79,14 @@
             </el-table>
         </div>
 
-        <!-- 弹窗 -->
-        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
-            <el-pagination small background layout="prev, pager, next" :total="list.length" class="mt-4" />
+        <div style="margin-bottom: 20px; padding: 10px; background-color: white;"
+            :style="{ boxShadow: $root.boxShadow }">
+            <el-pagination small background layout="total, sizes, prev, pager, next, jumper" :total="total"
+                :current-page="currentPage" :page-size="pageSize" :page-sizes="[10, 20, 50, 100]"
+                @current-change="handlePageChange" @size-change="handleSizeChange" />
         </div>
+
+        <!-- 弹窗 -->
         <el-dialog v-model="showsetadd" align-center :title="formMode === 'add' ? '新增条目' : '编辑条目'" width="520px">
             <el-form label-width="150px" label-position="left" class="my-form">
                 <!-- 直属上级菜单 -->
@@ -145,11 +149,15 @@ import { getErrorMessage } from '@/utils/errorMessage'
 export default {
     data() {
         return {
+            keyword: '',
             selectedRows: [], // 当前选中的行
             showsetadd: false,
             loading: false,
             list: [],
             flatList: [],           // ← 新增：扁平数据，给 computed 用
+            currentPage: 1,
+            pageSize: 10,
+            total: 0,
             formMode: 'add',        // ← 新增：'add' | 'edit'
             form: {
                 id: null,
@@ -221,17 +229,82 @@ export default {
                 this.fillFullPath(flat)
                 this.flatList = flat
                 this.list = this.buildTreeOrder(flat)
+
+                this.currentPage = 1        // 重新加载后回到第一页
+                this.updatePagedList()      // ← 切页
             } catch (e) {
                 ElMessage({ type: 'error', message: getErrorMessage(e, '加载路由表失败，请稍后重试') })
             } finally {
                 this.loading = false
             }
         },
-        getParentName(pid) {
-            if (!pid || pid === 0 || pid === '0') return '顶级菜单'
-            const parent = this.flatList.find(i => i.id === pid)
-            return parent ? parent.name : `未知(${pid})`
+        handleSearch() {
+            const kw = this.keyword.trim().toLowerCase()
+
+            if (!kw) {
+                this.list = this.buildTreeOrder(this.flatList)
+                this.currentPage = 1
+                this.updatePagedList()
+                return
+            }
+
+            // 1. 找出直接匹配的节点
+            const matchedIds = new Set()
+            this.flatList.forEach(item => {
+                const name = (item.name || '').toLowerCase()
+                const path = (item.path || '').toLowerCase()
+                if (name.includes(kw) || path.includes(kw)) {
+                    matchedIds.add(item.id)
+                }
+            })
+
+            // 2. 把匹配节点的所有祖先也加进来（否则树上挂不住）
+            const byId = {}
+            this.flatList.forEach(item => { byId[item.id] = item })
+
+            const includeIds = new Set(matchedIds)
+            matchedIds.forEach(id => {
+                let cur = byId[id]
+                while (cur && cur.pid && cur.pid !== '0') {
+                    const parent = byId[cur.pid]
+                    if (!parent) break
+                    includeIds.add(parent.id)
+                    cur = parent
+                }
+            })
+
+            // 3. 过滤 + 重建树
+            const filtered = this.flatList.filter(item => includeIds.has(item.id))
+            this.list = this.buildTreeOrder(filtered)
+            this.currentPage = 1        // 搜索后回到第一页
+            this.updatePagedList()      // ← 切页
         },
+
+        // 计算当前页数据
+        updatePagedList() {
+            this.total = this.list.length
+            const start = (this.currentPage - 1) * this.pageSize
+            const end = start + this.pageSize
+            this.pagedList = this.list.slice(start, end)
+
+            // 如果当前页超出范围（比如删了数据），回退到最后一页
+            if (this.pagedList.length === 0 && this.currentPage > 1) {
+                this.currentPage = Math.max(1, Math.ceil(this.total / this.pageSize))
+                this.updatePagedList()
+            }
+        },
+
+        handlePageChange(page) {
+            this.currentPage = page
+            this.updatePagedList()
+        },
+
+        handleSizeChange(size) {
+            this.pageSize = size
+            this.currentPage = 1     // 改每页大小后回到第一页
+            this.updatePagedList()
+        },
+
         // 构建顺序 + 记录深度
         buildTreeOrder(flatList) {
             const byPid = {}
