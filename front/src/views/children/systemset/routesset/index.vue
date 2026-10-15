@@ -126,7 +126,7 @@
 
                 <!-- 是否叶子节点 -->
                 <el-form-item label="是否叶子节点：">
-                    <el-switch v-model="form.isleaf" :active-text="false" :data-allow-mismatch="true" />
+                    <el-switch v-model="form.isleaf" />
                     <span style="margin-left: 8px; color: #909399;">
                         {{ form.isleaf ? '是' : '否' }}
                     </span>
@@ -154,11 +154,12 @@ export default {
             showsetadd: false,
             loading: false,
             list: [],
-            flatList: [],           // ← 新增：扁平数据，给 computed 用
+            pagedList: [],
+            flatList: [],           //扁平数据，给 computed 用
             currentPage: 1,
             pageSize: 10,
             total: 0,
-            formMode: 'add',        // ← 新增：'add' | 'edit'
+            formMode: 'add',        //'add' | 'edit'
             form: {
                 id: null,
                 pid: 0,
@@ -213,6 +214,8 @@ export default {
     methods: {
         async loadMenuList() {
             this.loading = true
+            this.list = []
+            this.pagedList = []
             try {
                 const user = JSON.parse(localStorage.getItem('currentUser') || '{}')
                 const res = await http.postJson('/menu/user', user, { timeoutMs: 5000 })
@@ -229,8 +232,6 @@ export default {
                 this.fillFullPath(flat)
                 this.flatList = flat
                 this.list = this.buildTreeOrder(flat)
-
-                this.currentPage = 1        // 重新加载后回到第一页
                 this.updatePagedList()      // ← 切页
             } catch (e) {
                 ElMessage({ type: 'error', message: getErrorMessage(e, '加载路由表失败，请稍后重试') })
@@ -449,7 +450,6 @@ export default {
                 const ids = this.selectedRows.map(r => r.id)
                 await http.postJson('/menu/batchDelete', { ids })
                 ElMessage.success('批量删除成功！')
-                this.selectedRows = []
                 this.$refs.tableRef?.clearSelection()
                 this.loadMenuList()
             } catch (e) {
