@@ -11,6 +11,7 @@ import java.io.Serializable;
 @TableName(value = "class")
 @Data
 public class Class implements Serializable {
+
     private Integer id;
 
     private Integer grade;

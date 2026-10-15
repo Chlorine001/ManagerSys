@@ -1,5 +1,7 @@
 package com.chlorine.water.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -12,6 +14,7 @@ import java.util.Date;
 @TableName(value = "download")
 @Data
 public class Download implements Serializable {
+    @TableId(type = IdType.AUTO)
     private Integer id;
 
     private Integer fileId;
