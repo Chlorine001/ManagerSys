@@ -20,7 +20,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
             "FROM menu m " +
             "JOIN role_menu rm ON rm.menu_id = m.id " +
             "JOIN role r ON r.id = rm.role_id " +
-            "JOIN user u ON u.role = r.numb " +
+            "JOIN user u ON u.role_id = r.id " +
             "WHERE u.name = #{username} " +
             "ORDER BY m.pid, m.id")
     List<Menu> selectMenusByUsername(@Param("username") String username);

@@ -138,6 +138,7 @@ import menuitem from '@/components/menuitem.vue'
 import righttop from '@/components/righttop.vue'
 import elicon from '@/components/fonticons.vue'
 import { ElMessage, ElMessageBox, ElLoading } from 'element-plus'
+import { goBase } from '@/router/router.js'
 
 export default {
   data() {
@@ -208,7 +209,6 @@ export default {
     settitle(v) {
       this.title = v.meta.subtitle || '--'
       this.titles = v.meta.subtitles || '--'
-      //
       this.nowroute = (v.path.split('/')[v.path.split('/').length - 1]) || v.name
     },
     gettitle() {

@@ -1,5 +1,6 @@
 package com.chlorine.water.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.chlorine.water.entity.Menu;
 import com.chlorine.water.entity.User;
 import com.chlorine.water.mapper.MenuMapper;
@@ -20,13 +21,19 @@ public class MenuController {
         return ok(menuMapper.selectList(null));
     }
 
+    /** 全部菜单（前端转树） */
+    @GetMapping("/all")
+    public List<Menu> allMenus() {
+        return menuMapper.selectList(new LambdaQueryWrapper<Menu>().orderByAsc(Menu::getPid).orderByAsc(Menu::getId));
+    }
+
     @PostMapping("/user")
     public Map<String, Object> listByUser(@RequestBody User user) {
-        Integer role = user.getRole();
+        Integer role = user.getRoleId();
 
         // 管理员：直接给全部菜单
         List<Menu> menus;
-        if (role != null && role == 0) {
+        if (role != null && role == 1) {
             menus = menuMapper.selectList(null);
         } else {
             menus = menuMapper.selectMenusByUsername(user.getName());

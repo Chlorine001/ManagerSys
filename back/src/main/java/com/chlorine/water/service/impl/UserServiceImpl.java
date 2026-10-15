@@ -38,7 +38,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 3. 设置创建时间
         user.setCreateTime(LocalDateTime.now());
         user.setTrueState(0);//非实名
-        user.setRole(2);//默认学生
+        user.setRoleId(1);//默认普通用户
         user.setState(0);//非锁定账户
         // 4. 调用Mapper保存
         userMapper.insert(user);

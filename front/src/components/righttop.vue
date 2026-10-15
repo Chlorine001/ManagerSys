@@ -103,7 +103,8 @@
 
 <script>
 import elicon from './fonticons.vue'
-import {getCurrentUserName} from '@/utils/user'
+import { getCurrentUserName } from '@/utils/user'
+import { goBase } from '@/router/router.js'
 
 export default {
   data() {

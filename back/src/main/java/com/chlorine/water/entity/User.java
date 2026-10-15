@@ -1,6 +1,8 @@
 package com.chlorine.water.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,8 +15,6 @@ import java.time.LocalDateTime;
  */
 @TableName(value = "user")
 @Data
-@Getter
-@Setter
 public class User implements Serializable {
     private Integer id;
 
@@ -44,7 +44,8 @@ public class User implements Serializable {
 
     private Integer trueState;
 
-    private Integer role;
+    @TableField("role_id")
+    private Integer roleId;
 
     private String trueName;
 

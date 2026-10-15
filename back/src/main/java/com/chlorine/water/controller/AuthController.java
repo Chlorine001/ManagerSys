@@ -48,7 +48,7 @@ public class AuthController {
 
         List<Menu> menus;
         // 管理员：直接给全部菜单
-        if (user.getRole() != null && user.getRole() == 0) {
+        if (user.getRoleId() != null && user.getRoleId() == 1) {
             menus = menuMapper.selectList(null);
         } else {
             menus = menuMapper.selectMenusByUsername(username);

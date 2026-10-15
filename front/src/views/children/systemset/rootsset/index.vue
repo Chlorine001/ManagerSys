@@ -1,10 +1,10 @@
 <template>
     <div>
-        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
+        <!-- <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
             <span style="color:#999">
                 这个架构里面，角色即等同于岗位，建议使用“部门_岗位”或“部门-岗位”这样的双重命名方式进行角色管理
             </span>
-        </div>
+        </div> -->
         <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
             <span style="display:inline-block;margin-right: 10px; white-space: nowrap;">
                 <span style="display: inline-block;margin-right: 10px;">
