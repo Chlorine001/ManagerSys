@@ -15,11 +15,10 @@ public class Role implements Serializable {
 
     private String name;
 
+    /** 1=启用 0=禁用 */
     private String state;
 
     private String info;
-
-    private Integer numb;
 
     private static final long serialVersionUID = 1L;
 }
