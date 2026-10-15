@@ -3,6 +3,8 @@ package com.chlorine.water.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.chlorine.water.common.core.PageResult;
+import com.chlorine.water.common.core.R;
 import com.chlorine.water.entity.Role;
 import com.chlorine.water.entity.RoleMenu;
 import com.chlorine.water.mapper.RoleMapper;
@@ -33,15 +35,16 @@ public class RoleController {
 
     /** 分页查询 */
     @GetMapping("/page")
-    public IPage<Role> page(@RequestParam(required = false) String name,
-                            @RequestParam(defaultValue = "1") long current,
-                            @RequestParam(defaultValue = "10") long size) {
+    public R<IPage<Role>> page(@RequestParam(required = false) String name,
+                               @RequestParam(defaultValue = "1") long current,
+                               @RequestParam(defaultValue = "10") long size) {
         LambdaQueryWrapper<Role> qw = new LambdaQueryWrapper<>();
         if (StringUtils.hasText(name)) {
             qw.like(Role::getName, name);
         }
         qw.orderByAsc(Role::getId);
-        return roleMapper.selectPage(new Page<>(current, size), qw);
+
+        return R.ok(roleMapper.selectPage(new Page<>(current, size), qw));
     }
 
     /** 新增 */
