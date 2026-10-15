@@ -1,0 +1,26 @@
+{
+  "records": [
+    {
+      "id": 1,
+      "name": "超级管理员",
+      "state": "1",
+      "info": null
+    },
+    {
+      "id": 2,
+      "name": "普通用户",
+      "state": "1",
+      "info": null
+    },
+    {
+      "id": 3,
+      "name": "付费会员",
+      "state": "1",
+      "info": null
+    }
+  ],
+  "total": 4,
+  "size": 10,
+  "current": 1,
+  "pages": 1
+}
