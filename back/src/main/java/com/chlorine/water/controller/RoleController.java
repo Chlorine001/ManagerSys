@@ -35,7 +35,7 @@ public class RoleController {
 
     /** 分页查询 */
     @GetMapping("/page")
-    public R<IPage<Role>> page(@RequestParam(required = false) String name,
+    public R<PageResult<Role>> page(@RequestParam(required = false) String name,
                                @RequestParam(defaultValue = "1") long current,
                                @RequestParam(defaultValue = "10") long size) {
         LambdaQueryWrapper<Role> qw = new LambdaQueryWrapper<>();
@@ -44,7 +44,13 @@ public class RoleController {
         }
         qw.orderByAsc(Role::getId);
 
-        return R.ok(roleMapper.selectPage(new Page<>(current, size), qw));
+        IPage<Role> page = roleMapper.selectPage(new Page<>(current, size), qw);
+
+        PageResult<Role> result = new PageResult<>(
+                page.getRecords(), page.getTotal(),
+                page.getSize(), page.getCurrent(), page.getPages()
+        );
+        return R.ok(result);
     }
 
     /** 新增 */
