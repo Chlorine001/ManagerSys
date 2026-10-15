@@ -227,6 +227,9 @@ export default {
       this.nowroute = v.path || v.name
     },
     showreport() {
+      if (localStorage.getItem('back_notice')) {
+        return;
+      }
       var loadings = ElLoading.service()
       // const loadings = ElLoading.service();
 
@@ -246,9 +249,9 @@ export default {
             ElMessageBox.alert(res, '关于本站'
               , {
                 dangerouslyUseHTMLString: true,
-                // callback() {
-                //   console.log(res);
-                // }
+                callback() {
+                  localStorage.setItem('back_notice', true)
+                }
               }
             )
             // console.log(res)
