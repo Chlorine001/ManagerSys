@@ -1,4 +1,4 @@
-package com.chlorine.water.config.Error;
+package com.chlorine.water.common.exception;
 
 import lombok.Getter;
 

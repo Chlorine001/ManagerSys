@@ -1,6 +1,7 @@
 package com.chlorine.water.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.chlorine.water.common.core.R;
 import com.chlorine.water.entity.Menu;
 import com.chlorine.water.entity.User;
 import com.chlorine.water.mapper.MenuMapper;
@@ -17,8 +18,8 @@ public class MenuController {
     private MenuMapper menuMapper;
 
     @GetMapping("/list")
-    public Map<String, Object> listAll() {
-        return ok(menuMapper.selectList(null));
+    public R<List<Menu>> listAll() {
+        return R.ok(menuMapper.selectList(null));
     }
 
     /** 全部菜单（前端转树） */
@@ -28,7 +29,7 @@ public class MenuController {
     }
 
     @PostMapping("/user")
-    public Map<String, Object> listByUser(@RequestBody User user) {
+    public R<List<Menu>> listByUser(@RequestBody User user) {
         Integer role = user.getRoleId();
 
         // 管理员：直接给全部菜单
@@ -38,25 +39,25 @@ public class MenuController {
         } else {
             menus = menuMapper.selectMenusByUsername(user.getName());
         }
-        return ok(menus);
+        return R.ok(menus);
     }
 
     // ============ 新增 ============
     @PostMapping("/add")
-    public Map<String, Object> add(@RequestBody Menu menu) {
-        if (isBlank(menu.getName())) return fail("标题不能为空");
-        if (isBlank(menu.getUrl())) return fail("路径不能为空");
+    public R<Map<String, Object>> add(@RequestBody Menu menu) {
+        if (isBlank(menu.getName())) return R.failBusiness("标题不能为空");
+        if (isBlank(menu.getUrl())) return R.failBusiness("路径不能为空");
 
         if (menu.getPid() == null) menu.setPid(0);
 
         if (menu.getPid() != 0) {
             Menu parent = menuMapper.selectById(menu.getPid());
-            if (parent == null) return fail("父级菜单不存在");
+            if (parent == null) return R.failBusiness("父级菜单不存在");
         }
 
         Long count = menuMapper.countByPidAndUrl(menu.getPid(), menu.getUrl(), null);
         if (count != null && count > 0) {
-            return fail("同级下已存在相同的路径：" + menu.getUrl());
+            return R.failBusiness("同级下已存在相同的路径：" + menu.getUrl());
         }
 
         if (menu.getIsHide() == null) menu.setIsHide(false);
@@ -65,30 +66,30 @@ public class MenuController {
         menuMapper.insert(menu);
 
         updateParentLeaf(menu.getPid());
-        return ok(null);
+        return R.ok(null);
     }
 
     // ============ 编辑 ============
     @PostMapping("/update")
-    public Map<String, Object> update(@RequestBody Menu menu) {
-        if (menu.getId() == null) return fail("缺少 id");
+    public R<Map<String, Object>> update(@RequestBody Menu menu) {
+        if (menu.getId() == null) return R.failBusiness("缺少 id");
 
         Menu exist = menuMapper.selectById(menu.getId());
-        if (exist == null) return fail("菜单不存在");
+        if (exist == null) return R.failBusiness("菜单不存在");
 
-        if (isBlank(menu.getName())) return fail("标题不能为空");
-        if (isBlank(menu.getUrl())) return fail("路径不能为空");
+        if (isBlank(menu.getName())) return R.failBusiness("标题不能为空");
+        if (isBlank(menu.getUrl())) return R.failBusiness("路径不能为空");
 
         if (menu.getId().equals(menu.getPid())) {
-            return fail("不能把自身设为父级");
+            return R.failBusiness("不能把自身设为父级");
         }
         if (menu.getPid() != null && isDescendant(menu.getId(), menu.getPid())) {
-            return fail("不能把父级设为自己的下级");
+            return R.failBusiness("不能把父级设为自己的下级");
         }
 
         Long count = menuMapper.countByPidAndUrl(menu.getPid(), menu.getUrl(), menu.getId());
         if (count != null && count > 0) {
-            return fail("同级下已存在相同的路径：" + menu.getUrl());
+            return R.failBusiness("同级下已存在相同的路径：" + menu.getUrl());
         }
 
         menuMapper.updateById(menu);
@@ -98,33 +99,33 @@ public class MenuController {
         }
         updateParentLeaf(menu.getPid());
 
-        return ok(null);
+        return R.ok(null);
     }
 
     // ============ 删除单个 ============
     @PostMapping("/delete")
-    public Map<String, Object> delete(@RequestBody Menu menu) {
-        if (menu.getId() == null) return fail("缺少 id");
+    public R<Map<String, Object>> delete(@RequestBody Menu menu) {
+        if (menu.getId() == null) return R.failBusiness("缺少 id");
 
         Menu exist = menuMapper.selectById(menu.getId());
-        if (exist == null) return fail("菜单不存在");
+        if (exist == null) return R.failBusiness("菜单不存在");
 
         Long childCount = menuMapper.countByPid(menu.getId());
         if (childCount != null && childCount > 0) {
-            return fail("请先删除该菜单下的子菜单");
+            return R.failBusiness("请先删除该菜单下的子菜单");
         }
 
         menuMapper.deleteById(menu.getId());
         updateParentLeaf(exist.getPid());
-        return ok(null);
+        return R.ok(null);
     }
 
     // ============ 批量删除 ============
     @PostMapping("/batchDelete")
-    public Map<String, Object> batchDelete(@RequestBody Map<String, Object> body) {
+    public R<Map<String, Object>> batchDelete(@RequestBody Map<String, Object> body) {
         Object idsObj = body.get("ids");
         if (!(idsObj instanceof List) || ((List<?>) idsObj).isEmpty()) {
-            return fail("请选择要删除的菜单");
+            return R.failBusiness("请选择要删除的菜单");
         }
 
         @SuppressWarnings("unchecked")
@@ -147,19 +148,19 @@ public class MenuController {
 
             Long childCount = menuMapper.countByPid(id);
             if (childCount != null && childCount > 0) {
-                return fail("菜单「" + exist.getName() + "」下有子菜单，请先删除");
+                return R.failBusiness("菜单「" + exist.getName() + "」下有子菜单，请先删除");
             }
             if (exist.getPid() != null) pidSet.add(exist.getPid());
         }
 
-        if (idList.isEmpty()) return fail("没有可删除的菜单");
+        if (idList.isEmpty()) return R.failBusiness("没有可删除的菜单");
 
         menuMapper.deleteBatchIds(idList);
 
         for (Integer pid : pidSet) {
             updateParentLeaf(pid);
         }
-        return ok(null);
+        return R.ok(null);
     }
 
     // ============ 工具 ============
@@ -192,21 +193,5 @@ public class MenuController {
     private boolean isBlank(String s) {
         return s == null || s.trim().isEmpty();
     }
-
-    private Map<String, Object> ok(Object data) {
-        Map<String, Object> res = new HashMap<>();
-        res.put("ok", true);
-        res.put("data", data);
-        res.put("message", "success");
-        res.put("BusinessException", false);
-        return res;
-    }
-
-    private Map<String, Object> fail(String msg) {
-        Map<String, Object> res = new HashMap<>();
-        res.put("ok", false);
-        res.put("message", msg);
-        res.put("BusinessException", true);
-        return res;
-    }
+    
 }

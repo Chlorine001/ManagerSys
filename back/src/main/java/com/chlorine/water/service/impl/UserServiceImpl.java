@@ -1,7 +1,7 @@
 package com.chlorine.water.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.chlorine.water.config.Error.BusinessException;
+import com.chlorine.water.common.exception.BusinessException;
 import com.chlorine.water.entity.User;
 import com.chlorine.water.mapper.UserMapper;
 import com.chlorine.water.service.UserService;

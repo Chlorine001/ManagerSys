@@ -1,4 +1,4 @@
-package com.chlorine.water.config.Error;
+package com.chlorine.water.common.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
