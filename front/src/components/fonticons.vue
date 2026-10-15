@@ -20,7 +20,7 @@
                 <OfficeBuilding />
             </el-icon>
         </template>
-        <template v-else-if="name == 'page1'">
+        <template v-else-if="name == 'role'">
             <el-icon>
                 <Coin />
             </el-icon>
@@ -30,12 +30,12 @@
                 <User />
             </el-icon>
         </template>
-        <template v-else-if="name == 'pagerootsettip'">
+        <template v-else-if="name == 'root'">
             <el-icon>
                 <Switch />
             </el-icon>
         </template>
-        <template v-else-if="name == 'page1b' || name == 'subpage1b'">
+        <template v-else-if="name == 'note'">
             <el-icon>
                 <ScaleToOriginal />
             </el-icon>
@@ -61,7 +61,7 @@
             </el-icon>
         </template>
         <template v-else>
-<!--             <img class="navimg" src="/favicon.ico" />-->
+            <!-- <img class="navimg" src="/favicon.ico" /> -->
             <el-icon>
                 <More />
             </el-icon>
