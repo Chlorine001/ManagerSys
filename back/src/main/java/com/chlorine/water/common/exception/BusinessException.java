@@ -31,5 +31,28 @@ public class BusinessException extends RuntimeException {
         this.data = null;
     }
 
-}
+    // ===== 自动取枚举里的默认文案 =====
+    public BusinessException(ErrorCodes ec) {
+        super(ec.getMessage());
+        this.code = ec.getCode();
+        this.data = null;
+    }
 
+    public BusinessException(ErrorCodes ec, String message) {
+        super(message);
+        this.code = ec.getCode();
+        this.data = null;
+    }
+
+    public BusinessException(ErrorCodes ec, Object data) {
+        super(ec.getMessage());
+        this.code = ec.getCode();
+        this.data = data;
+    }
+
+    public BusinessException(ErrorCodes ec, String message, Object data) {
+        super(message);
+        this.code = ec.getCode();
+        this.data = data;
+    }
+}

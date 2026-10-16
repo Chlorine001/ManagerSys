@@ -52,7 +52,7 @@ async function request(path, options = {}) {
     
     // ① HTTP 状态码错误（404 / 500 等，后端未被 GlobalExceptionHandler 捕获时）
     if (!res.ok) {
-      const msg = data?.message || (typeof data === 'string' && data ? data : `HTTP ${res.status}`)
+      const msg = data?.msg || (typeof data === 'string' && data ? data : `HTTP ${res.status}`)
       const err = new Error(msg)
       err.status = res.status
       err.body = data
@@ -63,19 +63,15 @@ async function request(path, options = {}) {
     // ② 业务层统一包装：ok === false
     if (data && typeof data === 'object' && data.ok === false) {
       //检查系统内部的错误 or 业务层面的错误
-      const isBusiness = data.BusinessException === true
-      const err = new Error(data.message || (isBusiness ? '业务错误' : '系统错误'))
+      const isBusiness = data.businessException === true
+      const err = new Error(data.msg || (isBusiness ? '业务错误' : '系统错误'))
       err.status = res.status
       err.body = data
       err.isBusinessError = isBusiness
       err.type = isBusiness ? 'business' : 'system'
+      err.code = data.code
 
-      if (isBusiness) {
-        // 业务异常：后端带 code / code_name / code_message
-        err.code = data.code
-        err.codeName = data.code_name
-        err.codeMessage = data.code_message
-      } else {
+      if (!isBusiness) {
         // 系统异常：后端带 error / stacktrace
         err.errorType = data.error
         err.stacktrace = data.stacktrace

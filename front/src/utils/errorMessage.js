@@ -8,18 +8,18 @@ export function getErrorMessage(e, defaultMsg = '操作失败') {
             return '网络异常，请检查网络连接'
         case 'business':
             // 业务错误：后端 message 一般是中文，直接用
-            return e.message || defaultMsg
+            return e.msg || defaultMsg
 
         case 'system':
         case 'http':
             console.log('Error', e)
             // 系统/HTTP 错误：优先用后端 message，没有再用兜底
-            return e.body?.message || defaultMsg
+            return e.body?.msg || defaultMsg
 
         default:
             console.log('Error', e)
             // 未分类：可能是原生 Error，做一次中英文过滤
-            return isUserFriendly(e.message) ? e.message : defaultMsg
+            return isUserFriendly(e.msg) ? e.msg : defaultMsg
     }
 }
 

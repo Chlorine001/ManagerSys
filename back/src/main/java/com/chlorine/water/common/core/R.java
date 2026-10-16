@@ -17,7 +17,7 @@ public class R<T> implements Serializable {
     private Boolean ok;        // 是否成功
     private String msg;    // 提示信息
     private T data;        // 真正的业务数据
-    private boolean BusinessException;    // 是否业务逻辑失败
+    private boolean businessException;    // 是否业务逻辑失败
 
 
     public R() {
@@ -28,15 +28,15 @@ public class R<T> implements Serializable {
         this.code = code;
         this.msg = msg;
         this.data = data;
-        this.BusinessException = false;
+        this.businessException = false;
     }
 
-    public R(Boolean ok, int code, String msg, T data, Boolean BusinessException) {
+    public R(Boolean ok, int code, String msg, T data, Boolean businessException) {
         this.ok = ok;
         this.code = code;
         this.msg = msg;
         this.data = data;
-        this.BusinessException = BusinessException;
+        this.businessException = businessException;
     }
 
     public static <T> R<T> ok() {
