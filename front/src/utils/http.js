@@ -48,7 +48,8 @@ async function request(path, options = {}) {
     } else {
       data = await res.text().catch(() => '')
     }
-
+    console.log(data)
+    
     // ① HTTP 状态码错误（404 / 500 等，后端未被 GlobalExceptionHandler 捕获时）
     if (!res.ok) {
       const msg = data?.message || (typeof data === 'string' && data ? data : `HTTP ${res.status}`)
@@ -101,6 +102,14 @@ async function request(path, options = {}) {
     clearTimeout(timer)
   }
 }
+function jsonRequest(method, path, data, opts = {}) {
+  return request(path, {
+    ...opts,
+    method,
+    headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
+    body: JSON.stringify(data ?? {}),
+  })
+}
 
 export const http = {
   getText(path, opts = {}) {
@@ -109,16 +118,29 @@ export const http = {
   get(path, opts = {}) {
     return request(path, { ...opts, method: 'GET' })
   },
-  postJson(path, data, opts = {}) {
-    return request(path, {
-      ...opts,
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
-      body: JSON.stringify(data ?? {}),
-    })
+  post(path, data, opts = {}) {
+    return jsonRequest('POST', path, data, opts)
   },
-  del(path, opts = {}) {
+  put(path, data, opts = {}) {
+    return jsonRequest('PUT', path, data, opts)
+  },
+  patch(path, data, opts = {}) {
+    return jsonRequest('PATCH', path, data, opts)
+  },
+  delete(path, opts = {}) {
     return request(path, { ...opts, method: 'DELETE' })
   },
+  // del(path, opts = {}) {
+  //   const { body, ...rest } = opts
+  //   return request(path, {
+  //     ...rest,
+  //     method: 'DELETE',
+  //     headers: {
+  //       ...(body ? { 'Content-Type': 'application/json' } : {}),
+  //       ...(opts.headers || {}),
+  //     },
+  //     body: body ? JSON.stringify(body) : undefined,
+  //   })
+  // },
 }
 

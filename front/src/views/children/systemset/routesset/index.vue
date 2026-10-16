@@ -218,7 +218,7 @@ export default {
             this.pagedList = []
             try {
                 const user = JSON.parse(localStorage.getItem('currentUser') || '{}')
-                const res = await http.postJson('/menu/user', user, { timeoutMs: 5000 })
+                const res = await http.post('/menu/user', user, { timeoutMs: 5000 })
                 const data = res?.data ?? []
                 const flat = (data || []).map(v => ({
                     id: String(v.id),
@@ -401,10 +401,10 @@ export default {
 
             try {
                 if (this.formMode === 'add') {
-                    await http.postJson('/menu/add', payload)
+                    await http.post('/menu/add', payload)
                     ElMessage.success('新增成功')
                 } else {
-                    await http.postJson('/menu/update', { ...payload, id: this.form.id })
+                    await http.post('/menu/update', { ...payload, id: this.form.id })
                     ElMessage.success('编辑成功')
                 }
                 this.showsetadd = false
@@ -421,7 +421,7 @@ export default {
                 { type: 'warning' }
             ).then(async () => {
                 try {
-                    await http.postJson('/menu/delete', { id: row.id })
+                    await http.post('/menu/delete', { id: row.id })
                     ElMessage.success('删除成功')
                     this.loadMenuList()
                 } catch (e) {
@@ -448,7 +448,7 @@ export default {
             }
             try {
                 const ids = this.selectedRows.map(r => r.id)
-                await http.postJson('/menu/batchDelete', { ids })
+                await http.post('/menu/batchDelete', { ids })
                 ElMessage.success('批量删除成功！')
                 this.$refs.tableRef?.clearSelection()
                 this.loadMenuList()

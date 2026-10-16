@@ -75,7 +75,7 @@ export default {
     async tologin() {
       this.loading = true
       try {
-        const res = await http.postJson('/auth/login', {name: this.name, password: this.password}, {timeoutMs: 5000})
+        const res = await http.post('/auth/login', {name: this.name, password: this.password}, {timeoutMs: 5000})
         if (!res || res.ok !== true) {
           ElMessage({type: 'error', message: (res && res.message) ? res.message : '登录失败'})
           return
