@@ -12,9 +12,18 @@
                             部门</div>
                         <div style="padding:12px">
                             <el-input v-model="filterText" placeholder="Filter keyword" @input="setvalue" />
-                            <el-tree ref="tree" :props="props" node-key="id" :default-expanded-keys="expandedkeys"
+                            <!-- <el-tree ref="tree" :props="props" node-key="id" :default-expanded-keys="expandedkeys"
                                 :data="datas" @node-click="nodeClick" show-checkbox :render-content="renderContent"
-                                :filter-node-method="filterNode" />
+                                :filter-node-method="filterNode" /> -->
+                            <el-tree ref="tree" :props="props" node-key="id" :default-expanded-keys="expandedkeys"
+                                :data="datas" @node-click="nodeClick" show-checkbox :filter-node-method="filterNode">
+                                <template #default="{ node, data }">
+                                    <span style="display:flex;align-items:center;">
+                                        <span>{{ node.label }}</span>
+                                        <span style="margin-left:6px;color:#999;font-size:12px;">({{ data.id }})</span>
+                                    </span>
+                                </template>
+                            </el-tree>
                         </div>
                     </div>
                 </div>
@@ -63,7 +72,7 @@
             </div>
         </div>
         <!-- 弹框 - 权限处理 -->
-        <el-dialog v-model="showsetdata" align-center="true" title="编辑用户">
+        <el-dialog v-model="showsetdata" align-center title="编辑用户">
             <div style="display: flex;margin-bottom: 20px;">
                 <div><span style="display: inline-block;width:100px">用户名：</span> </div>
                 <el-input value="xxx"></el-input>
@@ -76,7 +85,7 @@
             </div>
         </el-dialog>
         <!-- 弹框 - 新增 -->
-        <el-dialog v-model="showsetadd" align-center="true" title="新增用户">
+        <el-dialog v-model="showsetadd" align-center title="新增用户">
             <div style="display: flex;margin-bottom: 20px;">
                 <div><span style="display: inline-block;width:100px">用户名：</span> </div>
                 <el-input></el-input>
@@ -105,7 +114,7 @@ export default {
         return {
             winheight: '',
             winwidth: '',
-            showsetdata: 0,
+            showsetdata: false,
             flexshowright: 1,
             //
             filterText: '',

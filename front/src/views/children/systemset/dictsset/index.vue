@@ -41,7 +41,7 @@
         <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
             <el-pagination small background layout="prev, pager, next" :total="50" class="mt-4" />
         </div>
-        <el-dialog v-model="showsetadd" align-center="true" title="新增条目">
+        <el-dialog v-model="showsetadd" align-center title="新增条目">
             <div style="display: flex;margin-bottom: 20px;">
                 <div><span style="display: inline-block;width:100px">字典名称：</span> </div>
                 <el-input v-model="dicts"></el-input>
@@ -60,7 +60,7 @@ import { ElMessage } from 'element-plus'
 export default {
     data() {
         return {
-            showsetadd: 0,
+            showsetadd: false,
             dicts: '',
             list: [
                 // {

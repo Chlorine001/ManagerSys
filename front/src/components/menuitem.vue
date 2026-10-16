@@ -14,8 +14,8 @@
             </Menuitem>
             <!-- </el-menu-item-group> -->
         </el-sub-menu>
-        <el-menu-item v-else-if="!v.meta || v.meta && v.meta.ishide !== true && v.meta.userroot" :index="v.path || v.name"
-            @click="handleMenuClick(v), settitle(v)">
+        <el-menu-item v-else-if="!v.meta || v.meta && v.meta.ishide !== true && v.meta.userroot"
+            :index="v.path || v.name" @click="handleMenuClick(v), settitle(v)">
             <!-- <i :class="'fas ' + icons[v.name]" style=" width:20px;font-size: 20px;"></i> -->
             <!-- <img class="navimg" src="../../public/favicon.ico"> -->
             <elicon :name="v.meta.icon"></elicon>
@@ -30,6 +30,7 @@
 import elicon from '../components/fonticons.vue'
 export default {
     name: 'Menuitem', props: ['list', 'ifopen'],
+    emits: ['title'],
     data() {
         return {
 

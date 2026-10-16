@@ -36,7 +36,7 @@
             </el-table>
         </div>
         <!-- 弹框 - 新增 -->
-        <el-dialog v-model="showsetadd" align-center="true" title="部门">
+        <el-dialog v-model="showsetadd" align-center title="部门">
             <div style="display: flex;margin-bottom: 20px;" v-if="type == 2">
                 <div><span style="display: inline-block;width:100px">上级部门：</span> </div>
                 <el-input disabled v-model="parentobj.name"></el-input>
@@ -53,7 +53,7 @@
             </div>
         </el-dialog>
         <!-- 弹框 - 选部门 -->
-        <el-dialog v-model="showselectdept" align-center="true" title="部门">
+        <el-dialog v-model="showselectdept" align-center title="部门">
             <el-table :data="list" row-key="id" default-expand-all>
                 <el-table-column label="表列1标题">
                     <template #default="scope">

@@ -40,7 +40,7 @@
             <el-pagination small background layout="prev, pager, next" :total="50" class="mt-4" />
         </div>
         <!-- 弹框 - 新增 -->
-        <el-dialog v-model="showsetadd" align-center="true" title="新增条目">
+        <el-dialog v-model="showsetadd" align-center title="新增条目">
             <div style="display: flex;margin-bottom: 20px;">
                 <div><span style="display: inline-block;width:100px">项目名：</span> </div>
                 <el-input></el-input>

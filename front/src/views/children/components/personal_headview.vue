@@ -25,7 +25,7 @@
             </span>
         </div>
         <!-- 弹窗 - 通知 -->
-        <el-dialog v-model="showmsg" align-center="true" title="通知">
+        <el-dialog v-model="showmsg" align-center title="通知">
             <msgVue />
         </el-dialog>
     </div>
@@ -36,7 +36,7 @@ import msgVue from './msg.vue'
 export default {
     data() {
         return {
-            showmsg: 0
+            showmsg: false
         }
     },
     components: {
