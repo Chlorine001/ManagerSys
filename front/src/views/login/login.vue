@@ -82,11 +82,14 @@ export default {
         }
         this.logined = true
         // 保存 token 和用户信息
-        localStorage.setItem('token', res.token || 'token')
-        localStorage.setItem('currentUser', JSON.stringify(res.user))
+        const { token, user, navroot } = res.data
+        if (!token) throw new Error('登录响应缺少 token')
+        if (!user) throw new Error('登录响应缺少 user')
+
+        localStorage.setItem('token', token)
+        localStorage.setItem('currentUser', JSON.stringify(user))
         
         // 验证并处理菜单路由数据
-        const navroot = Array.isArray(res.navroot) ? res.navroot : []
         if (navroot.length === 0) {
           console.warn('未获取到菜单数据')
           ElMessage({type: 'warning', message: '暂无可用菜单权限'})
@@ -113,11 +116,8 @@ export default {
         }
 
         setTimeout(() => {
-          if ((localStorage.getItem('navroot') || []).length === 0) {
-            ElMessage({type: 'error', message: '没有获取到页面地址组'})
-          } else {
-            goBase('/home')
-          }
+          const navroot = JSON.parse(localStorage.getItem('navroot') || '[]')
+          if (navroot.length === 0) { ElMessage({ type: 'error', message: '没有获取到页面地址组' }) } else { goBase('/home') }
         }, 200)
       } catch (e) {
         ElMessage({

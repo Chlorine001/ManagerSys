@@ -15,6 +15,7 @@ public enum ErrorCodes {
     USER_NOT_LOGIN(1003, "用户未登录"),
     USER_NOT_AUTHORIZED(1004, "用户未授权"),
     USER_NOT_ENABLED(1005, "用户未启用"),
+    LOGIN_FAILED(1006, "账号或密码错误"),
 
     // 订单相关 (2001-2999)
     ORDER_ALREADY_PAID(2001, "订单已支付"),
