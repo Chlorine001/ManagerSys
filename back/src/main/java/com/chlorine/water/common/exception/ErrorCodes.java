@@ -8,26 +8,27 @@ import lombok.Getter;
  */
 @Getter
 public enum ErrorCodes {
-    // 用户相关错误 (1001-1999)
+
+    // 用户相关 (1001-1999)
     USER_NOT_FOUND(1001, "用户未找到"),
     USER_ALREADY_FOUND(1002, "用户已存在"),
     USER_NOT_LOGIN(1003, "用户未登录"),
     USER_NOT_AUTHORIZED(1004, "用户未授权"),
     USER_NOT_ENABLED(1005, "用户未启用"),
 
-    // 订单相关错误 (2001-2999)
+    // 订单相关 (2001-2999)
     ORDER_ALREADY_PAID(2001, "订单已支付"),
 
-    // 参数/校验 (4001-4999)
+    // 参数 / 校验 (4001-4999)
     PARAM_INVALID(4001, "参数校验失败"),
 
-    // 数据库相关 (9001-9100)
+    // 数据库相关 (9001-9999)
     DUPLICATE_KEY(9001, "数据已存在，请勿重复提交"),
     DATA_INTEGRITY_VIOLATION(9002, "数据完整性校验失败"),
     DB_ERROR(9003, "数据库操作失败"),
 
     // 系统级 (9998-9999)
-    SYSTEM_ERROR(9999, "系统内部错误"),
+    SYSTEM_ERROR(9999, "系统繁忙，请稍后重试"),
     ;
 
     private final int code;
@@ -42,27 +43,14 @@ public enum ErrorCodes {
      * 根据错误码获取枚举
      */
     public static ErrorCodes fromCode(int code) {
-        for (ErrorCodes error : values()) {
-            if (error.getCode() == code) {
-                return error;
-            }
+        for (ErrorCodes e : values()) {
+            if (e.code == code) return e;
         }
         return null;
     }
 
-    /**
-     * 获取错误码名称
-     */
-    public static String getNameByCode(int code) {
-        ErrorCodes error = fromCode(code);
-        return error != null ? error.name() : "UNKNOWN_ERROR";
-    }
-
-    /**
-     * 获取错误信息
-     */
     public static String getMessageByCode(int code) {
-        ErrorCodes error = fromCode(code);
-        return error != null ? error.getMessage() : "未知错误";
+        ErrorCodes e = fromCode(code);
+        return e != null ? e.getMessage() : SYSTEM_ERROR.getMessage();
     }
 }

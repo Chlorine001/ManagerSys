@@ -1,6 +1,7 @@
 package com.chlorine.water.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
 import com.chlorine.water.common.exception.BusinessException;
 import com.chlorine.water.entity.User;
 import com.chlorine.water.mapper.UserMapper;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+
+import static com.chlorine.water.common.exception.ErrorCodes.USER_ALREADY_FOUND;
 
 /**
  * @author Chlorine
@@ -29,7 +32,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public User registerUser(User user) {
         // 1. 业务校验（如用户名是否已存在）
         if (userMapper.selectByName(user.getName()) != null) {
-            throw new BusinessException(1002);
+//            throw new BusinessException(1002);
+            throw new BusinessException(USER_ALREADY_FOUND);
         }
         user.setName(user.getName());
         // 2. 密码加密

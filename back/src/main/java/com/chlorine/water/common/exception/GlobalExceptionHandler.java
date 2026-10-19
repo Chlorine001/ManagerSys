@@ -11,44 +11,41 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * 全局异常处理器 —— 所有异常的最终出口
+ * 原则：msg 永远是可以直接展示给用户的文案
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-
-    /* ========== 1. 业务异常（最常用） ========== */
+    /* ===== 1. 业务异常 ===== */
     @ExceptionHandler(BusinessException.class)
     public R<Object> handleBusiness(BusinessException e) {
-        ErrorCodes ec = ErrorCodes.fromCode(e.getCode());
-        String name = ec != null ? ec.name() : "UNKNOWN_ERROR";
-        // 优先用异常里带的 msg，没有就用枚举默认
+        // 优先用异常里带的 msg，否则回退到枚举文案
         String msg = e.getMessage() != null
                 ? e.getMessage()
-                : (ec != null ? ec.getMessage() : "业务异常");
+                : ErrorCodes.getMessageByCode(e.getCode());
 
-        logger.warn("业务异常 code={} name={} msg={}", e.getCode(), name, msg);
+        logger.warn("业务异常 code={} msg={}", e.getCode(), msg);
 
-        R<Object> r = R.failBusiness(e.getCode(), msg);
-        r.setData(e.getData());   // 把附加数据带出去
-        return r;
+        // 附加数据放进 data（可为 null）
+        return R.fail(e.getCode(), msg, e.getData());
     }
 
-    /* ========== 2. 主键/唯一索引冲突 → 9001 ========== */
+    /* ===== 2. 主键 / 唯一索引冲突 → 9001 ===== */
     @ExceptionHandler(DuplicateKeyException.class)
     public R<Void> handleDuplicateKey(DuplicateKeyException e) {
         logger.error("主键/唯一约束冲突：", e);
-        return R.failBusiness(
+        return R.fail(
                 ErrorCodes.DUPLICATE_KEY.getCode(),
                 ErrorCodes.DUPLICATE_KEY.getMessage()
         );
     }
 
-    /* ========== 3. 其它数据完整性（非空、外键等） → 9002 ========== */
+    /* ===== 3. 其它数据完整性（非空、外键等） → 9002 ===== */
     @ExceptionHandler(DataIntegrityViolationException.class)
     public R<Void> handleDataIntegrity(DataIntegrityViolationException e) {
         logger.error("数据完整性异常：", e);
-        return R.failBusiness(
+        return R.fail(
                 ErrorCodes.DATA_INTEGRITY_VIOLATION.getCode(),
                 ErrorCodes.DATA_INTEGRITY_VIOLATION.getMessage()
         );
@@ -64,13 +61,13 @@ public class GlobalExceptionHandler {
         return R.fail(ErrorCodes.PARAM_INVALID.getCode(), msg);
     }
 
-    /* ========== 5. 兜底：其它所有异常 → 9999 ========== */
+    /* ===== 5. 兜底 → 9999（固定文案，绝不外泄原始异常信息） ===== */
     @ExceptionHandler(Exception.class)
     public R<Void> handleException(Exception e) {
-        logger.error("系统异常：", e);
-        String msg = e.getMessage() != null
-                ? e.getMessage()
-                : ErrorCodes.SYSTEM_ERROR.getMessage();
-        return R.fail(ErrorCodes.SYSTEM_ERROR.getCode(), msg);
+        logger.error("系统异常：", e);   // 真实堆栈只进日志
+        return R.fail(
+                ErrorCodes.SYSTEM_ERROR.getCode(),
+                ErrorCodes.SYSTEM_ERROR.getMessage()
+        );
     }
 }

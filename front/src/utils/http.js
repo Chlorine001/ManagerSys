@@ -62,20 +62,10 @@ async function request(path, options = {}) {
 
     // ② 业务层统一包装：ok === false
     if (data && typeof data === 'object' && data.ok === false) {
-      //检查系统内部的错误 or 业务层面的错误
-      const isBusiness = data.businessException === true
-      const err = new Error(data.msg || (isBusiness ? '业务错误' : '系统错误'))
+      const err = new Error(data.msg || '操作失败')
       err.status = res.status
       err.body = data
-      err.isBusinessError = isBusiness
-      err.type = isBusiness ? 'business' : 'system'
       err.code = data.code
-
-      if (!isBusiness) {
-        // 系统异常：后端带 error / stacktrace
-        err.errorType = data.error
-        err.stacktrace = data.stacktrace
-      }
       throw err
     }
     return data
