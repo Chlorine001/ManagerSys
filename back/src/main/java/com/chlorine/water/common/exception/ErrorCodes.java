@@ -19,8 +19,13 @@ public enum ErrorCodes {
     // 订单相关 (2001-2999)
     ORDER_ALREADY_PAID(2001, "订单已支付"),
 
+    // 菜单相关 (3001-3999)
+    MENU_PARENT_NOT_FOUND(3001, "父级菜单不存在"),
+    MENU_URL_DUPLICATE(3002, "同级下已存在相同的路径"),
+
     // 参数 / 校验 (4001-4999)
     PARAM_INVALID(4001, "参数校验失败"),
+
 
     // 数据库相关 (9001-9999)
     DUPLICATE_KEY(9001, "数据已存在，请勿重复提交"),

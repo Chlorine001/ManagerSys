@@ -1,5 +1,6 @@
 package com.chlorine.water.common.core;
 
+import com.chlorine.water.common.exception.ErrorCodes;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -51,5 +52,12 @@ public class R<T> implements Serializable {
     }
     public static <T> R<T> fail(int code, String msg, T data) {
         return new R<>(false, code, msg, data);
+    }
+
+    public static <T> R<T> fail(ErrorCodes ec) {
+        return new R<>(false, ec.getCode(), ec.getMessage(), null);
+    }
+    public static <T> R<T> fail(ErrorCodes ec, String msg) {
+        return new R<>(false, ec.getCode(), msg, null);
     }
 }

@@ -2,6 +2,7 @@ package com.chlorine.water.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.chlorine.water.common.core.R;
+import com.chlorine.water.common.exception.ErrorCodes;
 import com.chlorine.water.entity.Menu;
 import com.chlorine.water.entity.User;
 import com.chlorine.water.mapper.MenuMapper;
@@ -45,19 +46,20 @@ public class MenuController {
     // ============ 新增 ============
     @PostMapping("/add")
     public R<Map<String, Object>> add(@RequestBody Menu menu) {
-        if (isBlank(menu.getName())) return R.failBusiness("标题不能为空");
-        if (isBlank(menu.getUrl())) return R.failBusiness("路径不能为空");
+        if (isBlank(menu.getName())) return R.fail(ErrorCodes.PARAM_INVALID,"标题不能为空");
+        if (isBlank(menu.getUrl()))  return R.fail(ErrorCodes.PARAM_INVALID, "路径不能为空");
 
         if (menu.getPid() == null) menu.setPid(0);
 
         if (menu.getPid() != 0) {
             Menu parent = menuMapper.selectById(menu.getPid());
-            if (parent == null) return R.failBusiness("父级菜单不存在");
+            if (parent == null) return R.fail(ErrorCodes.MENU_PARENT_NOT_FOUND);
         }
 
         Long count = menuMapper.countByPidAndUrl(menu.getPid(), menu.getUrl(), null);
         if (count != null && count > 0) {
-            return R.failBusiness("同级下已存在相同的路径：" + menu.getUrl());
+            return R.fail(ErrorCodes.MENU_URL_DUPLICATE,
+                    "同级下已存在相同的路径：" + menu.getUrl());
         }
 
         if (menu.getIsHide() == null) menu.setIsHide(false);
@@ -72,24 +74,24 @@ public class MenuController {
     // ============ 编辑 ============
     @PostMapping("/update")
     public R<Map<String, Object>> update(@RequestBody Menu menu) {
-        if (menu.getId() == null) return R.failBusiness("缺少 id");
+        if (menu.getId() == null) return R.fail("缺少 id");
 
         Menu exist = menuMapper.selectById(menu.getId());
-        if (exist == null) return R.failBusiness("菜单不存在");
+        if (exist == null) return R.fail("菜单不存在");
 
-        if (isBlank(menu.getName())) return R.failBusiness("标题不能为空");
-        if (isBlank(menu.getUrl())) return R.failBusiness("路径不能为空");
+        if (isBlank(menu.getName())) return R.fail("标题不能为空");
+        if (isBlank(menu.getUrl())) return R.fail("路径不能为空");
 
         if (menu.getId().equals(menu.getPid())) {
-            return R.failBusiness("不能把自身设为父级");
+            return R.fail("不能把自身设为父级");
         }
         if (menu.getPid() != null && isDescendant(menu.getId(), menu.getPid())) {
-            return R.failBusiness("不能把父级设为自己的下级");
+            return R.fail("不能把父级设为自己的下级");
         }
 
         Long count = menuMapper.countByPidAndUrl(menu.getPid(), menu.getUrl(), menu.getId());
         if (count != null && count > 0) {
-            return R.failBusiness("同级下已存在相同的路径：" + menu.getUrl());
+            return R.fail("同级下已存在相同的路径：" + menu.getUrl());
         }
 
         menuMapper.updateById(menu);
@@ -105,14 +107,14 @@ public class MenuController {
     // ============ 删除单个 ============
     @PostMapping("/delete")
     public R<Map<String, Object>> delete(@RequestBody Menu menu) {
-        if (menu.getId() == null) return R.failBusiness("缺少 id");
+        if (menu.getId() == null) return R.fail("缺少 id");
 
         Menu exist = menuMapper.selectById(menu.getId());
-        if (exist == null) return R.failBusiness("菜单不存在");
+        if (exist == null) return R.fail("菜单不存在");
 
         Long childCount = menuMapper.countByPid(menu.getId());
         if (childCount != null && childCount > 0) {
-            return R.failBusiness("请先删除该菜单下的子菜单");
+            return R.fail("请先删除该菜单下的子菜单");
         }
 
         menuMapper.deleteById(menu.getId());
@@ -125,7 +127,7 @@ public class MenuController {
     public R<Map<String, Object>> batchDelete(@RequestBody Map<String, Object> body) {
         Object idsObj = body.get("ids");
         if (!(idsObj instanceof List) || ((List<?>) idsObj).isEmpty()) {
-            return R.failBusiness("请选择要删除的菜单");
+            return R.fail("请选择要删除的菜单");
         }
 
         @SuppressWarnings("unchecked")
@@ -148,12 +150,12 @@ public class MenuController {
 
             Long childCount = menuMapper.countByPid(id);
             if (childCount != null && childCount > 0) {
-                return R.failBusiness("菜单「" + exist.getName() + "」下有子菜单，请先删除");
+                return R.fail("菜单「" + exist.getName() + "」下有子菜单，请先删除");
             }
             if (exist.getPid() != null) pidSet.add(exist.getPid());
         }
 
-        if (idList.isEmpty()) return R.failBusiness("没有可删除的菜单");
+        if (idList.isEmpty()) return R.fail("没有可删除的菜单");
 
         menuMapper.deleteBatchIds(idList);
 
