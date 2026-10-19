@@ -49,7 +49,7 @@ public class MenuController {
     public R<Map<String, Object>> add(@RequestBody Menu menu) {
         if (isBlank(menu.getName()))
             throw new BusinessException(ErrorCodes.PARAM_INVALID, "标题不能为空");
-        if (isBlank(menu.getUrl()))
+        if (isBlank(menu.getUrl())||menu.getUrl().equals("/"))
             throw new BusinessException(ErrorCodes.PARAM_INVALID, "路径不能为空");
 
 
@@ -87,7 +87,7 @@ public class MenuController {
 
         if (isBlank(menu.getName()))
             throw new BusinessException(ErrorCodes.PARAM_INVALID, "标题不能为空");
-        if (isBlank(menu.getUrl()))
+        if (isBlank(menu.getUrl())||menu.getUrl().equals("/"))
             throw new BusinessException(ErrorCodes.PARAM_INVALID, "路径不能为空");
 
         if (menu.getPid() == null) menu.setPid(0);
