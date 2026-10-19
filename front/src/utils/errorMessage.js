@@ -19,7 +19,7 @@ export function getErrorMessage(e, defaultMsg = '操作失败') {
         default:
             console.log('Error', e)
             // 未分类：可能是原生 Error，做一次中英文过滤
-            return isUserFriendly(e.msg) ? e.msg : defaultMsg
+            return isUserFriendly(e.body.msg) ? e.body.msg : defaultMsg
     }
 }
 
