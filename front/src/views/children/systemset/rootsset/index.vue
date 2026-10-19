@@ -167,6 +167,12 @@ export default {
             }
             this.saving = true
             try {
+                // 提交前先查重（编辑时排除自身）
+                const dup = await this.checkNameDuplicate(this.form.name)
+                if (dup) {
+                    ElMessage.warning('角色名称已存在，请更换')
+                    return
+                }
                 if (this.formMode === 'add') {
                     await http.post('/role', this.form, { timeoutMs: 5000 })
                     ElMessage.success('新增成功')
@@ -182,6 +188,15 @@ export default {
             } finally {
                 this.saving = false
             }
+        },
+        // 查重：按名称精确查询，命中且不是自己 -> true
+        async checkNameDuplicate(name) {
+            const res = await http.get('/role/page', {
+                params: { name, current: 1, size: 50 },
+                timeoutMs: 5000
+            })
+            const records = res?.data?.records || []
+            return records.some(r => r.name === name && r.id !== this.form.id)
         },
         handleState(row) {
             const target = row.state === '1' ? '0' : '1'
