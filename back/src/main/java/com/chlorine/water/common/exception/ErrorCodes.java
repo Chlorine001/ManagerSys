@@ -20,8 +20,13 @@ public enum ErrorCodes {
     ORDER_ALREADY_PAID(2001, "订单已支付"),
 
     // 菜单相关 (3001-3999)
-    MENU_PARENT_NOT_FOUND(3001, "父级菜单不存在"),
-    MENU_URL_DUPLICATE(3002, "同级下已存在相同的路径"),
+    // 菜单相关 (3001-3999)
+    MENU_NOT_FOUND(3001, "菜单不存在"),
+    MENU_PARENT_NOT_FOUND(3002, "父级菜单不存在"),
+    MENU_URL_DUPLICATE(3003, "同级下已存在相同的路径"),
+    MENU_HAS_CHILDREN(3004, "请先删除该菜单下的子菜单"),
+    MENU_SELF_AS_PARENT(3005, "不能把自身设为父级"),
+    MENU_PARENT_IS_DESCENDANT(3006, "不能把父级设为自己的下级"),
 
     // 参数 / 校验 (4001-4999)
     PARAM_INVALID(4001, "参数校验失败"),
