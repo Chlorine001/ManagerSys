@@ -3,7 +3,7 @@
     <fadeshowVue />
     <div class="top">
       <!-- in -->
-      <span class="logoimg">
+      <span class="logoimg" @click="toHome">
         <img src="/favicon.ico" alt="">
       </span>
       <span class="projtitle"
@@ -205,7 +205,9 @@ export default {
         this.allshow = 1
       }
     },
-    //
+    toHome() {
+      goBase('/home')
+    },
     settitle(v) {
       this.title = v.meta.subtitle || '--'
       this.titles = v.meta.subtitles || '--'
@@ -341,6 +343,7 @@ export default {
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  cursor: pointer;
   /* background-color: #333; */
 }
 
