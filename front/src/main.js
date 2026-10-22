@@ -8,7 +8,7 @@ import ElementPlus from 'element-plus'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'//图标相关
-import './styles/theme.css' 
+import './assets/theme.css' 
 
 const app = createApp(App) 
 
