@@ -252,6 +252,18 @@ export default {
     setlangs(type) {
       localStorage.setItem('lang', type)
     },
+    goFromSearch(v) {
+      const path = v.path || v.meta?.forusepath
+      if (!path) {
+        ElMessage.warning('该页面路径无效')
+        return
+      }
+      this.showfades = 0
+      this.resroutes = []
+      this.resroutespath = []
+      this.texts = ''
+      this.$router.replace(path)
+    },
     //
     doms() {
       setTimeout(() => {
