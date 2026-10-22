@@ -83,7 +83,11 @@ export default {
       if (!canvas || !box) return
 
       // 用更安全的算法获取高度，防止变成负数
-      let height = box.offsetHeight - 80 // 减去按钮和边框的粗略高度
+      let wrapper = this.$refs.boxRef // 拿到最外层有固定高度的容器
+      let btnBox = box.querySelector('.btnBox')
+      let btnHeight = btnBox ? btnBox.offsetHeight : 80
+      let height = wrapper.offsetHeight - btnHeight - 10 // 用最外层高度减去真实按钮高度
+      // let height = box.offsetHeight - 80 // 减去按钮和边框的粗略高度
       if (height < 200) height = 300     // 兜底高度
 
       let width = box.offsetWidth
@@ -104,8 +108,8 @@ export default {
       this.canvasTxt.lineWidth = 2
       this.canvasTxt.lineCap = 'round'
       this.canvasTxt.lineJoin = 'round'
-      let isDark = document.documentElement.classList.contains('dark')
-      this.canvasTxt.strokeStyle = isDark ? '#ffffff' : '#000000'
+      // let isDark = document.documentElement.classList.contains('dark')
+      // this.canvasTxt.strokeStyle = isDark ? '#ffffff' : '#000000'
 
       // 顺便清空数据
       this.points = []
@@ -137,6 +141,7 @@ export default {
     touchMove(ev) {
       ev.preventDefault()
       if (ev.touches.length == 1) {
+        this.canvasTxt.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--app-text').trim();
         let obj = {
           x: ev.targetTouches[0].clientX - this.stageInfo.left,
           y: ev.targetTouches[0].clientY - this.stageInfo.top
@@ -161,6 +166,7 @@ export default {
     //=======pc========
     mouseDown(ev) {
       ev.preventDefault()
+      this.canvasTxt.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--app-text').trim();
       let obj = {
         x: ev.offsetX,
         y: ev.offsetY
@@ -238,7 +244,8 @@ export default {
 <style scoped>
 .signatureBox {
   width: 100%;
-  height: calc(100% - 50px);
+  height: 400px;
+  /* height: calc(100% - 50px); */
   box-sizing: border-box;
   overflow: hidden;
   background: var(--app-panel);
