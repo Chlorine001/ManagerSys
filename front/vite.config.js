@@ -1,6 +1,6 @@
-import {fileURLToPath, URL} from 'node:url'
+import { fileURLToPath, URL } from 'node:url'
 
-import {defineConfig} from 'vite'
+import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
@@ -23,6 +23,7 @@ export default defineConfig({
                 rewrite: (path) => path.replace(/^\/api/, '')
             }
         },
+        // open: true, // 启动后自动打开浏览器
         // host: '0.0.0.0', // 本地开发环境通过代理实现跨域
     }
 })
