@@ -29,11 +29,18 @@
                   <template #prepend><span class="sign">密码：</span></template>
                 </el-input>
               </div>
-              <div>
-                <el-input placeholder="请输入验证码" v-model="verify"
-                  style="background-color:var(--app-login-input);border-radius: 40px;">
+              <div style="margin: 0 0 25px; display: flex; align-items: center; justify-content: space-between;">
+                <el-input placeholder="请输入验证码" v-model="code" maxlength="4" @keyup.enter="tologin"
+                  style="background-color:var(--app-login-input);border-radius: 40px; flex: 1;">
                   <template #prepend><span class="sign">验证码：</span></template>
                 </el-input>
+                <!-- 验证码图片/画布，点击可刷新 -->
+                <div
+                  style="width: 100px; height: 40px; margin-left: 10px; cursor: pointer; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1);"
+                  @click="refreshCode" title="点击刷新验证码">
+                  <img v-if="codeImg" :src="codeImg" style="width: 100%; height: 100%; object-fit: cover;" />
+                  <canvas v-else ref="codeCanvas" width="100" height="40" style="width: 100%; height: 100%;"></canvas>
+                </div>
               </div>
             </div>
             <div style="padding:20px 40px 0; text-align: center;">
@@ -64,15 +71,30 @@ export default {
       logined: false,
       name: 'admin',
       password: 'admin',
-      verify: '',
+      code: '',          // ✅ 绑定的用户输入的验证码
+      codeValue: '',     // ✅ 当前的真实验证码文本（仅前端演示用）
+      codeImg: '',       // ✅ 后端返回的验证码 Base64（如果是后端生成）
       loading: false,
     }
   },
+  mounted() {
+    this.refreshCode()
+  },
   methods: {
     async tologin() {
+      if (!this.code) {
+        ElMessage({ type: 'warning', message: '请输入验证码' })
+        return
+      }
+      if (this.code.toUpperCase() !== this.codeValue.toUpperCase()) {
+        ElMessage({ type: 'error', message: '验证码错误，请重试' })
+        this.code = ''
+        this.refreshCode() // 错误后自动刷新
+        return
+      }
       this.loading = true
       try {
-        const res = await http.post('/auth/login', { name: this.name, password: this.password }, { timeoutMs: 5000 })
+        const res = await http.post('/auth/login', { name: this.name, password: this.password, code: this.code }, { timeoutMs: 5000 })
         this.logined = true
         // 保存 token 和用户信息
         const { token, user, navroot } = res.data
@@ -113,12 +135,57 @@ export default {
           if (navroot.length === 0) { ElMessage({ type: 'error', message: '没有获取到页面地址组' }) } else { goBase('/home') }
         }, 200)
       } catch (e) {
+        this.refreshCode()
+        this.code = ''
         ElMessage({
           type: 'error',
           message: e?.message === 'timeout' ? '登录超时，请检查后端服务！' : e.message
         })
       } finally {
         this.loading = false
+      }
+    },
+    refreshCode() {
+      // 【方案 A：纯前端Canvas生成（演示用）】
+      const canvas = this.$refs.codeCanvas
+      if (!canvas) return
+      const ctx = canvas.getContext('2d')
+      const width = canvas.width
+      const height = canvas.height
+
+      // 清空画布，铺背景
+      ctx.clearRect(0, 0, width, height)
+      ctx.fillStyle = '#f0f0f0'
+      ctx.fillRect(0, 0, width, height)
+
+      // 生成随机 4 位字符
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789' // 去掉了容易混淆的 O0 I1
+      let code = ''
+      for (let i = 0; i < 4; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length))
+      }
+      this.codeValue = code // 保存真实验证码用于比对
+
+      // 画出字符
+      for (let i = 0; i < 4; i++) {
+        ctx.font = `${Math.floor(Math.random() * 6 + 20)}px Arial`
+        ctx.fillStyle = `rgb(${Math.random() * 100}, ${Math.random() * 100}, ${Math.random() * 100})`
+        ctx.save()
+        const x = 15 + i * 20
+        const y = 25 + Math.random() * 5
+        ctx.translate(x, y)
+        ctx.rotate((Math.random() - 0.5) * 0.5) // 随机旋转
+        ctx.fillText(code[i], 0, 0)
+        ctx.restore()
+      }
+
+      // 画几条干扰线
+      for (let i = 0; i < 4; i++) {
+        ctx.strokeStyle = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.5)`
+        ctx.beginPath()
+        ctx.moveTo(Math.random() * width, Math.random() * height)
+        ctx.lineTo(Math.random() * width, Math.random() * height)
+        ctx.stroke()
       }
     }
   }
