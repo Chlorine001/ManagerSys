@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
 import { BASE_PATH, BASE_NAME } from '@/router/constants'
 
 /**
@@ -139,7 +138,7 @@ const router = createRouter({
                 title: 'base',
             },
             redirect: `${BASE_PATH}/home`,
-            component: HomeView,
+            component: () => import('@/views/HomeView.vue'),
             children: []
         },
         // 404 页面 - 固定路由
