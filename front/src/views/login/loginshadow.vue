@@ -1,16 +1,18 @@
 <template>
-  <div>
-    <div
-        style="position: fixed;top:-100%;left:0;width:100%;height: 100%;background-color: #333;z-index: 999999;text-align: center;animation: Tops 2000ms forwards;"
-        :style="{ lineHeight: winheight + 'px' }">
-      <div style="position: absolute;top:-40px;left:0;width:100%;height: 40px;background-color: #333;"></div>
-      <div style="display: inline-block;line-height: normal;text-align: left;vertical-align: middle;">
-        <div
-            style="width: 120px;height:120px;margin: 0px 30px 15px;background-color: white;border-radius: 40%; animation: sizeset 1000ms forwards;">
-          <img src="/favicon.ico" style="width: 100%;height:100%;transform: scale(.8);" alt="">
-        </div>
-        <div style="padding:30px 0 0; line-height: 10px; text-align: center;font-family: 楷体 ;font-size: 30px; color:white;animation: shows 500ms forwards;">后台管理系统</div>
+  <div
+    style="position: fixed;top:-100%;left:0;width:100%;height: 100%;background-color: var(--app-login-shadow);z-index: 999999;text-align: center;animation: Tops 1600ms forwards;"
+    :style="{ display: 'flex', alignItems: 'center', justifyContent: 'center' }">
+    <div style="position: absolute;top:-40px;left:0;width:100%;height: 40px;background-color: var(--app-login-shadow);">
+    </div>
+    <div style="text-align: center; margin-top: -80px;">
+      <div
+        style="width: 120px;height:120px;margin: 0px 30px 15px;background-color: var(--app-panel);border-radius: 40%; animation: sizeset 1000ms forwards;">
+        <img :src="$root.isDark ? '/favicon-inverted.png' : '/favicon.ico'"
+          style="width: 100%;height:100%;transform: scale(.8);" alt="">
       </div>
+      <div
+        style="padding:0; text-align: center;font-family: 楷体 ;font-size: 30px; color: white ;animation: shows 500ms forwards;">
+        后台管理系统</div>
     </div>
   </div>
 </template>
@@ -20,18 +22,11 @@ export default {
   data() {
     return {
       load: 0,
-      winheight: ''
     }
   },
   methods: {
     setdoms() {
       this.winheight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-      if (this.load != 1) {
-        this.load = 1
-        setTimeout(() => {
-          this.winheight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-        }, 500)
-      }
     }
   },
   mounted() {
