@@ -2,51 +2,51 @@
   <div v-show="load == 1">
     <!-- 运动顶部 -->
     <div
-        style="position: fixed;top:0;left:0; width: 100%;height:80px;line-height: 80px;text-align: center;background-color: white;z-index: 999;transition: 200ms;"
-        :style="{ top: !ifshow ? '-80px' : 0 }">
-            <span style="float: left;padding: 0 20px;cursor: pointer;" @click="ifshow = 0">
-                <img src="/favicon.ico" alt=""
-                     style="display: inline-block;width: 40px;height:40px;vertical-align: middle;">
-            </span>
+      style="position: fixed;top:0;left:0; width: 100%;height:80px;line-height: 80px;text-align: center;background-color: var(--app-panel);z-index: 999;transition: 200ms;"
+      :style="{ top: !ifshow ? '-80px' : 0 }">
+      <span style="float: left;padding: 0 20px;cursor: pointer;" @click="ifshow = 0">
+        <img :src="$root.isDark ? '/favicon-dark.ico' : '/favicon.ico'" alt=""
+          style="display: inline-block;width: 40px;height:40px;vertical-align: middle;">
+      </span>
       {{ titlechange('会话窗口') }}
       <span style="float:right;padding: 0 20px;font-size: 30px;cursor: pointer;" @click="ifshow = 0">×</span>
     </div>
     <!-- 运动窗体 -->
     <div style="position: fixed;top:80px;left:0; width: 100%;background-color: #cacaca;z-index: 99;transition: 500ms;"
-         :style="{ height: winheight - 80 + 'px', top: !ifshow ? '-100%' : '80px' }">
+      :style="{ height: winheight - 80 + 'px', top: !ifshow ? '-100%' : '80px' }">
       <!-- // nav -->
       <div style="float: left;overflow: hidden auto;" :style="{ height: winheight + 'px' }">
         <div style="padding: 20px 20px 0;">
-          <div style="height:50px;width:50px;background-color: white;cursor: pointer;"
-               :style="{ boxShadow: $root.boxShadow2, backgroundColor: changetype == 2 ? '#308df7' : '#fff' }"
-               @click="changetype = 2">
+          <div style="height:50px;width:50px;background-color: var(--app-panel);cursor: pointer;"
+            :style="{ boxShadow: $root.boxShadow2, backgroundColor: changetype == 2 ? '#308df7' : '#fff' }"
+            @click="changetype = 2">
             <el-icon>
-              <User style="transform: scale(.5);" :style="{ color: changetype == 2 ? '#fff' : '' }"/>
+              <User style="transform: scale(.5);" :style="{ color: changetype == 2 ? '#fff' : '' }" />
             </el-icon>
           </div>
         </div>
         <div style="padding: 20px 20px 0;" v-if="showchat">
-          <div style="height:50px;width:50px;background-color: white;cursor: pointer;"
-               :style="{ boxShadow: $root.boxShadow2, backgroundColor: changetype == 1 ? '#308df7' : '#fff' }"
-               @click="changetype = 1">
+          <div style="height:50px;width:50px;background-color: var(--app-panel);cursor: pointer;"
+            :style="{ boxShadow: $root.boxShadow2, backgroundColor: changetype == 1 ? '#308df7' : '#fff' }"
+            @click="changetype = 1">
             <el-icon>
-              <ChatDotRound style="transform: scale(.5);" :style="{ color: changetype == 1 ? '#fff' : '' }"/>
+              <ChatDotRound style="transform: scale(.5);" :style="{ color: changetype == 1 ? '#fff' : '' }" />
             </el-icon>
           </div>
         </div>
       </div>
       <!-- // cont -->
       <div style="margin-left: 90px;margin-right: 20px;padding-top:20px">
-        <div style="background-color: white;overflow: hidden auto;"
-             :style="{ height: winheight - 120 + 'px', boxShadow: $root.boxShadow2 }">
+        <div style="background-color: var(--app-panel);overflow: hidden auto;"
+          :style="{ height: winheight - 120 + 'px', boxShadow: $root.boxShadow2 }">
 
           <div v-show="changetype == 2">
-            <div style="min-height: 40px; padding: 20px 0;border-bottom: 1px solid #ccc;cursor: pointer;"
-                 v-for="v in 5" @click="sel_else_init">
-                            <span style="float: left;padding: 0 20px;cursor: pointer;">
-                                <img src="/favicon.ico" alt=""
-                                     style="display: inline-block;width: 40px;height:40px;vertical-align: middle;">
-                            </span>
+            <div style="min-height: 40px; padding: 20px 0;border-bottom: 1px solid var(--app-border);cursor: pointer;"
+              v-for="v in 5" @click="sel_else_init">
+              <span style="float: left;padding: 0 20px;cursor: pointer;">
+                <img :src="$root.isDark ? '/favicon-dark.ico' : '/favicon.ico'" alt=""
+                  style="display: inline-block;width: 40px;height:40px;vertical-align: middle;">
+              </span>
               <div style="width:100%">
                 <div style="padding:0 30px 0 80px;">
                   <div style="font-size: 16px;font-weight: 800;">Test</div>
@@ -99,15 +99,15 @@
               </div>
             </div>
             <div style="padding:20px;">
-                            <span
-                                style="float:right;padding: 0 20px;line-height: 40px; font-size: 16px;cursor: pointer;background-color: #308df7;color: white;"
-                                :style="{ boxShadow: $root.boxShadow }" @click="sendmsg">{{
-                                titlechange('发送')
-                              }}</span>
+              <span
+                style="float:right;padding: 0 20px;line-height: 40px; font-size: 16px;cursor: pointer;background-color: #308df7;color: white;"
+                :style="{ boxShadow: $root.boxShadow }" @click="sendmsg">{{
+                  titlechange('发送')
+                }}</span>
               <div style="margin-right: 100px;">
                 <div style="padding: 0 10px; height:40px;" :style="{ boxShadow: $root.boxShadow }">
                   <input type="text" style="width:100%;line-height: 40px; font-size: 16px;" id="valuemsg"
-                         :placeholder="titlechange('输入要发送的内容')">
+                    :placeholder="titlechange('输入要发送的内容')">
                 </div>
               </div>
             </div>
@@ -118,17 +118,17 @@
     </div>
     <!-- 浮动按钮 -->
     <div
-        style="position: fixed;right:20px;bottom:30px;width: 60px;height: 60px;background-color: #308df7;border-radius: 50%;z-index: 2;cursor: pointer;"
-        :style="{ boxShadow: $root.boxShadow }" @click="ifshow = 1">
+      style="position: fixed;right:20px;bottom:30px;width: 60px;height: 60px;background-color: #308df7;border-radius: 50%;z-index: 2;cursor: pointer;"
+      :style="{ boxShadow: $root.boxShadow }" @click="ifshow = 1">
       <el-icon>
-        <ChatDotRound style="color: white;transform: scale(.5);"/>
+        <ChatDotRound style="color: white;transform: scale(.5);" />
       </el-icon>
     </div>
   </div>
 </template>
 
 <script>
-import {setchatdatas} from '../utils/chatdata'
+import { setchatdatas } from '../utils/chatdata'
 
 export default {
   data() {
