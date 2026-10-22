@@ -9,21 +9,37 @@
       <section class="signature">
         <div class="signatureBox" ref="boxRef">
           <div class="canvasBox" ref="canvasHW">
-            <canvas ref="canvasF" @touchstart.prevent='touchStart' @touchmove.prevent='touchMove'
-              @touchend.prevent='touchEnd' @mousedown="mouseDown" @mousemove="mouseMove" @mouseup="mouseUp"></canvas>
+            <canvas ref="canvasF" @touchstart.passive='touchStart' @touchmove.passive='touchMove'
+              @touchend.passive='touchEnd' @mousedown="mouseDown" @mousemove="mouseMove" @mouseup="mouseUp"></canvas>
             <div class="btnBox">
               <el-button style="margin:0 10px 10px 0" @click="overwrite">重写</el-button>
-              <el-button style="margin:0 10px 10px 0" @click="commit">提交签名</el-button>
+              <!-- <el-button style="margin:0 10px 10px 0" @click="commit">提交签名</el-button> -->
+              <el-button style="margin:0 10px 10px 0" @click="preview">预览</el-button>
             </div>
           </div>
         </div>
-        <img v-if="imgUrl" class="imgCanvas" :src="imgUrl" alt="签名预览">
+        <!-- <img v-if="imgUrl" class="imgCanvas" :src="imgUrl" alt="签名预览"> -->
       </section>
     </div>
+
+    <!-- 预览签名弹窗 -->
+    <el-dialog v-model="dialogVisible" title="签名预览" width="90%" center>
+      <div style="text-align: center; background:var(--app-panel); padding: 20px;">
+        <img :src="imgUrl" style="max-width: 100%; max-height: 100%; border-radius: 8px; background: var(--app-panel);"
+          alt="签名预览">
+      </div>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button type="info" @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="commitFromDialog">提 交</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import { ElMessage, ElMessageBox, ElLoading } from 'element-plus'
 export default {
   data() {
     return {
@@ -42,7 +58,8 @@ export default {
       h: null,
       isDown: false,
       isViewAutograph: this.$route.query.isViews > 0,
-      contractSuccess: this.$route.query.contractSuccess
+      contractSuccess: this.$route.query.contractSuccess,
+      dialogVisible: false, // 控制弹窗显示
     }
   },
   watch: {
@@ -55,6 +72,9 @@ export default {
   mounted() {
     this.initCanvas()
     window.addEventListener('resize', this.initCanvas)
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.initCanvas)
   },
   methods: {
     initCanvas() {
@@ -95,8 +115,10 @@ export default {
       this.stageInfo = canvas.getBoundingClientRect()
     },
 
+    //========= 触控 / 鼠标事件 =========
     //=========mobile=========
     touchStart(ev) {
+      ev.preventDefault()
       if (ev.touches.length == 1) {
         let obj = {
           x: ev.targetTouches[0].clientX - this.stageInfo.left,
@@ -113,6 +135,7 @@ export default {
       }
     },
     touchMove(ev) {
+      ev.preventDefault()
       if (ev.touches.length == 1) {
         let obj = {
           x: ev.targetTouches[0].clientX - this.stageInfo.left,
@@ -131,12 +154,13 @@ export default {
       }
     },
     touchEnd(ev) {
+      ev.preventDefault()
       // 手指抬起，直接完事，不需要再画了
-      // ev 参数留着备用，不用写 preventDefault，因为有.prevent
     },
 
     //=======pc========
     mouseDown(ev) {
+      ev.preventDefault()
       let obj = {
         x: ev.offsetX,
         y: ev.offsetY
@@ -152,6 +176,7 @@ export default {
       this.isDown = true
     },
     mouseMove(ev) {
+      ev.preventDefault()
       if (this.isDown) {
         let obj = {
           x: ev.offsetX,
@@ -170,6 +195,7 @@ export default {
       }
     },
     mouseUp(ev) {
+      ev.preventDefault()
       this.isDown = false
     },
 
@@ -178,10 +204,32 @@ export default {
     overwrite() {
       this.initCanvas() // 直接调用初始化，完美清空
     },
-    //提交签名
-    commit() {
+    // 预览按钮
+    preview() {
+      if (this.points.length === 0) {
+        ElMessage.warning('请先手写签名')
+        return
+      }
       this.imgUrl = this.$refs.canvasF.toDataURL();
-      // console.log(this.$refs.canvasF.toDataURL()) //签名img回传后台
+      this.dialogVisible = true
+    },
+    // 提交按钮（在弹窗里）
+    commitFromDialog() {
+      this.dialogVisible = false
+      this.commit()
+    },
+    //提交签名
+    // 直接提交按钮（在画板下方，如果想保留的话）
+    commit() {
+      if (this.points.length === 0) {
+        ElMessage.warning('请先手写签名')
+        return
+      }
+      // console.log('签名Base64:', imgUrl)
+      ElMessage.success('签名提交成功！')
+
+      // 如果需要提交给后台，在这里发请求：
+      // axios.post('/api/signature', { img: imgUrl })
     }
   }
 }
