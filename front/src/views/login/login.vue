@@ -193,6 +193,20 @@ export default {
 </script>
 
 <style scoped>
+/* ✅ 暗黑模式下，用伪元素盖一层半透明黑布 */
+html.dark .wrapout::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  /* 调整 0.6 控制暗度 */
+  pointer-events: none;
+  /* 让鼠标点击可以穿透这层黑布 */
+  z-index: 0;
+}
 .wrapout {
   position: fixed;
   top: 0;
