@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div style="margin-bottom: 20px;padding: 0 0 20px; background-color: white;"
-         :style="{ boxShadow: $root.boxShadow }">
-      <personalHeadvue/>
+    <div style="margin-bottom: 20px;padding: 0 0 20px; background-color: var(--app-panel);"
+      :style="{ boxShadow: $root.boxShadow }">
+      <personalHeadvue />
     </div>
-    <div style="margin-bottom: 20px;padding:30px 20px; background-color: white;"
-         :style="{ boxShadow: $root.boxShadow }">
+    <div style="margin-bottom: 20px;padding:30px 20px; background-color: var(--app-panel);"
+      :style="{ boxShadow: $root.boxShadow }">
       <div style="display: flex;margin-bottom: 20px;">
         <div><span style="display: inline-block;width:100px">用户名称：</span></div>
         <el-input v-if="type == 1" :value="currentUser?.name || 'Admin'"></el-input>
@@ -38,9 +38,9 @@
       <div style="display: flex;margin-bottom: 20px;">
         <div><span style="display: inline-block;width:100px">多项：</span></div>
         <div v-if="type == 1">
-          <el-checkbox v-model="checked1" label="Option 1" size="large"/>
-          <el-checkbox v-model="checked2" label="Option 2" size="large"/>
-          <el-checkbox v-model="checked3[0]" label="Option 3" size="large"/>
+          <el-checkbox v-model="checked1" label="Option 1" size="large" />
+          <el-checkbox v-model="checked2" label="Option 2" size="large" />
+          <el-checkbox v-model="checked3[0]" label="Option 3" size="large" />
         </div>
         <div v-else>选项1，选项2</div>
       </div>
