@@ -1,66 +1,62 @@
 <template>
   <div>
     <div class="wrapout">
+      <div
+        style="position: fixed; top: 20px; right: 30px; z-index: 10; cursor: pointer; font-size: 24px; user-select: none;"
+        @click="$root.toggleDark()" title="切换主题">
+        {{ $root.isDark ? '🌙' : '☀️' }}
+      </div>
       <div class="wrap">
         <div style="max-width: 520px;height: 100%;">
           <div class="wrapin">
             <h1 style="padding-top: 70px; text-align: center;">
               <span
-                  style="display: inline-block;padding: 20px; width:40px;height: 40px;border-radius: 50%;background-color: white;overflow: hidden;">
-                <img src="/favicon.ico" style="width:40px;height: 40px;" alt=""></span>
+                style="display: inline-block;padding: 20px; width:40px;height: 40px;border-radius: 50%;background-color: var(--app-panel);overflow: hidden;">
+                <img :src="$root.isDark ? '/favicon-dark.ico' : '/favicon.ico'" style="width:40px;height: 40px;"
+                  alt=""></span>
             </h1>
             <h1 style="padding-top: 20px; text-align: center;">后台管理系统</h1>
             <div style="padding:40px 66px 30px;">
               <div style="margin: 0 0 25px;">
-                <el-input placeholder="登录账号" v-model="name"
-                          style="background-color: rgba(255, 255, 255, .7);border-radius: 40px;">
+                <el-input placeholder="请输入登录账号" v-model="name"
+                  style="background-color:var(--app-login-input);border-radius: 40px;">
                   <template #prepend><span class="sign">账号：</span></template>
                 </el-input>
               </div>
               <div style="margin: 0 0 25px;">
-                <el-input placeholder="登录密码" v-model="password" type="password"
-                          style="background-color: rgba(255, 255, 255, .7);border-radius: 40px;">
+                <el-input placeholder="请输入登录密码" v-model="password" type="password"
+                  style="background-color:var(--app-login-input);border-radius: 40px;">
                   <template #prepend><span class="sign">密码：</span></template>
                 </el-input>
               </div>
-              <!--              <div>-->
-              <!--                <el-input placeholder="输入验证码" value="dragon"-->
-              <!--                          style="background-color: rgba(255, 255, 255, .7);border-radius: 40px;">-->
-              <!--                  <template #prepend><span class="sign">验证码：</span></template>-->
-              <!--                </el-input>-->
-              <!--              </div>-->
+              <div>
+                <el-input placeholder="请输入验证码" v-model="verify"
+                  style="background-color:var(--app-login-input);border-radius: 40px;">
+                  <template #prepend><span class="sign">验证码：</span></template>
+                </el-input>
+              </div>
             </div>
             <div style="padding:20px 40px 0; text-align: center;">
               <span style="display: inline-block;width: 70%;max-width: 150px;">
                 <el-button
-                    style="width: 100%; border-radius: 40px;_background-color: #41b883;_border: none;box-shadow: 0 5px 30px 0 #777;"
-                    type="primary" :loading="loading" size="large" @click="tologin">登录</el-button>
+                  style="width: 100%; border-radius: 40px;_background-color: #41b883;_border: none;box-shadow: 0 5px 30px 0 #777;"
+                  type="primary" :loading="loading" size="large" @click="tologin">登录</el-button>
               </span>
             </div>
-            <!--            <div style="padding: 20px 30px;">-->
-            <!--              <div-->
-            <!--                  style="position: relative; padding-top:20px; text-align: center;color: black;overflow: hidden;">-->
-            <!--                教师身份：除admin外，任意登录<br>管理员：账号admin，密码123456-->
-            <!--                <div-->
-            <!--                    style="position: absolute;top:-1px;left:-1px; padding-top:20px; width: 100%; text-align: center;color: white;">-->
-            <!--                  管理员：admin账号，123456密码，游客身份：除了admin之外，随便输-->
-            <!--                                </div>-->
-            <!--              </div>-->
-            <!--            </div>-->
           </div>
         </div>
       </div>
     </div>
-    <div style="position: fixed;top:-100%;left:0;width: 100%;height: 100%;background-color: #333;z-index: 3;"
-         :class="{ logined: logined }"></div>
+    <div style="position: fixed;top:-100%;left:0;width: 100%;height: 100%;background-color: var(--app-text);z-index: 3;"
+      :class="{ logined: logined }"></div>
   </div>
 </template>
 
 <script>
-import {fns} from '@/utils/utils.js'
-import {ElMessage} from 'element-plus'
-import {http} from '@/utils/http'
-import {loadMenuRoutes, addMenuRoutes, dynamicRoutes, groupByPid, buildRoutes, goBase} from '@/router/router'
+import { fns } from '@/utils/utils.js'
+import { ElMessage } from 'element-plus'
+import { http } from '@/utils/http'
+import { loadMenuRoutes, addMenuRoutes, dynamicRoutes, groupByPid, buildRoutes, goBase } from '@/router/router'
 
 export default {
   data() {
@@ -68,6 +64,7 @@ export default {
       logined: false,
       name: 'admin',
       password: 'admin',
+      verify: '',
       loading: false,
     }
   },
@@ -75,7 +72,7 @@ export default {
     async tologin() {
       this.loading = true
       try {
-        const res = await http.post('/auth/login', {name: this.name, password: this.password}, {timeoutMs: 5000})
+        const res = await http.post('/auth/login', { name: this.name, password: this.password }, { timeoutMs: 5000 })
         this.logined = true
         // 保存 token 和用户信息
         const { token, user, navroot } = res.data
@@ -84,11 +81,11 @@ export default {
 
         localStorage.setItem('token', token)
         localStorage.setItem('currentUser', JSON.stringify(user))
-        
+
         // 验证并处理菜单路由数据
         if (navroot.length === 0) {
           console.warn('未获取到菜单数据')
-          ElMessage({type: 'warning', message: '暂无可用菜单权限'})
+          ElMessage({ type: 'warning', message: '暂无可用菜单权限' })
         } else {
           try {
             // 将扁平菜单转换为树形结构
@@ -107,7 +104,7 @@ export default {
             fns(this.$router, navroot)
           } catch (e) {
             console.error('处理菜单路由失败:', e.message || e)
-            ElMessage({type: 'error', message: '路由配置异常'})
+            ElMessage({ type: 'error', message: '路由配置异常' })
           }
         }
 
