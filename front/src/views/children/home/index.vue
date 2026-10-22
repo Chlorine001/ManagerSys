@@ -3,38 +3,38 @@
     <!--      首页上部-->
     <div class="leftshow1 a">
       <div class="leftshow1in" :style="{ boxShadow: $root.boxShadow }">
-        <homeCount/>
+        <homeCount />
       </div>
     </div>
     <div class="leftshow2">
       <div class="leftshow2in" :style="{ boxShadow: $root.boxShadow }">
-        <homeHeadvue/>
+        <homeHeadvue />
       </div>
     </div>
     <div class="leftshow1 b">
       <div class="leftshow1in" :style="{ boxShadow: $root.boxShadow }">
-        <homeCount/>
+        <homeCount />
       </div>
     </div>
     <!--      日期和图表-->
     <div class="leftshow1">
       <div class="leftshow1in" style="min-height: 449px;" :style="{ boxShadow: $root.boxShadow }">
-        <el-calendar class="el-calendar-table" v-model="value"/>
+        <el-calendar class="el-calendar-table" v-model="value" />
       </div>
     </div>
     <div class="leftshow2">
       <div class="leftshow2in" :style="{ boxShadow: $root.boxShadow }">
-        <radarEchart ref="radarEchart"/>
+        <radarEchart ref="radarEchart" />
       </div>
     </div>
     <div class="leftshow1">
       <div class="leftshow1in" :style="{ boxShadow: $root.boxShadow }">
-        <barEchart ref="barEchart"/>
+        <barEchart ref="barEchart" />
       </div>
     </div>
     <div class="leftshow2">
       <div class="leftshow2in" :style="{ boxShadow: $root.boxShadow }">
-        <pieEchart ref="pieEchart"/>
+        <pieEchart ref="pieEchart" />
       </div>
     </div>
     <div style="clear: both;"></div>
@@ -92,27 +92,26 @@ export default {
 
 .leftshow1in,
 .leftshow2in {
-  background: white;
+  background: var(--app-panel);
 }
 
 /* 日历边框背景颜色 */
 :deep(.el-calendar-table td, .el-calendar-table tr:first-child td, .el-calendar-table tr td:first-child) {
-  border-color: black !important;
+  border-color: var(--app-text) !important;
 }
 
 /*  日历单元格鼠标滑过背景色 */
 :deep(.el-calendar-table .el-calendar-day:hover) {
-  background-color: lightcyan !important;
+  background-color: var(--app-calendar-deep) !important;
 }
 
 :deep(.el-calendar-table .is-today) {
   color: #8400ff !important;
-  background-color: white;
 }
 
-:deep(.el-calendar-table .is-selected ) {
-  color: black;
-  background-color: lightcyan !important;
+:deep(.el-calendar-table .is-selected) {
+  color: var(--app-text);
+  background-color: var(--app-calendar-deep) !important;
 }
 
 
