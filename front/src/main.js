@@ -5,8 +5,10 @@ import { fns } from '@/utils/utils.js'
 import { groupByPid, buildRoutes, addMenuRoutes } from '@/router/router.js'
 
 import ElementPlus from 'element-plus'
+import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'//图标相关
+import './styles/theme.css' 
 
 const app = createApp(App) 
 

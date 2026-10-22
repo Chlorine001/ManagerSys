@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
+        <div style="margin-bottom: 20px;padding:10px; background-color: var(--app-panel);"
+            :style="{ boxShadow: $root.boxShadow }">
             <span style="color:#999">
                 系统代码获取：
             </span>
@@ -11,18 +12,20 @@
                 </div>
             </div>
         </div>
-        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
+        <div style="margin-bottom: 20px;padding:10px; background-color: var(--app-panel);"
+            :style="{ boxShadow: $root.boxShadow }">
             <span style="color:#999">
                 配置白名单：
             </span>
             <div style="padding-top: 20px;">
-                <div style="padding: 20px;background-color: #eee;">
+                <div style="padding: 20px;background-color: var(--app-panel);">
                     <textarea style="width: 100%;height:100px;resize: none;" name="" id="" cols="30" rows="10"
                         v-model="texts"></textarea>
                 </div>
             </div>
         </div>
-        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
+        <div style="margin-bottom: 20px;padding:10px; background-color: var(--app-panel);"
+            :style="{ boxShadow: $root.boxShadow }">
             <span style="color:#999">
                 赞助：
             </span>
@@ -30,7 +33,8 @@
                 <div style="display: inline-block; margin:0 20px 20px">
                     <div
                         style="width: 200px;height:200px;box-shadow: 0 5px 10px 0 #05a558 inset;border-radius: 10px;background-color: #04c66a;overflow: hidden;">
-                        <div style="margin: 20px 0 0 20px; width:160px;height: 160px;background-color: white;">
+                        <div
+                            style="margin: 20px 0 0 20px; width:160px;height: 160px;background-color: var(--app-panel);">
                             <img src="../../../assets/1.jpg" style="width: 100%;height: 100%;" alt="">
                         </div>
                     </div>
@@ -41,7 +45,8 @@
                 <div style="display: inline-block; margin:0 20px 20px">
                     <div
                         style="width: 200px;height:200px;box-shadow: 0 5px 10px 0 #3944bd inset;border-radius: 10px;background-color: #3368fc;overflow: hidden;">
-                        <div style="margin: 20px 0 0 20px; width:160px;height: 160px;background-color: white;">
+                        <div
+                            style="margin: 20px 0 0 20px; width:160px;height: 160px;background-color: var(--app-panel);">
                             <img src="../../../assets/2.jpg" style="width: 100%;height: 100%;" alt="">
                         </div>
                     </div>

@@ -4,24 +4,24 @@
     <div class="top">
       <!-- in -->
       <span class="logoimg" @click="toHome">
-        <img src="/favicon.ico" alt="">
+        <img :src="$root.isDark ? '/favicon-dark.ico' : '/favicon.ico'" alt="">
       </span>
-      <span class="projtitle"
+      <span class="projtitle" 
         :style="{ width: ifopen ? undefined : winwidth > 400 ? '120px' : undefined }">后台管理系统</span>
       <span class="navslide projtitle" @click="setleftnav" v-if="ifopen">
         <svg t="1682083887476" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-          p-id="5621" width="17" height="17">
+          p-id="5621" width="17" height="17" fill="currentColor">
           <path
             d="M109.632 673.664h519.68c25.152 0 45.568-22.016 45.568-48.896 0-26.88-20.416-48.896-45.568-48.896h-519.68c-25.216 0-45.632 22.016-45.632 48.896 0 26.88 20.48 48.896 45.632 48.896z m0-228.096h519.68c25.152 0 45.568-21.952 45.568-48.896 0-26.88-20.416-48.896-45.568-48.896h-519.68c-25.216 0-45.632 22.016-45.632 48.896 0 26.88 20.48 48.896 45.632 48.896z m3.264-219.904h795.776c26.88 0 50.56-20.352 51.328-47.168A48.896 48.896 0 0 0 911.104 128H115.328c-26.88 0-50.56 20.416-51.328 47.168a48.896 48.896 0 0 0 48.896 50.56z m619.776 447.232V348.672L960 510.784l-227.328 162.112c0 0.768 0 0.768 0 0z m178.432 122.944H115.328c-26.88 0-50.56 20.48-51.328 47.232a48.896 48.896 0 0 0 48.896 50.496h795.776c26.88 0 50.56-20.416 51.328-47.232a48.896 48.896 0 0 0-48.896-50.496z"
-            fill="#000000" p-id="5622"></path>
+            fill="#currentColor" p-id="5622"></path>
         </svg>
       </span>
       <span class="navslide projtitle" @click="setleftnav" v-else>
         <svg t="1682083749544" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-          p-id="5241" width="17" height="17">
+          p-id="5241" width="17" height="17" fill="currentColor">
           <path
             d="M914.368 673.664h-519.68c-25.152 0-45.568-22.016-45.568-48.896 0-26.88 20.416-48.896 45.568-48.896h519.68c25.216 0 45.632 22.016 45.632 48.896 0 26.88-20.48 48.896-45.632 48.896z m0-228.096h-519.68c-25.152 0-45.568-21.952-45.568-48.896 0-26.88 20.416-48.896 45.568-48.896h519.68c25.216 0 45.632 22.016 45.632 48.896 0 26.88-20.48 48.896-45.632 48.896z m-3.264-219.904H115.328c-26.88 0-50.56-20.352-51.328-47.168A48.896 48.896 0 0 1 112.896 128h795.776c26.88 0 50.56 20.416 51.328 47.168a48.896 48.896 0 0 1-48.896 50.56z m-619.776 447.232V348.672L64 510.784l227.328 162.112c0 0.768 0 0.768 0 0z m-178.432 122.944h795.776c26.88 0 50.56 20.48 51.328 47.232a48.896 48.896 0 0 1-48.896 50.496H115.328c-26.88 0-50.56-20.416-51.328-47.232a48.896 48.896 0 0 1 48.896-50.496z"
-            fill="#000000" p-id="5242"></path>
+            fill="#currentColor" p-id="5242"></path>
         </svg>
       </span>
       <span style="float:right">
@@ -54,7 +54,7 @@
                       <span v-if="!ifopen" style="margin-left: 10px;">{{ v && titlechange(v.meta.title) }}</span>
                     </template>
 
-                    <!--                     <el-menu-item-group>-->
+                    <!--                     <el -menu-item-group>-->
                     <menuitem :list="v" :ifopen="ifopen" @title="settitle">
                     </menuitem>
                     <!--                     </el-menu-item-group>-->
@@ -88,10 +88,10 @@
             <template v-for="(v, i) in val.children">
               <div style="position: absolute;left:0;bottom: 0;width:100%;"
                 v-if="v.path === 'icons' && !v.meta || v.meta && v.meta.userroot">
-                <div style="margin-right: 9px;border-top: 1px solid #ccc;">
-                  <el-menu class="el-menu-vertical-demo"
+                <div style="border-top: 1px solid #ccc;">
+                  <el-menu class="el-menu-vertical-demo" background-color="var(--app-panel)"
                     :collapse="!ifopen && allshow ? false : (!!(ifopen || (!ifopen && allhide)))">
-                    <el-menu-item style="_background-color: #fff;" @click="toicons">
+                    <el-menu-item @click="toicons">
                       <elicon name="icons"></elicon>
                       <template #title>
                         <span style="margin-left: 10px;">更多图标展示</span>
@@ -235,7 +235,7 @@ export default {
       var loadings = ElLoading.service()
       // const loadings = ElLoading.service();
 
-      // 设置加载动画显示时长（例如：3秒）
+      // // 设置加载动画显示时长（例如：3秒）
       // const loadingTimeout = setTimeout(() => {
       //   loadings.close();
       //   // 可选：在此处添加对超时情况的处理逻辑，如提示用户加载超时
@@ -330,9 +330,9 @@ export default {
   left: 0;
   width: 100%;
   height: 80px;
-  box-shadow: 0 0 10px 0 #333;
+  box-shadow: 0 0 100px 0 var(--app-shadow);
   z-index: 100;
-  background-color: white;
+  background-color: var(--app-panel);
   white-space: nowrap;
 }
 
@@ -344,7 +344,7 @@ export default {
   height: 40px;
   border-radius: 50%;
   cursor: pointer;
-  /* background-color: #333; */
+  /* background-color: var(--app-text); */
 }
 
 .logoimg img {
@@ -353,6 +353,7 @@ export default {
 }
 
 .projtitle {
+  color: var(--app-text);
   display: inline-block;
   padding-left: 20px;
   vertical-align: top;
@@ -379,7 +380,7 @@ export default {
 
 .leftin {
   position: relative;
-  padding-right: 10px;
+  /* padding-right: 10px; */
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -389,8 +390,8 @@ export default {
 .theleftin {
   width: 100%;
   height: 100%;
-  box-shadow: 0 0 10px 0 #333;
-  background-color: white;
+  box-shadow: 0 0 10px 0 var(--app-shadow);
+  background-color: var(--app-panel);
   overflow: hidden auto;
   scrollbar-width: thin;
   scrollbar-color: #f0f0f0 #c7c7c7;
@@ -429,7 +430,7 @@ export default {
 <style>
 body,
 html {
-  background-color: #f8f8f8;
+  background-color: var(--app-panel);
   scrollbar-width: thin;
   scrollbar-color: #f0f0f0 #c7c7c7;
 }
@@ -461,7 +462,7 @@ html::-webkit-scrollbar-track {
   width: 20px;
   height: 20px;
   /* border-radius: 50%; */
-  /* background-color: #333; */
+  /* background-color: var(--app-text); */
   vertical-align: middle !important;
   overflow: hidden;
 }

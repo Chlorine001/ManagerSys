@@ -1,0 +1,25 @@
+:root {
+	--app-bg: #f8f8f8;
+	--app-panel: #ffffff;
+	--app-text: #333333;
+	--app-text-secondary: #999999;
+	--app-border: #cccccc;
+	--app-shadow: rgba(0, 0, 0, 0.1);
+	--app-menu-bg: #ffffff;
+	--app-menu-active: #ecf5ff;
+	--app-input-bg: #eeeeee;
+	--app-login-shadow: #333;
+}
+
+html.dark {
+	--app-bg: #141414;
+	--app-panel: #1d1e1f;
+	--app-text: #e5eaf3;
+	--app-text-secondary: #a3a6ad;
+	--app-border: #414243;
+	--app-shadow: rgba(0, 0, 0, 0.5);
+	--app-menu-bg: #1d1e1f;
+	--app-menu-active: #18222c;
+	--app-input-bg: #2b2b2b;
+	--app-login-shadow: black;
+}

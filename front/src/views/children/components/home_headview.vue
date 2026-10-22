@@ -1,7 +1,7 @@
 <template>
   <div style="position:relative;cursor: pointer;" @click="goBase('/personal')">
     <div class="head">
-      <img src="/favicon.ico" style="width:100%;height:100%" alt="">
+      <img :src="$root.isDark ? '/favicon-dark.ico' : '/favicon.ico'" style="width:100%;height:100%" alt="">
     </div>
     <div class="info">
       <div style="padding:20px 0 0;font-size: 14px;white-space: nowrap;">欢迎</div>

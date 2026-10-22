@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
+        <div style="margin-bottom: 20px;padding:10px; background-color: var(--app-panel);"
+            :style="{ boxShadow: $root.boxShadow }">
             <span style="color:#999">
                 这个项目一开始要定好，有哪些角色，哪些页面，哪些按钮显示权限<br><br>
                 然后还要定好，每个页面，它显示的某部分内容的字典标识，以及对应的按钮权限，能操作的所有内容的字典标识<br><br>
@@ -10,15 +11,18 @@
         <div style="margin-bottom: 20px;padding:10px; background-color: _white;">
             前端渲染处理：
         </div>
-        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
+        <div style="margin-bottom: 20px;padding:10px; background-color: var(--app-panel);"
+            :style="{ boxShadow: $root.boxShadow }">
             页面展示权限：当后端在页面访问数组里面有[{path:'xxx',root:[]}]，这样的对象的时候，表明该页面相对于这个身份，是可以访问的
         </div>
-        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
+        <div style="margin-bottom: 20px;padding:10px; background-color: var(--app-panel);"
+            :style="{ boxShadow: $root.boxShadow }">
             按钮权限查询：{{ $route.meta.root }}<br><br>
             当$route.meta.root长度不为空的时候，它会有'edit','add','del'这三种当中的其中一种或多种的操作按钮权限<br>
             存在对应权限的时候，并为对应的按钮配置好相应权限，当该权限存在，即可展示对应操作按钮
         </div>
-        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
+        <div style="margin-bottom: 20px;padding:10px; background-color: var(--app-panel);"
+            :style="{ boxShadow: $root.boxShadow }">
             字典查询：{{ $root.dictionarysuse }}<br><br>
             当$root.dictionarysuse对象为null的时候，表示是初始为null，且显示全部和字典相关的数据模块内容<br>
             即$root.dictionarysuse为null的时候，显示全部对应字典的相关数据模块，当不为null的时候，并做好相应的字典对应模块的判断，即属性为1的时候，只显示对应已提交到后台的相关字典标识的数据模块内容
@@ -26,7 +30,8 @@
         <div style="margin-bottom: 20px;padding:10px; background-color: _white;">
             后端数据处理：
         </div>
-        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
+        <div style="margin-bottom: 20px;padding:10px; background-color: var(--app-panel);"
+            :style="{ boxShadow: $root.boxShadow }">
             一张表以路由（path，title）为关键点，按钮权限关联添加到这张表路由id，字典操作数据也一样。以下例子：<br><br>
             一张路由按钮字典的联动表<br><br>
             <tableAll></tableAll><br>

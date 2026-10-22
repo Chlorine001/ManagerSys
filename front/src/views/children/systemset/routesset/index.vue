@@ -1,16 +1,16 @@
 <template>
     <div>
-        <!-- <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
+        <!-- <div style="margin-bottom: 20px;padding:10px; background-color: var(--app-panel);" :style="{ boxShadow: $root.boxShadow }">
             <span style="color:#999">用于维护存储到后端的路由表</span>
         </div>
-        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
+        <div style="margin-bottom: 20px;padding:10px; background-color: var(--app-panel);" :style="{ boxShadow: $root.boxShadow }">
             <span style="color:#999">对应路由与角色的权限匹配方式：比如这个角色有这个路由显示权限，然后这个路由有这些权限：<span style="white-space: nowrap;">{{
                 '[{path:xxx,root:[],dicts:[]}]' }}</span>，root是按钮显示权限，dicts是数据显示权限，通过字典标识来控制</span>
         </div>
-        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
+        <div style="margin-bottom: 20px;padding:10px; background-color: var(--app-panel);" :style="{ boxShadow: $root.boxShadow }">
             <span style="color:#999">路由追加了之后，默认路由显示权限，所有按钮权限都是打开的</span>
         </div> -->
-        <div style="margin-bottom: 20px;padding:0 0 10px 0; background-color: white;"
+        <div style="margin-bottom: 20px;padding:0 0 10px 0; background-color: var(--app-panel);"
             :style="{ boxShadow: $root.boxShadow }">
             <el-input v-model="keyword" placeholder="请输入路由标题" clearable
                 style="display: inline-block; white-space: nowrap; margin: 12px 0px 0 12px; width: 220px"
@@ -79,7 +79,7 @@
             </el-table>
         </div>
 
-        <div style="margin-bottom: 20px; padding: 10px; background-color: white;"
+        <div style="margin-bottom: 20px; padding: 10px; background-color: var(--app-panel);"
             :style="{ boxShadow: $root.boxShadow }">
             <el-pagination small background layout="total, sizes, prev, pager, next, jumper" :total="total"
                 :current-page="currentPage" :page-size="pageSize" :page-sizes="[10, 20, 50, 100]"

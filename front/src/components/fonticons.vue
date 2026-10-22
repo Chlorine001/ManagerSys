@@ -61,7 +61,7 @@
             </el-icon>
         </template>
         <template v-else>
-            <!-- <img class="navimg" src="/favicon.ico" /> -->
+            <!-- <img class="navimg" :src="$root.isDark ? '/favicon-dark.ico' : '/favicon.ico'" /> -->
             <el-icon>
                 <More />
             </el-icon>

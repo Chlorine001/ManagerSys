@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div style="margin-bottom: 20px;padding:0 0 10px 0; background-color: white;"
+        <div style="margin-bottom: 20px;padding:0 0 10px 0; background-color: var(--app-panel);"
             :style="{ boxShadow: $root.boxShadow }">
             <el-input v-model="keyword" placeholder="请输入角色名称" clearable
                 style="display: inline-block; white-space: nowrap; margin: 12px 0px 0 12px; width: 220px"
@@ -10,8 +10,7 @@
             <el-button style="margin:12px 0px 0px 12px;vertical-align: top;"
                 @click="openEditDialog(null)">新增</el-button>
             <el-button style="margin:12px 0px 0px 12px;vertical-align: top;" type="warning"
-                :disabled="!selectedRows.length"
-                @click="handleBatchState('0')">批量禁用</el-button>
+                :disabled="!selectedRows.length" @click="handleBatchState('0')">批量禁用</el-button>
             <el-button style="margin:12px 0px 0px 12px;vertical-align: top;" type="danger"
                 :disabled="!selectedRows.length" @click="handleBatchDelete">批量删除</el-button>
         </div>
@@ -48,7 +47,7 @@
             </el-table>
         </div>
 
-        <div style="margin-bottom: 20px; padding: 10px; background-color: white;"
+        <div style="margin-bottom: 20px; padding: 10px; background-color: var(--app-panel);"
             :style="{ boxShadow: $root.boxShadow }">
             <el-pagination small background layout="total, sizes, prev, pager, next, jumper" :total="total"
                 :current-page="currentPage" :page-size="pageSize" :page-sizes="[10, 20, 50, 100]"

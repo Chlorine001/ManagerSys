@@ -1,9 +1,10 @@
 <template>
     <div>
-        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
+        <div style="margin-bottom: 20px;padding:10px; background-color: var(--app-panel);"
+            :style="{ boxShadow: $root.boxShadow }">
             <span style="color:#999"> ! 表格每一项可以进行拖拽排序操作</span>
         </div>
-        <div style="margin-bottom: 20px;padding:0 0 10px 0; background-color: white;"
+        <div style="margin-bottom: 20px;padding:0 0 10px 0; background-color: var(--app-panel);"
             :style="{ boxShadow: $root.boxShadow }">
             <span style="display:inline-block;white-space: nowrap;">
                 <span style="display: inline-block;margin: 12px 0px 0 12px;">
@@ -36,7 +37,8 @@
                 </el-table-column>
             </el-table>
         </div>
-        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
+        <div style="margin-bottom: 20px;padding:10px; background-color: var(--app-panel);"
+            :style="{ boxShadow: $root.boxShadow }">
             <el-pagination small background layout="prev, pager, next" :total="50" class="mt-4" />
         </div>
         <!-- 弹框 - 新增 -->

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div style="position: relative;  border-top: 1px solid #eee;background-color: white;overflow: auto;"
+        <div style="position: relative;  border-top: 1px solid #eee;background-color: var(--app-panel);overflow: auto;"
             :style="{ height: winheight - 220 + 'px', boxShadow: $root.boxShadow }">
             <div style="display: flex;min-width: 650px;">
                 <!-- 部门 -->
@@ -64,7 +64,7 @@
                 </div>
                 <!-- 分页 -->
                 <div style="position: absolute;left:0;bottom:0; width: 100%;z-index: 1;">
-                    <div style="padding:10px;border-top: 1px solid #eee;background-color: white;"
+                    <div style="padding:10px;border-top: 1px solid #eee;background-color: var(--app-panel);"
                         :style="{ marginLeft: winwidth < 600 ? ' 200px' : '210px' }">
                         <el-pagination small background layout="prev, pager, next" :total="50" class="mt-4" />
                     </div>

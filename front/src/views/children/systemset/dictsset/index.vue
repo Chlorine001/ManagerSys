@@ -1,12 +1,14 @@
 <template>
     <div>
-        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
+        <div style="margin-bottom: 20px;padding:10px; background-color: var(--app-panel);"
+            :style="{ boxShadow: $root.boxShadow }">
             <span style="color:#999">该表格用于维护存储到后端的字典表，拿了几个简单来举例放到表格中</span>
         </div>
-        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
+        <div style="margin-bottom: 20px;padding:10px; background-color: var(--app-panel);"
+            :style="{ boxShadow: $root.boxShadow }">
             <span style="color:#999">字典用于控制对应页面所能看到的数据的权限，前后端要及时匹配，添加了之后，默认是允许操作和显示的</span>
         </div>
-        <div style="margin-bottom: 20px;padding:0 0 10px 0; background-color: white;"
+        <div style="margin-bottom: 20px;padding:0 0 10px 0; background-color: var(--app-panel);"
             :style="{ boxShadow: $root.boxShadow }">
             <span style="display:inline-block;white-space: nowrap;">
                 <span style="display: inline-block;margin: 12px 0px 0 12px;">
@@ -38,7 +40,8 @@
                 </el-table-column>
             </el-table>
         </div>
-        <div style="margin-bottom: 20px;padding:10px; background-color: white;" :style="{ boxShadow: $root.boxShadow }">
+        <div style="margin-bottom: 20px;padding:10px; background-color: var(--app-panel);"
+            :style="{ boxShadow: $root.boxShadow }">
             <el-pagination small background layout="prev, pager, next" :total="50" class="mt-4" />
         </div>
         <el-dialog v-model="showsetadd" align-center title="新增条目">

@@ -27,15 +27,23 @@ export default {
       boxShadow2: '2px 2px 5px 0px #888',
       //国际化
       langtype: 'default',//目前分了default和en两种
+      isDark: false,  
       vue3test: 5
     }
   },
   watch: {
     '$route.path': function (news) {
       this.dictionaryset(news)//字典相关
-    }
+    },
+    isDark(val) {             // ✅ 监听切换
+      document.documentElement.classList.toggle('dark', val)
+      localStorage.setItem('app_theme', val ? 'dark' : 'light')
+    },
   },
   methods: {
+    toggleDark() {            // 子组件调 $root.toggleDark()
+      this.isDark = !this.isDark
+    },
     dictionaryset(news) {
       //字典相关
       this.dictionarysuse = null
@@ -67,6 +75,13 @@ export default {
     },
   },
   mounted() {
+    const saved = localStorage.getItem('app_theme')
+    if (saved === 'dark' || saved === 'light') {
+      this.isDark = saved === 'dark'
+    } else {
+      this.isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    }
+    document.documentElement.classList.toggle('dark', this.isDark)
     setTimeout(() => {
       this.dictionaryset(this.$route.path)//字典相关
       if (localStorage.getItem('lang')) {

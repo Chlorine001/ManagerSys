@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div style="margin-bottom: 20px;padding:0 0 10px 0; background-color: white;"
+        <div style="margin-bottom: 20px;padding:0 0 10px 0; background-color: var(--app-panel);"
             :style="{ boxShadow: $root.boxShadow }">
             <span style="display:inline-block;white-space: nowrap;">
                 <span style="display: inline-block;margin: 12px 0px 0 12px;">
