@@ -16,7 +16,7 @@ public class Class implements Serializable {
 
     private Integer grade;
 
-    private Integer name;
+    private String name;
 
     private String info;
 

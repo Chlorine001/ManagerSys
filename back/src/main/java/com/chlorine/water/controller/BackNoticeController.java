@@ -20,7 +20,7 @@ public class BackNoticeController {
     @GetMapping("/text")
     public String getBackNotice() {
         List<BackNotice> backNotice = backNoticeMapper.getBackNotice();
-        return backNotice.get(0).getReport().toString();
+        return backNotice.get(0).getContent();
     }
 
 

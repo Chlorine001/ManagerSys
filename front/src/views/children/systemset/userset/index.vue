@@ -1,216 +1,214 @@
 <template>
     <div>
-        <div style="position: relative;  border-top: 1px solid #eee;background-color: var(--app-panel);overflow: auto;"
-            :style="{ height: winheight - 220 + 'px', boxShadow: $root.boxShadow }">
-            <div style="display: flex;min-width: 650px;">
-                <!-- 部门 -->
-                <div style="position:relative;z-index: 3;">
-                    <div class="tree" style="overflow: hidden auto;"
-                        :style="{ height: winheight - 220 + 'px', width: winwidth < 600 ? ' 200px' : '210px' }">
-                        <div
-                            style="padding:0 12px; height:39px;line-height: 39px; border-bottom: 1px solid #eee;font-size: 14px;color: #666;">
-                            部门</div>
-                        <div style="padding:12px">
-                            <el-input v-model="filterText" placeholder="Filter keyword" @input="setvalue" />
-                            <!-- <el-tree ref="tree" :props="props" node-key="id" :default-expanded-keys="expandedkeys"
-                                :data="datas" @node-click="nodeClick" show-checkbox :render-content="renderContent"
-                                :filter-node-method="filterNode" /> -->
-                            <el-tree ref="tree" :props="props" node-key="id" :default-expanded-keys="expandedkeys"
-                                :data="datas" @node-click="nodeClick" show-checkbox :filter-node-method="filterNode">
-                                <template #default="{ node, data }">
-                                    <span style="display:flex;align-items:center;">
-                                        <span>{{ node.label }}</span>
-                                        <span style="margin-left:6px;color:#999;font-size:12px;">({{ data.id }})</span>
-                                    </span>
-                                </template>
-                            </el-tree>
-                        </div>
-                    </div>
-                </div>
-                <!-- 角色 -->
-                <div style="width:100%">
-                    <div style="overflow: hidden auto;" :style="{ height: winheight - 220 + 'px' }">
-                        <div
-                            style="padding:0 12px; height:39px;line-height: 39px; border-bottom: 1px solid #eee;font-size: 14px;color: #666;">
-                            角色</div>
-                        <div>
-                            <span style="display:inline-block;white-space: nowrap;">
-                                <span style="display: inline-block;margin: 12px 0px 0 12px;">
-                                    <el-input placeholder="Filter keyword" />
-                                </span>
-                                <el-button style="margin:12px 0px 0px 12px;vertical-align: top;"
-                                    type="primary">查询</el-button>
-                            </span>
-                            <el-button style="margin:12px 0px 0px 12px;vertical-align: top;"
-                                @click="showsetadd = true">新增</el-button>
-                            <el-button style="margin:12px 0px 0px 12px;vertical-align: top;">批量禁用</el-button>
-                            <el-button style="margin:12px 0px 0px 12px;vertical-align: top;">批量删除</el-button>
-                        </div>
-                        <div style="padding-bottom: 50px;">
-                            <el-table v-if="flexshowright" style="width:100%" :data="userlist">
-                                <el-table-column type="selection"></el-table-column>
-                                <el-table-column label="昵称" prop="name"></el-table-column>
-                                <el-table-column label="操作">
-                                    <template #default="scope">
-                                        <div style="padding-top:10px"></div>
-                                        <el-button style="margin:0 10px 10px 0">禁用</el-button>
-                                        <el-button style="margin:0 10px 10px 0">删除</el-button>
-                                        <el-button style="margin:0 10px 10px 0" @click="showsetdata = 1">编辑</el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                        </div>
-                    </div>
-                </div>
-                <!-- 分页 -->
-                <div style="position: absolute;left:0;bottom:0; width: 100%;z-index: 1;">
-                    <div style="padding:10px;border-top: 1px solid #eee;background-color: var(--app-panel);"
-                        :style="{ marginLeft: winwidth < 600 ? ' 200px' : '210px' }">
-                        <el-pagination small background layout="prev, pager, next" :total="50" class="mt-4" />
-                    </div>
-                </div>
-            </div>
+        <!-- 查询区 -->
+        <div style="margin-bottom: 20px;padding:0 0 10px 0; background-color: var(--app-panel);"
+            :style="{ boxShadow: $root.boxShadow }">
+            <el-input v-model="keyword" placeholder="请输入用户名/昵称" clearable
+                style="display: inline-block; white-space: nowrap; margin: 12px 0px 0 12px; width: 220px"
+                @keyup.enter="handleSearch" @clear="handleSearch" />
+            <el-button style="margin:12px 0px 0px 12px;vertical-align: top;" type="primary"
+                @click="handleSearch">查询</el-button>
+            <el-button style="margin:12px 0px 0px 12px;vertical-align: top;" @click="openEditDialog(null)">新增</el-button>
+            <el-button style="margin:12px 0px 0px 12px;vertical-align: top;" type="danger"
+                :disabled="!selectedRows.length" @click="handleBatchDelete">批量删除</el-button>
         </div>
-        <!-- 弹框 - 权限处理 -->
-        <el-dialog v-model="showsetdata" align-center title="编辑用户">
-            <div style="display: flex;margin-bottom: 20px;">
-                <div><span style="display: inline-block;width:100px">用户名：</span> </div>
-                <el-input value="xxx"></el-input>
-            </div>
-            <div style="display: flex;margin-bottom: 20px;">
-                <div><span style="display: inline-block;width:100px">身份：</span> </div>
-                <el-select style="width:100%" v-model="userrootselect">
-                    <el-option :value="1" label="管理员">管理员</el-option>
-                </el-select>
-            </div>
-        </el-dialog>
-        <!-- 弹框 - 新增 -->
-        <el-dialog v-model="showsetadd" align-center title="新增用户">
-            <div style="display: flex;margin-bottom: 20px;">
-                <div><span style="display: inline-block;width:100px">用户名：</span> </div>
-                <el-input></el-input>
-            </div>
-            <div style="display: flex;margin-bottom: 20px;">
-                <div><span style="display: inline-block;width:100px">身份：</span> </div>
-                <el-select style="width:100%" v-model="userrootselect">
-                    <el-option :value="1" label="管理员">管理员</el-option>
-                </el-select>
-            </div>
+
+        <!-- 表格 -->
+        <div id="tables" style="margin-bottom: 20px;" :style="{ boxShadow: $root.boxShadow }">
+            <el-table ref="tableRef" :data="list" stripe row-key="id" v-loading="loading"
+                @selection-change="handleSelectionChange">
+                <el-table-column type="selection"></el-table-column>
+                <el-table-column label="序号" width="70">
+                    <template #default="scope">
+                        {{ (currentPage - 1) * pageSize + scope.$index + 1 }}
+                    </template>
+                </el-table-column>
+                <el-table-column label="用户名" prop="name" min-width="130" />
+                <el-table-column label="昵称" prop="nickName" min-width="110" />
+                <el-table-column label="邮箱" prop="email" min-width="180" show-overflow-tooltip />
+                <el-table-column label="手机号" prop="phone" min-width="120" />
+                <el-table-column label="角色" width="110" align="center">
+                    <template #default="{ row }">
+                        <el-tag size="small" :type="roleTagType(row.roleId)">{{ roleName(row.roleId) }}</el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column label="状态" width="90" align="center">
+                    <template #default="{ row }">
+                        <el-tag :type="row.state === 0 ? 'success' : 'danger'" size="small">
+                            {{ row.state === 0 ? '正常' : '锁定' }}
+                        </el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" width="160" align="center" fixed="right">
+                    <template #default="{ row }">
+                        <el-button size="small" @click="openEditDialog(row)">编辑</el-button>
+                        <el-button size="small" type="danger" @click="handleDelete(row)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+
+        <!-- 分页 -->
+        <div style="margin-bottom: 20px; padding: 10px; background-color: var(--app-panel);"
+            :style="{ boxShadow: $root.boxShadow }">
+            <el-pagination small background layout="total, sizes, prev, pager, next, jumper" :total="total"
+                :current-page="currentPage" :page-size="pageSize" :page-sizes="[10, 20, 50, 100]"
+                @current-change="handlePageChange" @size-change="handleSizeChange" />
+        </div>
+
+        <!-- 新增/编辑弹窗 -->
+        <el-dialog v-model="showEdit" align-center :title="formMode === 'add' ? '新增用户' : '编辑用户'" width="480px">
+            <el-form label-width="90px" label-position="left">
+                <el-form-item label="用户名：">
+                    <el-input v-model="form.name" :disabled="formMode === 'edit'" placeholder="请输入用户名" />
+                </el-form-item>
+                <el-form-item v-if="formMode === 'add'" label="密码：">
+                    <el-input v-model="form.password" type="password" placeholder="请输入密码" />
+                </el-form-item>
+                <el-form-item label="昵称：">
+                    <el-input v-model="form.nickName" placeholder="请输入昵称" />
+                </el-form-item>
+                <el-form-item label="邮箱：">
+                    <el-input v-model="form.email" placeholder="请输入邮箱" />
+                </el-form-item>
+                <el-form-item label="手机号：">
+                    <el-input v-model="form.phone" placeholder="请输入手机号" maxlength="11" />
+                </el-form-item>
+                <el-form-item label="角色：">
+                    <el-select v-model="form.roleId" style="width: 100%" placeholder="请选择角色">
+                        <el-option v-for="r in roleList" :key="r.id" :label="r.name" :value="r.id" />
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <el-button @click="showEdit = false">取消</el-button>
+                <el-button type="primary" :loading="saving" @click="submitForm">确定</el-button>
+            </template>
         </el-dialog>
     </div>
 </template>
 
 <script>
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { http } from '@/utils/http'
+import { getErrorMessage } from '@/utils/errorMessage'
+
 export default {
-    /*
-        与后端交互处理权限，
-        交互完成后，再重新获取用户权限
-        后端应该根据显示与否，在返回数组的时候是否返回对应页面对象到这个数组里面，比如：
-        [{path:'xxxx',root:['set','add','del']}]，我打开了aaa的显示，那应该[{path:'xxxx',root:['set','add','del']},{path:'aaa',root:['set','add','del']}]这样格式返回
-        然后其他权限处理，比如：
-        [{path:'xxxx',root:['set','add','del']}]，我将'xxxx'的删除权限关闭，就应该[{path:'xxxx',root:['set','add']}]这样格式返回
-    */
     data() {
         return {
-            winheight: '',
-            winwidth: '',
-            showsetdata: false,
-            flexshowright: 1,
-            //
-            filterText: '',
-            props: {
-                label: 'name',//
-                children: 'zones',
-                isLeaf: 'leaf',
-            },
-            datas: [
-                {
-                    name: '部门1',
-                    id: 100
-                },
-                {
-                    name: '部门2',
-                    id: 102,
-                    zones: [
-                        {
-                            name: '部门2二级',
-                            id: 103,
-                        }
-                    ]
-                }
-            ],
-            expandedkeys: [103],
-            //
-            showsetadd: false,
-            userrootselect: 1,
-            userlist: [
-                {
-                    name: '角色1',
-                    id: 200
-                },
-                {
-                    name: '角色2',
-                    id: 201
-                }
-            ]
+            keyword: '',
+            selectedRows: [],
+            loading: false,
+            saving: false,
+            list: [],
+            total: 0,
+            currentPage: 1,
+            pageSize: 10,
+            showEdit: false,
+            formMode: 'add',
+            form: { id: null, name: '', password: '', nickName: '', email: '', phone: '', roleId: 1 },
+            roleList: []
         }
     },
     methods: {
-        doms() {
-            this.winheight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-            this.winwidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
-            this.flexshowright = 0
-            this.$nextTick(() => {
-                this.flexshowright = 1
-            })
-        },
-        //
-        nodeClick: function (data, node, item) {
-            console.log(data)
-            if (data.id == 100 || data.name == '部门1二级') {
-                var date = new Date().getTime()
-                for (var i = 0; i <= node.childNodes.length; i++) {
-                    this.$refs.tree.remove(node.childNodes[i])
-                }
+        async loadList() {
+            this.loading = true
+            try {
+                const res = await http.get('/user/page', {
+                    params: { pageNum: this.currentPage, pageSize: this.pageSize },
+                    timeoutMs: 5000
+                })
+                const data = res?.data ?? {}
+                this.list = data.records || []
+                this.total = data.total || 0
+            } catch (e) {
+                ElMessage({ type: 'error', message: getErrorMessage(e, '加载用户列表失败') })
+            } finally {
+                this.loading = false
             }
-
-            setTimeout(() => {
-                //第一级
-                if (node.level == 1 && data.id == 100) {
-                    this.$refs.tree.append({ name: '部门1二级', id: 200 + '-' + date }, data)
-                    this.expandedkeys = [data.id]
-                }
-                //第二级(虽然用了name，但一般情况是用id的)
-                if (node.level == 2 && data.name == '部门1二级') {
-                    this.$refs.tree.append({ name: '部门1三级', id: 200 + '-' + date }, data)
-                    this.expandedkeys = [data.id]
-                }
-            }, 300)
         },
-        setvalue() {
-            this.$refs.tree.filter(this.filterText)
+        async loadRoles() {
+            try {
+                const res = await http.get('/role/page', { params: { current: 1, size: 100 }, timeoutMs: 5000 })
+                this.roleList = res?.data?.records || []
+            } catch (e) {
+                // 角色加载失败不阻塞主流程
+                console.warn('加载角色失败', e)
+            }
         },
-        filterNode(value, data) {
-            if (!value) return true
-            return data.name.includes(value)
-        }
-    },
-    watch: {
-        '$root.openchange': function (news, olds) {
-            this.doms()
+        handleSearch() {
+            this.currentPage = 1
+            this.loadList()
+        },
+        handlePageChange(page) { this.currentPage = page; this.loadList() },
+        handleSizeChange(size) { this.pageSize = size; this.currentPage = 1; this.loadList() },
+        handleSelectionChange(rows) { this.selectedRows = rows },
+        openEditDialog(row) {
+            this.formMode = row ? 'edit' : 'add'
+            this.form = row
+                ? { id: row.id, name: row.name, password: '', nickName: row.nickName, email: row.email, phone: row.phone, roleId: row.roleId }
+                : { id: null, name: '', password: '', nickName: '', email: '', phone: '', roleId: 1 }
+            this.showEdit = true
+        },
+        async submitForm() {
+            if (!this.form.name) { ElMessage.warning('请输入用户名'); return }
+            if (this.formMode === 'add' && !this.form.password) { ElMessage.warning('请输入密码'); return }
+            this.saving = true
+            try {
+                if (this.formMode === 'add') {
+                    await http.post('/user/register', this.form, { timeoutMs: 5000 })
+                    ElMessage.success('新增成功')
+                } else {
+                    // 编辑走自定义更新：后端暂无 /user 更新接口时用 put 更新实体
+                    await http.put('/user', this.form, { timeoutMs: 5000 })
+                    ElMessage.success('编辑成功')
+                }
+                this.showEdit = false
+                this.loadList()
+            } catch (e) {
+                const action = this.formMode === 'add' ? '新增' : '编辑'
+                ElMessage({ type: 'error', message: getErrorMessage(e, `${action}失败`) })
+            } finally {
+                this.saving = false
+            }
+        },
+        handleDelete(row) {
+            ElMessageBox.confirm(`确定删除用户「${row.name}」吗？`, '提示', { type: 'warning' })
+                .then(async () => {
+                    try {
+                        await http.delete(`/user/${row.id}`, { timeoutMs: 5000 })
+                        ElMessage.success('删除成功')
+                        this.loadList()
+                    } catch (e) {
+                        ElMessage({ type: 'error', message: getErrorMessage(e, '删除失败') })
+                    }
+                }).catch(() => { })
+        },
+        async handleBatchDelete() {
+            if (!this.selectedRows.length) return
+            try {
+                await ElMessageBox.confirm(`确定删除选中的 ${this.selectedRows.length} 个用户吗？`, '提示', { type: 'warning' })
+            } catch { return }
+            try {
+                await Promise.all(this.selectedRows.map(r => http.delete(`/user/${r.id}`, { timeoutMs: 5000 })))
+                ElMessage.success('批量删除成功')
+                this.$refs.tableRef?.clearSelection()
+                this.loadList()
+            } catch (e) {
+                ElMessage({ type: 'error', message: getErrorMessage(e, '批量删除失败') })
+            }
+        },
+        roleName(roleId) {
+            const r = this.roleList.find(x => x.id === roleId)
+            return r ? r.name : `角色${roleId}`
+        },
+        roleTagType(roleId) {
+            return roleId === 1 ? 'danger' : 'primary'
         }
     },
     mounted() {
-        this.doms()
-        window.addEventListener('resize', () => {
-            this.doms()
-        })
+        this.loadList()
+        this.loadRoles()
     }
 }
 </script>
-
-<style scoped>
-.tree {
-    border-right: 1px solid #eee;
-}
-</style>

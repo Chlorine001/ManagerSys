@@ -2,93 +2,70 @@ package com.chlorine.water.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.chlorine.water.common.core.PageResult;
+import com.chlorine.water.common.core.R;
 import com.chlorine.water.entity.User;
-import com.chlorine.water.mapper.UserMapper;
 import com.chlorine.water.service.UserService;
-import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Getter
-    @Autowired
-    private UserMapper userMapper;
+    private final UserService userService;
 
-    @Autowired
-    private UserService userService;
-
-    //查询所有数据
+    // 查询所有数据（脱敏：password/idNumber 不输出）
     @GetMapping
-    public List<User> findAll() {
-        return userService.list();
+    public R<List<User>> findAll() {
+        return R.ok(userService.list());
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
-        return userService.registerUser(user);
+    public R<User> register(@RequestBody User user) {
+        return R.ok(userService.registerUser(user));
     }
 
-    //删除
+    // 删除
     @DeleteMapping("/{id}")
-    public boolean delete(@PathVariable Integer id) {
-        return userService.removeById(id);
+    public R<Void> delete(@PathVariable Integer id) {
+        userService.removeById(id);
+        return R.ok();
     }
 
-    //分页查询
-    //接口：/user/page
-    // @RequestParam接收 ?pageNum=1&pageSize=3
+    // 更新（脱敏：password/idNumber 不参与输出；为空不覆盖密码）
+    @PutMapping
+    public R<User> update(@RequestBody User user) {
+        User exist = userService.getById(user.getId());
+        if (exist == null) {
+            return R.fail(1001, "用户未找到");
+        }
+        // 密码留空表示不修改
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            user.setPassword(exist.getPassword());
+        }
+        userService.updateById(user);
+        return R.ok(userService.getById(user.getId()));
+    }
 
-//    @GetMapping("/page")
-//    public Map<String, Object> findPage (@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
-//        pageNum = (pageNum - 1) * pageSize;
-//        List<User> data = userMapper.selectPage(pageNum, pageSize);
-//        Integer total = userMapper.selectTotal();
-//        Map<String, Object> res = new HashMap<>();
-//        res.put("data", data);
-//        res.put("total", total);
-//        return res;
-//    }
-
-    //分页查询-MybatisPlus
+    // 分页查询
     @GetMapping("/page")
-    public IPage<User> findPage(@RequestParam Integer pageNum,
-                                @RequestParam Integer pageSize) {
-        IPage<User> page = new Page<>(pageNum, pageSize);
-        return userService.page(page);
+    public R<PageResult<User>> findPage(@RequestParam(defaultValue = "1") Integer pageNum,
+                                        @RequestParam(defaultValue = "10") Integer pageSize) {
+        IPage<User> page = userService.page(new Page<>(pageNum, pageSize));
+        PageResult<User> result = new PageResult<>(
+                page.getRecords(), page.getTotal(),
+                page.getSize(), page.getCurrent(), page.getPages()
+        );
+        return R.ok(result);
     }
 
+    // 单个查询
+    @GetMapping("/{id}")
+    public R<User> getById(@PathVariable Integer id) {
+        return R.ok(userService.getById(id));
+    }
 }
-
-//
-/// / UserController.java
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.web.bind.annotation.*;
-//
-//@RestController
-//@RequestMapping("/users")
-//public class UserController {
-//
-//    @Autowired
-//    private UserService userService;
-//
-//    @PostMapping("/register")
-//    public User register(@RequestBody User user) {
-//        return userService.registerUser(user);
-//    }
-//
-//    @GetMapping("/{id}")
-//    public User getUser(@PathVariable Long id) {
-//        return userService.getUserById(id);
-//    }
-//
-//    @PutMapping("/{id}/email")
-//    public String updateEmail(@PathVariable Long id, @RequestParam String email) {
-//        boolean success = userService.updateUserEmail(id, email);
-//        return success ? "更新成功" : "用户不存在";
-//    }
-//}

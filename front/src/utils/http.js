@@ -48,7 +48,6 @@ async function request(path, options = {}) {
     } else {
       data = await res.text().catch(() => '')
     }
-    console.log(data)
     
     // ① HTTP 状态码错误（404 / 500 等，后端未被 GlobalExceptionHandler 捕获时）
     if (!res.ok) {

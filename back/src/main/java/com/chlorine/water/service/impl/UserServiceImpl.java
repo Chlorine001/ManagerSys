@@ -1,5 +1,6 @@
 package com.chlorine.water.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.chlorine.water.common.exception.BusinessException;
@@ -25,26 +26,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     private UserMapper userMapper;
 
-//    private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
     @Override
     @Transactional
     public User registerUser(User user) {
-        // 1. 业务校验（如用户名是否已存在）
-        if (userMapper.selectByName(user.getName()) != null) {
-//            throw new BusinessException(1002);
+        // 1. 业务校验：用户名是否已存在
+        Long exists = userMapper.selectCount(new LambdaQueryWrapper<User>()
+                .eq(User::getName, user.getName()));
+        if (exists != null && exists > 0) {
             throw new BusinessException(USER_ALREADY_FOUND);
         }
-        user.setName(user.getName());
-        // 2. 密码加密
+        // 2. 密码加密（生产接入 BCrypt 时在此处 encode）
         user.setPassword(user.getPassword());
-//        user.setPassword(encodePassword(user.getPassword()));
-        // 3. 设置创建时间
+        // 3. 设置默认值
         user.setCreateTime(LocalDateTime.now());
-        user.setTrueState(0);//非实名
-        user.setRoleId(1);//默认普通用户
-        user.setState(0);//非锁定账户
-        // 4. 调用Mapper保存
+        user.setTrueState(0);  // 非实名
+        user.setRoleId(1);     // 默认普通用户（TODO：应默认「普通用户」角色 id，与 role 表对齐）
+        user.setState(0);      // 非锁定
+        // 4. 保存
         userMapper.insert(user);
         return user;
     }
@@ -67,21 +65,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return false;
         }
         user.setEmail(email);
-        return userMapper.updateUserEmail(user);
+        return userMapper.updateById(user) > 0;
     }
-
-    /**
-     * 密码加密方法
-     *
-     * @param rawPassword 原始密码
-     * @return 加密后的密码
-     */
-//    private String encodePassword(String rawPassword) {
-//        return passwordEncoder.encode(rawPassword);
-//    }
-
 }
-
-
-
-

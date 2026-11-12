@@ -57,8 +57,8 @@ public class RoleController {
     @PostMapping
     public Role add(@RequestBody Role role) {
         role.setId(null);
-        if (!StringUtils.hasText(role.getState())) {
-            role.setState("1"); // 默认启用
+        if (role.getState() == null) {
+            role.setState(1); // 默认启用
         }
         roleMapper.insert(role);
         return role;
@@ -83,7 +83,7 @@ public class RoleController {
     @PutMapping("/state")
     public void changeState(@RequestBody Map<String, Object> body) {
         List<Integer> ids = (List<Integer>) body.get("ids");
-        String state = (String) body.get("state");
+        Integer state = ((Number) body.get("state")).intValue();
         Role update = new Role();
         update.setState(state);
         roleMapper.update(update, new LambdaQueryWrapper<Role>().in(Role::getId, ids));

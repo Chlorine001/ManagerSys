@@ -23,6 +23,8 @@ public class User implements Serializable {
 
     private String name;
 
+    /** 密码：只允许反序列化写入，序列化输出时忽略，避免泄露 */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     private String nickName;
@@ -52,6 +54,8 @@ public class User implements Serializable {
 
     private String trueName;
 
+    /** 身份证号：敏感字段，序列化输出时忽略 */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String idNumber;
 
     private String direction;

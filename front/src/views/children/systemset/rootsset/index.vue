@@ -10,7 +10,7 @@
             <el-button style="margin:12px 0px 0px 12px;vertical-align: top;"
                 @click="openEditDialog(null)">新增</el-button>
             <el-button style="margin:12px 0px 0px 12px;vertical-align: top;" type="warning"
-                :disabled="!selectedRows.length" @click="handleBatchState('0')">批量禁用</el-button>
+                :disabled="!selectedRows.length" @click="handleBatchState(0)">批量禁用</el-button>
             <el-button style="margin:12px 0px 0px 12px;vertical-align: top;" type="danger"
                 :disabled="!selectedRows.length" @click="handleBatchDelete">批量删除</el-button>
         </div>
@@ -27,8 +27,8 @@
                 <el-table-column label="角色名称" prop="name" min-width="140" />
                 <el-table-column label="状态" width="90" align="center">
                     <template #default="{ row }">
-                        <el-tag :type="row.state === '1' ? 'success' : 'info'" size="small">
-                            {{ row.state === '1' ? '启用' : '禁用' }}
+                        <el-tag :type="row.state === 1 ? 'success' : 'info'" size="small">
+                            {{ row.state === 1 ? '启用' : '禁用' }}
                         </el-tag>
                     </template>
                 </el-table-column>
@@ -36,9 +36,9 @@
                 <el-table-column label="操作" width="300" align="center" fixed="right">
                     <template #default="{ row }">
                         <el-button size="small" @click="openEditDialog(row)">编辑</el-button>
-                        <el-button size="small" :type="row.state === '1' ? 'warning' : 'success'"
+                        <el-button size="small" :type="row.state === 1 ? 'warning' : 'success'"
                             @click="handleState(row)">
-                            {{ row.state === '1' ? '禁用' : '启用' }}
+                            {{ row.state === 1 ? '禁用' : '启用' }}
                         </el-button>
                         <el-button size="small" type="danger" @click="handleDelete(row)">删除</el-button>
                         <el-button size="small" type="primary" @click="openPermDialog(row)">权限设置</el-button>
@@ -198,8 +198,8 @@ export default {
             return records.some(r => r.name === name && r.id !== this.form.id)
         },
         handleState(row) {
-            const target = row.state === '1' ? '0' : '1'
-            const text = target === '0' ? '禁用' : '启用'
+            const target = row.state === 1 ? 0 : 1
+            const text = target === 0 ? '禁用' : '启用'
             http.put('/role/state', { ids: [row.id], state: target }, { timeoutMs: 5000 })
                 .then(() => {
                     ElMessage.success(`${text}成功`)
@@ -209,7 +209,7 @@ export default {
         },
         handleBatchState(state) {
             const ids = this.selectedRows.map(r => r.id)
-            const text = state === '0' ? '禁用' : '启用'
+            const text = state === 0 ? '禁用' : '启用'
             ElMessageBox.confirm(`确定${text}选中的 ${ids.length} 个角色吗？`, '提示', { type: 'warning' })
                 .then(async () => {
                     try {

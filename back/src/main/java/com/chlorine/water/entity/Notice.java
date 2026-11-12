@@ -19,7 +19,7 @@ public class Notice implements Serializable {
 
     private Integer userId;
 
-    private String tittle;
+    private String title;
 
     private String content;
 

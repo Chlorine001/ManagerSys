@@ -16,7 +16,7 @@ public class BackNotice implements Serializable {
     @TableId(type = IdType.AUTO)
     private Integer id;
 
-    private String report;
+    private String content;
 
     private static final long serialVersionUID = 1L;
 
