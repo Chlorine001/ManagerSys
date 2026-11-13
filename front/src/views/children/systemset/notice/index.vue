@@ -20,8 +20,12 @@
                     <template #default="scope">{{ (currentPage - 1) * pageSize + scope.$index + 1 }}</template>
                 </el-table-column>
                 <el-table-column label="标题" prop="title" min-width="180" show-overflow-tooltip />
-                <el-table-column label="发布时间" prop="publishTime" min-width="160" />
-                <el-table-column label="过期时间" prop="expirationTime" min-width="160" />
+                <el-table-column label="发布时间" prop="publishTime" min-width="160">
+                    <template #default="{ row }">{{ formatTime(row.publishTime) }}</template>
+                </el-table-column>
+                <el-table-column label="过期时间" prop="expirationTime" min-width="160">
+                    <template #default="{ row }">{{ formatTime(row.expirationTime) }}</template>
+                </el-table-column>
                 <el-table-column label="操作" width="160" align="center" fixed="right">
                     <template #default="{ row }">
                         <el-button size="small" @click="openEdit(row)">编辑</el-button>
@@ -95,9 +99,16 @@ export default {
         openEdit(row) {
             this.formMode = row ? 'edit' : 'add'
             this.form = row
-                ? { id: row.id, title: row.title, content: row.content, expirationTime: row.expirationTime }
+                ? { id: row.id, title: row.title, content: row.content, expirationTime: this.toStr(row.expirationTime) }
                 : { id: null, title: '', content: '', expirationTime: '' }
             this.showEdit = true
+        },
+        toStr(v) {
+            if (!v) return ''
+            const d = new Date(v)
+            if (isNaN(d.getTime())) return String(v)
+            const p = n => String(n).padStart(2, '0')
+            return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`
         },
         async submitForm() {
             if (!this.form.title) { ElMessage.warning('请输入标题'); return }
@@ -135,6 +146,13 @@ export default {
                 this.$refs.tableRef?.clearSelection()
                 this.loadList()
             } catch (e) { ElMessage({ type: 'error', message: getErrorMessage(e, '批量删除失败') }) }
+        },
+        formatTime(v) {
+            if (!v) return '-'
+            const d = new Date(v)
+            if (isNaN(d.getTime())) return '-'
+            const p = n => String(n).padStart(2, '0')
+            return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`
         }
     },
     mounted() { this.loadList() }

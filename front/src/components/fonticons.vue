@@ -60,6 +60,31 @@
                 <Collection />
             </el-icon>
         </template>
+        <template v-else-if="name == 'class'">
+            <el-icon>
+                <School />
+            </el-icon>
+        </template>
+        <template v-else-if="name == 'course'">
+            <el-icon>
+                <Reading />
+            </el-icon>
+        </template>
+        <template v-else-if="name == 'student'">
+            <el-icon>
+                <UserFilled />
+            </el-icon>
+        </template>
+        <template v-else-if="name == 'schedule'">
+            <el-icon>
+                <Calendar />
+            </el-icon>
+        </template>
+        <template v-else-if="name == 'notice'">
+            <el-icon>
+                <Bell />
+            </el-icon>
+        </template>
         <template v-else>
             <!-- <img class="navimg" :src="$root.isDark ? '/favicon-dark.ico' : '/favicon.ico'" /> -->
             <el-icon>

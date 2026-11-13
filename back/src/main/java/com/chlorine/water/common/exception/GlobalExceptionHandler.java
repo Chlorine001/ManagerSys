@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -61,7 +62,15 @@ public class GlobalExceptionHandler {
         return R.fail(ErrorCodes.PARAM_INVALID.getCode(), msg);
     }
 
-    /* ===== 5. 兜底 → 9999（固定文案，绝不外泄原始异常信息） ===== */
+    /* ========== 5. 参数类型不匹配（如 ?classId=undefined）→ 4002 ========== */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public R<Void> handleTypeMismatch(MethodArgumentTypeMismatchException e) {
+        String msg = String.format("参数 %s 的值非法", e.getName());
+        logger.warn("参数类型不匹配：{}", e.getMessage());
+        return R.fail(ErrorCodes.PARAM_INVALID.getCode(), msg);
+    }
+
+    /* ===== 6. 兜底 → 9999（固定文案，绝不外泄原始异常信息） ===== */
     @ExceptionHandler(Exception.class)
     public R<Void> handleException(Exception e) {
         logger.error("系统异常：", e);   // 真实堆栈只进日志

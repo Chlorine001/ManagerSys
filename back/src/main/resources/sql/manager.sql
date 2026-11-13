@@ -65,11 +65,11 @@ CREATE TABLE `class`  (
 -- ----------------------------
 -- Records of class
 -- ----------------------------
-INSERT INTO `class` VALUES (1, 2020, '2002', '备注1');
-INSERT INTO `class` VALUES (2, 2020, '2003', '备注2');
-INSERT INTO `class` VALUES (3, 2020, '2008', '备注3');
-INSERT INTO `class` VALUES (4, 2020, '2004', '备注4');
-INSERT INTO `class` VALUES (5, 2020, '2005', '备注5');
+INSERT INTO `class` VALUES (1, 2020, '1班', '软件工程专业');
+INSERT INTO `class` VALUES (2, 2020, '2班', '软件工程专业');
+INSERT INTO `class` VALUES (3, 2020, '3班', '计算机科学与技术专业');
+INSERT INTO `class` VALUES (4, 2021, '1班', '软件工程专业');
+INSERT INTO `class` VALUES (5, 2021, '2班', '计算机科学与技术专业');
 
 -- ----------------------------
 -- Table structure for course
@@ -80,16 +80,17 @@ CREATE TABLE `course`  (
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '课程名',
   `info` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '课程表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '课程表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of course
 -- ----------------------------
-INSERT INTO `course` VALUES (1, '课程名1', '备注1');
-INSERT INTO `course` VALUES (2, '课程名2', '备注2');
-INSERT INTO `course` VALUES (3, '课程名3', '备注3');
-INSERT INTO `course` VALUES (4, '课程名4', '备注4');
-INSERT INTO `course` VALUES (5, '课程名5', '备注5');
+INSERT INTO `course` VALUES (1, 'Java程序设计', '计算机专业核心课程，讲授 Java 基础与面向对象编程');
+INSERT INTO `course` VALUES (2, '数据库原理', '讲授关系型数据库设计、SQL 与事务');
+INSERT INTO `course` VALUES (3, '数据结构', '讲授线性表、树、图等数据结构与算法');
+INSERT INTO `course` VALUES (4, '操作系统', '讲授进程管理、内存管理与文件系统');
+INSERT INTO `course` VALUES (5, '计算机网络', '讲授 TCP/IP 协议栈与网络编程');
+INSERT INTO `course` VALUES (6, '软件工程导论', '讲授软件生命周期、需求分析与项目管理');
 
 -- ----------------------------
 -- Table structure for download
@@ -110,9 +111,9 @@ CREATE TABLE `download`  (
 -- ----------------------------
 -- Records of download
 -- ----------------------------
-INSERT INTO `download` VALUES (1, 5, 3, '2024-02-09 16:35:00');
-INSERT INTO `download` VALUES (2, 5, 2, '2024-02-10 00:47:09');
-INSERT INTO `download` VALUES (3, 5, 4, '2024-02-11 06:19:52');
+INSERT INTO `download` VALUES (1, 2, 3, '2026-10-21 16:35:00');
+INSERT INTO `download` VALUES (2, 3, 2, '2026-09-06 00:47:09');
+INSERT INTO `download` VALUES (3, 1, 20, '2026-09-16 06:19:52');
 
 -- ----------------------------
 -- Table structure for file_comment
@@ -188,16 +189,15 @@ CREATE TABLE `flie`  (
   INDEX `IDX_flie_floder_id`(`floder_id` ASC) USING BTREE,
   CONSTRAINT `FK_flie_floder_id` FOREIGN KEY (`floder_id`) REFERENCES `floder` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FK_flie_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '文件' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '文件' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of flie
 -- ----------------------------
-INSERT INTO `flie` VALUES (1, 1, 1, '文件名1', '类型1', '标签1', '隐私程度1', NULL, '版本1', '2024-02-09 16:35:00', b'0');
-INSERT INTO `flie` VALUES (2, 1, 1, '文件名2', '类型2', '标签2', '隐私程度2', NULL, '版本1', '2024-02-10 00:47:09', b'0');
-INSERT INTO `flie` VALUES (3, 1, 1, '文件名3', '类型3', '标签3', '隐私程度3', NULL, '版本1', '2024-02-11 06:19:52', b'0');
-INSERT INTO `flie` VALUES (4, 1, 1, '文件名1', '类型1', '标签4', '隐私程度4', NULL, '版本2', '2024-02-13 04:07:16', b'0');
-INSERT INTO `flie` VALUES (5, 1, 1, '文件名1', '类型1', '标签5', '隐私程度5', NULL, '版本3', '2024-02-14 22:07:19', b'0');
+INSERT INTO `flie` VALUES (1, 1, 3, '毕业设计开题报告.docx', 'docx', '开题报告', '公开', NULL, 'v1', '2026-09-15 10:30:00', b'0');
+INSERT INTO `flie` VALUES (2, 1, 4, '毕业设计论文初稿.docx', 'docx', '论文', '私有', NULL, 'v1', '2026-10-20 15:00:00', b'0');
+INSERT INTO `flie` VALUES (3, 2, 2, '数据库原理课件.zip', 'zip', '课件', '公开', NULL, 'v1', '2026-09-05 09:00:00', b'0');
+INSERT INTO `flie` VALUES (4, 1, 1, '毕业设计要求说明.pdf', 'pdf', '要求', '公开', NULL, 'v1', '2026-09-01 11:00:00', b'0');
 
 -- ----------------------------
 -- Table structure for floder
@@ -214,16 +214,15 @@ CREATE TABLE `floder`  (
   INDEX `IDX_floder_user_id`(`user_id` ASC) USING BTREE,
   CONSTRAINT `FK_floder_pid` FOREIGN KEY (`pid`) REFERENCES `floder` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FK_floder_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '目录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '目录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of floder
 -- ----------------------------
-INSERT INTO `floder` VALUES (1, '目录1', NULL, 1, '2024-02-11 16:35:00');
-INSERT INTO `floder` VALUES (2, '目录2', NULL, 1, '2024-02-12 00:47:09');
-INSERT INTO `floder` VALUES (3, '目录1.1', 1, 1, '2024-02-13 06:19:52');
-INSERT INTO `floder` VALUES (4, '目录3', NULL, 1, '2024-02-15 04:07:16');
-INSERT INTO `floder` VALUES (5, '目录2.1', 2, 1, '2024-02-16 22:07:19');
+INSERT INTO `floder` VALUES (1, '毕业设计资料', NULL, 1, '2026-09-01 10:00:00');
+INSERT INTO `floder` VALUES (2, '课程资料', NULL, 2, '2026-09-01 10:00:00');
+INSERT INTO `floder` VALUES (3, '开题报告', 1, 1, '2026-09-15 10:00:00');
+INSERT INTO `floder` VALUES (4, '论文初稿', 1, 1, '2026-10-20 10:00:00');
 
 -- ----------------------------
 -- Table structure for follow
@@ -287,7 +286,7 @@ CREATE TABLE `menu`  (
   `is_hide` tinyint(1) NULL DEFAULT 0,
   `is_leaf` tinyint(1) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of menu
@@ -332,11 +331,9 @@ CREATE TABLE `notice`  (
 -- ----------------------------
 -- Records of notice
 -- ----------------------------
-INSERT INTO `notice` VALUES (1, 2, '公告名称1', '内容1', '2024-02-10 16:35:00', '2024-02-11 16:35:00');
-INSERT INTO `notice` VALUES (2, 2, '公告名称2', '内容2', '2024-02-11 00:47:09', '2024-02-12 00:47:09');
-INSERT INTO `notice` VALUES (3, 2, '公告名称3', '内容3', '2024-02-12 06:19:52', '2024-02-13 06:19:52');
-INSERT INTO `notice` VALUES (4, 2, '公告名称4', '内容4', '2024-02-14 04:07:16', '2024-02-15 04:07:16');
-INSERT INTO `notice` VALUES (5, 2, '公告名称5', '内容5', '2024-02-15 22:07:19', '2024-02-16 22:07:19');
+INSERT INTO `notice` VALUES (1, 1, '关于2026届毕业设计选题的通知', '各位同学：2026届毕业设计选题工作已启动，请于本月内登录系统完成选题，逾期系统将自动分配。选题方向包括：Java Web 开发、数据库系统设计、移动应用开发、人工智能应用等。如有疑问请联系指导教师。', '2026-11-01 09:00:00', '2026-12-31 23:59:59');
+INSERT INTO `notice` VALUES (2, 1, '毕业设计中期检查安排', '定于12月中旬进行毕业设计中期检查，请各位同学准备好阶段成果（需求文档、设计文档、原型系统）按时参加。中期检查未通过者将影响最终答辩资格。', '2026-11-08 10:00:00', '2026-12-20 23:59:59');
+INSERT INTO `notice` VALUES (3, 2, '数据库课程设计提交提醒', '数据库课程设计报告提交截止时间为12月10日，请未提交的同学抓紧时间。报告需包含 ER 图、关系模式设计、SQL 脚本及测试结果。', '2026-11-10 08:30:00', '2026-12-10 23:59:59');
 
 -- ----------------------------
 -- Table structure for role
@@ -349,7 +346,7 @@ CREATE TABLE `role`  (
   `info` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_role_name`(`name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 71 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '权限表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '权限表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of role
@@ -357,9 +354,6 @@ CREATE TABLE `role`  (
 INSERT INTO `role` VALUES (1, '超级管理员', 1, NULL);
 INSERT INTO `role` VALUES (2, '普通用户', 1, NULL);
 INSERT INTO `role` VALUES (3, '付费会员', 1, NULL);
-INSERT INTO `role` VALUES (50, '111', 1, '');
-INSERT INTO `role` VALUES (51, '1', 1, '');
-INSERT INTO `role` VALUES (61, '11', 1, '');
 
 -- ----------------------------
 -- Table structure for role_menu
@@ -409,16 +403,21 @@ CREATE TABLE `schedule`  (
   CONSTRAINT `FK_schedule_class_id` FOREIGN KEY (`class_id`) REFERENCES `class` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FK_schedule_course_id` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FK_schedule_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '课程安排关系表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '课程安排关系表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of schedule
 -- ----------------------------
-INSERT INTO `schedule` VALUES (1, 1, 5, 1);
-INSERT INTO `schedule` VALUES (2, 1, 5, 2);
+INSERT INTO `schedule` VALUES (1, 1, 1, 1);
+INSERT INTO `schedule` VALUES (2, 1, 2, 2);
 INSERT INTO `schedule` VALUES (3, 1, 5, 3);
-INSERT INTO `schedule` VALUES (4, 1, 5, 4);
-INSERT INTO `schedule` VALUES (5, 1, 5, 5);
+INSERT INTO `schedule` VALUES (4, 2, 1, 1);
+INSERT INTO `schedule` VALUES (5, 2, 3, 4);
+INSERT INTO `schedule` VALUES (6, 3, 3, 5);
+INSERT INTO `schedule` VALUES (7, 3, 2, 2);
+INSERT INTO `schedule` VALUES (8, 4, 4, 6);
+INSERT INTO `schedule` VALUES (9, 4, 1, 1);
+INSERT INTO `schedule` VALUES (10, 5, 3, 5);
 
 -- ----------------------------
 -- Table structure for student
@@ -433,14 +432,17 @@ CREATE TABLE `student`  (
   INDEX `FK_student_class_id`(`class_id` ASC) USING BTREE,
   CONSTRAINT `FK_student_class_id` FOREIGN KEY (`class_id`) REFERENCES `class` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FK_student_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '学生班级表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '学生班级表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of student
 -- ----------------------------
-INSERT INTO `student` VALUES (1, 1, 3);
-INSERT INTO `student` VALUES (2, 2, 3);
-INSERT INTO `student` VALUES (3, 3, 3);
+INSERT INTO `student` VALUES (1, 20, 1);
+INSERT INTO `student` VALUES (2, 21, 1);
+INSERT INTO `student` VALUES (3, 22, 2);
+INSERT INTO `student` VALUES (4, 23, 3);
+INSERT INTO `student` VALUES (5, 24, 4);
+INSERT INTO `student` VALUES (6, 25, 5);
 
 -- ----------------------------
 -- Table structure for user
@@ -468,20 +470,27 @@ CREATE TABLE `user`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `FK_user_role`(`role_id` ASC) USING BTREE,
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
 -- 注意：以下密码为占位明文，接入 BCrypt 后需重新生成密文（如 admin -> $2a$10$...）
+-- 教师用户 id=1~5（role_id=2 普通用户），学生用户 id=20~25
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'patricia_mfey', 'aaa', '昵称1', '头像1', '13209858103', '男', 37, '简介1', 'helen83@linkedin.com', '组织/机构1', '2024-02-13 15:11:58', 0, 1, 1, '伍云云', '124325198505031532', '研究方向1');
-INSERT INTO `user` VALUES (2, 'charles_9fkl', '密码2', '昵称2', '头像2', '13360707300', '女', 55, '简介2', 'sarah19@github.com', '组织/机构2', '2024-02-13 16:35:00', 0, 1, 1, '郑彬昱', '123016200305210859', '研究方向2');
-INSERT INTO `user` VALUES (3, 'paul_km', '密码3', '昵称3', '头像3', '13727353390', '女', 63, '简介3', 'james30@adobe.com', '组织/机构3', '2024-02-14 00:47:09', 0, 1, 1, '余霞欣', '363685197212040521', '研究方向3');
-INSERT INTO `user` VALUES (4, 'david_snh', '密码4', '昵称4', '头像4', '13539400338', '女', 35, '简介4', 'lisa4@w3.org', '组织/机构4', '2024-02-15 06:19:52', 0, 1, 1, '苏雅莉', '112500197108040217', '研究方向4');
-INSERT INTO `user` VALUES (5, 'elizabeth_9jaqmf', '密码5', '昵称5', '头像5', '13918573633', '女', 54, '简介5', 'linda17@blogspot.com', '组织/机构5', '2024-02-17 04:07:16', 0, 1, 1, '许青', '534922199308020951', '研究方向5');
+INSERT INTO `user` VALUES (1, 'teacher_wang', '123456', '王老师', NULL, '13800000001', '男', 42, '教授 Java 与数据结构', 'wang@bishe.edu.cn', '计算机学院', '2024-02-13 15:11:58', 0, 1, 2, '王建国', NULL, 'Java 开发');
+INSERT INTO `user` VALUES (2, 'teacher_li', '123456', '李老师', NULL, '13800000002', '女', 38, '教授数据库原理', 'li@bishe.edu.cn', '计算机学院', '2024-02-13 16:35:00', 0, 1, 2, '李丽', NULL, '数据库');
+INSERT INTO `user` VALUES (3, 'teacher_zhang', '123456', '张老师', NULL, '13800000003', '男', 45, '教授操作系统与计算机网络', 'zhang@bishe.edu.cn', '计算机学院', '2024-02-14 00:47:09', 0, 1, 2, '张伟', NULL, '操作系统');
+INSERT INTO `user` VALUES (4, 'teacher_chen', '123456', '陈老师', NULL, '13800000004', '女', 35, '教授软件工程导论', 'chen@bishe.edu.cn', '软件学院', '2024-02-15 06:19:52', 0, 1, 2, '陈静', NULL, '软件工程');
+INSERT INTO `user` VALUES (5, 'teacher_liu', '123456', '刘老师', NULL, '13800000005', '男', 40, '教授数据结构', 'liu@bishe.edu.cn', '计算机学院', '2024-02-17 04:07:16', 0, 1, 2, '刘强', NULL, '数据结构');
 INSERT INTO `user` VALUES (6, 'admin', 'admin', '管理员', NULL, NULL, NULL, NULL, NULL, 'admin@qq.com', NULL, '2024-04-20 10:57:51', 0, 0, 1, NULL, NULL, NULL);
 INSERT INTO `user` VALUES (10, 'test', '001', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-03-16 21:33:58', 0, 0, 1, NULL, NULL, NULL);
 INSERT INTO `user` VALUES (11, 'test1', '001', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-03-16 22:34:50', 0, 0, 1, NULL, NULL, NULL);
+INSERT INTO `user` VALUES (20, 'stu_zhaolei', '123456', '赵磊', NULL, '13900000001', '男', 21, '2020级软件工程1班学生', 'zhaolei@stu.bishe.edu.cn', '软件学院', '2026-09-01 10:00:00', 0, 1, 2, '赵磊', NULL, 'Java 开发');
+INSERT INTO `user` VALUES (21, 'stu_sunli', '123456', '孙丽', NULL, '13900000002', '女', 21, '2020级软件工程1班学生', 'sunli@stu.bishe.edu.cn', '软件学院', '2026-09-01 10:00:00', 0, 1, 2, '孙丽', NULL, '数据库');
+INSERT INTO `user` VALUES (22, 'stu_zhoujie', '123456', '周杰', NULL, '13900000003', '男', 22, '2020级软件工程2班学生', 'zhoujie@stu.bishe.edu.cn', '软件学院', '2026-09-01 10:00:00', 0, 1, 2, '周杰', NULL, '人工智能');
+INSERT INTO `user` VALUES (23, 'stu_wuhao', '123456', '吴昊', NULL, '13900000004', '男', 21, '2020级计科3班学生', 'wuhao@stu.bishe.edu.cn', '计算机学院', '2026-09-01 10:00:00', 0, 1, 2, '吴昊', NULL, '操作系统');
+INSERT INTO `user` VALUES (24, 'stu_zhengmin', '123456', '郑敏', NULL, '13900000005', '女', 20, '2021级软件工程1班学生', 'zhengmin@stu.bishe.edu.cn', '软件学院', '2026-09-01 10:00:00', 0, 1, 2, '郑敏', NULL, '软件工程');
+INSERT INTO `user` VALUES (25, 'stu_fengyu', '123456', '冯宇', NULL, '13900000006', '男', 20, '2021级计科2班学生', 'fengyu@stu.bishe.edu.cn', '计算机学院', '2026-09-01 10:00:00', 0, 1, 2, '冯宇', NULL, '计算机网络');
 
 -- ----------------------------
 -- Table structure for view

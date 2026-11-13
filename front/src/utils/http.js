@@ -10,14 +10,17 @@ function joinUrl(base, path) {
 
 async function request(path, options = {}) {
   const base = import.meta.env.VITE_API_BASE || '/api'
-  
+
   // 处理查询参数
   let url = joinUrl(base, path)
   if (options.params) {
     const queryString = Object.entries(options.params)
+      .filter(([, value]) => value !== undefined && value !== null && value !== '')
       .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
       .join('&')
-    url += url.includes('?') ? `&${queryString}` : `?${queryString}`
+    if (queryString) {
+      url += url.includes('?') ? `&${queryString}` : `?${queryString}`
+    }
   }
 
   const controller = new AbortController()
@@ -48,7 +51,6 @@ async function request(path, options = {}) {
     } else {
       data = await res.text().catch(() => '')
     }
-    
     // ① HTTP 状态码错误（404 / 500 等，后端未被 GlobalExceptionHandler 捕获时）
     if (!res.ok) {
       const msg = data?.msg || (typeof data === 'string' && data ? data : `HTTP ${res.status}`)
