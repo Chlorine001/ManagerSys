@@ -40,7 +40,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 3. 设置默认值
         user.setCreateTime(LocalDateTime.now());
         user.setTrueState(0);  // 非实名
-        user.setRoleId(1);     // 默认普通用户（TODO：应默认「普通用户」角色 id，与 role 表对齐）
+        user.setRoleId(2);     // 默认「普通用户」角色（与 role 表对齐，避免新用户获得超级管理员权限）
         user.setState(0);      // 非锁定
         // 4. 保存
         userMapper.insert(user);
